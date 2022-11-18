@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
+
+import 'chart_drag_ball.dart';
 
 class ChartPainter extends CustomPainter {
   final List<DataPoint> dataPoints;
@@ -25,42 +25,6 @@ class ChartPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
-  }
-}
-
-class DragBall extends StatelessWidget {
-  final DataPoint dataPoint;
-  final Size size;
-  final Function(DataPoint) updateDataPoint;
-
-  const DragBall(
-      {super.key,
-      required this.dataPoint,
-      required this.size,
-      required this.updateDataPoint});
-
-  @override
-  Widget build(BuildContext context) {
-    const ballDiameter = 24.0;
-
-    return Positioned(
-        left: dataPoint.x * size.width - ballDiameter / 2,
-        bottom: dataPoint.y * size.height - ballDiameter / 2,
-        child: GestureDetector(
-          onPanUpdate: (DragUpdateDetails details) {
-            updateDataPoint(DataPoint(
-                dataPoint.x + details.delta.dx / size.width,
-                dataPoint.y - details.delta.dy / size.height));
-          },
-          child: Container(
-            width: ballDiameter,
-            height: ballDiameter,
-            decoration: const BoxDecoration(
-              color: Colors.black,
-              shape: BoxShape.circle,
-            ),
-          ),
-        ));
   }
 }
 
