@@ -27,6 +27,8 @@ class _DragBallState extends State<DragBall> {
     var dataPoint = widget.dataPoint;
     var size = widget.size;
     var updateDataPoint = widget.updateDataPoint;
+    final ThemeData theme = Theme.of(context);
+    final ButtonThemeData buttonTheme = ButtonTheme.of(context);
 
     return Positioned(
         left: dataPoint.x * size.width - ballDiameter / 2,
@@ -46,12 +48,13 @@ class _DragBallState extends State<DragBall> {
                     (details.globalPosition.dy - dragStartLoc!.dy) /
                         size.height));
           },
-          child: Container(
-            width: ballDiameter,
-            height: ballDiameter,
-            decoration: const BoxDecoration(
-              color: Colors.black,
-              shape: BoxShape.circle,
+          child: const Material(
+            elevation: 12,
+            shape: CircleBorder(),
+            color: Colors.blue,
+            child: SizedBox(
+              width: ballDiameter,
+              height: ballDiameter,
             ),
           ),
         ));

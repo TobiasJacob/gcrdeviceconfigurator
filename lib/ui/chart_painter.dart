@@ -15,7 +15,7 @@ class ChartPainter extends CustomPainter {
           (1 - dataPoints[i + 1].y) * size.height);
       Paint paint = Paint()
         ..color = Colors.black
-        ..strokeWidth = 1;
+        ..strokeWidth = 2;
       canvas.drawLine(p1, p2, paint);
     }
   }

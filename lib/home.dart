@@ -57,27 +57,31 @@ class _HomeState extends State<Home> {
         Expanded(
             flex: 3,
             child: AxisDetail(
-              axis: currentAxis,
-              updateDataPoint: (index, newDataPoint) {
-                setState(() {
-                  currentAxis.dataPoints[index] = newDataPoint;
-                });
-              },
-              createDataPoint: (index) {
-                setState(() {
-                  currentAxis.dataPoints.insert(
-                      index + 1,
-                      DataPoint(
-                        (currentAxis.dataPoints[index].x +
-                                currentAxis.dataPoints[index + 1].x) /
-                            2,
-                        (currentAxis.dataPoints[index].y +
-                                currentAxis.dataPoints[index + 1].y) /
-                            2,
-                      ));
-                });
-              },
-            )),
+                axis: currentAxis,
+                updateDataPoint: (index, newDataPoint) {
+                  setState(() {
+                    currentAxis.dataPoints[index] = newDataPoint;
+                  });
+                },
+                createDataPoint: (index) {
+                  setState(() {
+                    currentAxis.dataPoints.insert(
+                        index + 1,
+                        DataPoint(
+                          (currentAxis.dataPoints[index].x +
+                                  currentAxis.dataPoints[index + 1].x) /
+                              2,
+                          (currentAxis.dataPoints[index].y +
+                                  currentAxis.dataPoints[index + 1].y) /
+                              2,
+                        ));
+                  });
+                },
+                deleteDataPoint: ((index) {
+                  setState(() {
+                    currentAxis.dataPoints.removeAt(index);
+                  });
+                }))),
       ],
     );
   }
