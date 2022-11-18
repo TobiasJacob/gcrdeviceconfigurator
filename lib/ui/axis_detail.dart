@@ -6,10 +6,14 @@ import '../data/data_point.dart';
 
 class AxisDetail extends StatelessWidget {
   final ControllerAxis axis;
-  final Function(String index, DataPoint newDataPoint) updateDataPoint;
+  final Function(int index, DataPoint newDataPoint) updateDataPoint;
+  final Function(int index) createDataPoint;
 
   const AxisDetail(
-      {super.key, required this.axis, required this.updateDataPoint});
+      {super.key,
+      required this.axis,
+      required this.updateDataPoint,
+      required this.createDataPoint});
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +22,7 @@ class AxisDetail extends StatelessWidget {
           child: Chart(
         updateDataPoint: updateDataPoint,
         dataPoints: axis.dataPoints,
+        createDataPoint: createDataPoint,
       )),
       Container(
         width: 200,

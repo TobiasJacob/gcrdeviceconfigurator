@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/axis.dart';
+import 'package:gcrdeviceconfigurator/data/data_point.dart';
 import 'package:gcrdeviceconfigurator/ui/axis_detail.dart';
 import 'package:gcrdeviceconfigurator/ui/axis_list.dart';
 
@@ -60,6 +61,20 @@ class _HomeState extends State<Home> {
               updateDataPoint: (index, newDataPoint) {
                 setState(() {
                   currentAxis.dataPoints[index] = newDataPoint;
+                });
+              },
+              createDataPoint: (index) {
+                setState(() {
+                  currentAxis.dataPoints.insert(
+                      index + 1,
+                      DataPoint(
+                        (currentAxis.dataPoints[index].x +
+                                currentAxis.dataPoints[index + 1].x) /
+                            2,
+                        (currentAxis.dataPoints[index].y +
+                                currentAxis.dataPoints[index + 1].y) /
+                            2,
+                      ));
                 });
               },
             )),

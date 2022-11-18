@@ -10,25 +10,33 @@ class Profile {
 
   Profile(this.name)
       : axes = {
-          "Gas": ControllerAxis("Gas", {
-            "kdn": DataPoint(0, 0),
-            "akn": DataPoint(0.3, 0.5),
-            "2xk": DataPoint(1.0, 1.0),
-          }),
-          "Brake": ControllerAxis("Brake", {
-            "kdn": DataPoint(0, 0),
-            "akn": DataPoint(0.3, 0.5),
-            "2xk": DataPoint(1.0, 1.0),
-          }),
-          "Clutch": ControllerAxis("Clutch", {
-            "kdn": DataPoint(0, 0),
-            "akn": DataPoint(0.3, 0.5),
-            "2xk": DataPoint(1.0, 1.0),
-          }),
-          "HandBrake": ControllerAxis("HandBrake", {
-            "kdn": DataPoint(0, 0),
-            "akn": DataPoint(0.3, 0.5),
-            "2xk": DataPoint(1.0, 1.0),
-          }),
+          "Gas": ControllerAxis(
+              "Gas",
+              {
+                "kdn": DataPoint(0, 0),
+                "akn": DataPoint(0.3, 0.5),
+                "2xk": DataPoint(1.0, 1.0),
+              }.values.toList()),
+          "Brake": ControllerAxis(
+              "Brake",
+              {
+                "kdn": DataPoint(0, 0),
+                "akn": DataPoint(0.3, 0.5),
+                "2xk": DataPoint(1.0, 1.0),
+              }.values.toList()),
+          "Clutch": ControllerAxis(
+              "Clutch",
+              {
+                "kdn": DataPoint(0, 0),
+                "akn": DataPoint(0.3, 0.5),
+                "2xk": DataPoint(1.0, 1.0),
+              }.values.toList()),
+          "HandBrake": ControllerAxis(
+              "HandBrake",
+              {
+                "kdn": DataPoint(0, 0),
+                "akn": DataPoint(0.3, 0.5),
+                "2xk": DataPoint(1.0, 1.0),
+              }.values.toList()),
         };
 }
