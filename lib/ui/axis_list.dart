@@ -19,7 +19,7 @@ class AxisList extends StatelessWidget {
     var axesKeys = axes.keys.toList();
 
     return ListView.separated(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(16),
       itemCount: axes.length,
       itemBuilder: (BuildContext context, int index) {
         return AxisTile(

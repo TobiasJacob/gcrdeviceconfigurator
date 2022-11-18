@@ -29,42 +29,37 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const margin = 16.0;
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-      return Container(
-        color: Colors.grey[300],
+      return SizedBox(
         width: constraints.biggest.width,
         height: constraints.biggest.height,
         child: Stack(
           alignment: Alignment.center,
           children: [
-            CustomPaint(painter: ChartPainter(dataPoints), child: Container()),
+            Container(
+                margin: const EdgeInsets.all(margin), color: Colors.grey[300]),
+            CustomPaint(
+                painter: ChartPainter(dataPoints, margin), child: Container()),
             ...dataPoints
                 .asMap()
                 .map((i, dataPoint) => MapEntry(
                     i,
                     DragBall(
-                        dataPoint: dataPoint,
-                        size: constraints.biggest,
-                        updateDataPoint: (newPoint) {
-                          updateDataPoint(i, newPoint);
-                        })))
+                      dataPoint: dataPoint,
+                      size: constraints.biggest,
+                      margin: margin,
+                      updateDataPoint: (newPoint) {
+                        updateDataPoint(i, newPoint);
+                      },
+                      onPressed: () {
+                        if (dataPoints.length > 2) {
+                          deleteDataPoint(i);
+                        }
+                      },
+                    )))
                 .values,
-            ...((dataPoints.length > 2)
-                ? dataPoints
-                    .asMap()
-                    .map((i, dataPoint) => MapEntry(
-                        i,
-                        ChartButton(
-                            dataPoint: dataPoint,
-                            size: constraints.biggest,
-                            text: "-",
-                            offset: const Offset(24.0, -16.0),
-                            onPressed: () {
-                              deleteDataPoint(i);
-                            })))
-                    .values
-                : const Iterable<Widget>.empty()),
             ...getMiddlePoints(dataPoints)
                 .asMap()
                 .map((i, dp) => MapEntry(
@@ -72,6 +67,7 @@ class Chart extends StatelessWidget {
                       ChartButton(
                         dataPoint: dp,
                         size: constraints.biggest,
+                        margin: margin,
                         text: "+",
                         onPressed: () {
                           createDataPoint(i);

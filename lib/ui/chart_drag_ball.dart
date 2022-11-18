@@ -5,13 +5,17 @@ import '../data/data_point.dart';
 class DragBall extends StatefulWidget {
   final DataPoint dataPoint;
   final Size size;
+  final double margin;
   final Function(DataPoint) updateDataPoint;
+  final Function() onPressed;
 
   const DragBall(
       {super.key,
       required this.dataPoint,
       required this.size,
-      required this.updateDataPoint});
+      required this.margin,
+      required this.updateDataPoint,
+      required this.onPressed});
 
   @override
   State<DragBall> createState() => _DragBallState();
@@ -24,16 +28,17 @@ class _DragBallState extends State<DragBall> {
   @override
   Widget build(BuildContext context) {
     const ballDiameter = 24.0;
-    var dataPoint = widget.dataPoint;
-    var size = widget.size;
-    var updateDataPoint = widget.updateDataPoint;
-    final ThemeData theme = Theme.of(context);
-    final ButtonThemeData buttonTheme = ButtonTheme.of(context);
+    final dataPoint = widget.dataPoint;
+    final size = widget.size;
+    final width = size.width - 2 * widget.margin;
+    final height = size.height - 2 * widget.margin;
+    final updateDataPoint = widget.updateDataPoint;
 
     return Positioned(
-        left: dataPoint.x * size.width - ballDiameter / 2,
-        bottom: dataPoint.y * size.height - ballDiameter / 2,
+        left: dataPoint.x * width - ballDiameter / 2 + widget.margin,
+        bottom: dataPoint.y * height - ballDiameter / 2 + widget.margin,
         child: GestureDetector(
+          onTap: widget.onPressed,
           onPanStart: (details) {
             setState(() {
               dragStartLoc = details.globalPosition;
@@ -43,13 +48,12 @@ class _DragBallState extends State<DragBall> {
           onPanUpdate: (DragUpdateDetails details) {
             updateDataPoint(DataPoint(
                 dragStartDataPoint!.x +
-                    (details.globalPosition.dx - dragStartLoc!.dx) / size.width,
+                    (details.globalPosition.dx - dragStartLoc!.dx) / width,
                 dragStartDataPoint!.y -
-                    (details.globalPosition.dy - dragStartLoc!.dy) /
-                        size.height));
+                    (details.globalPosition.dy - dragStartLoc!.dy) / height));
           },
           child: const Material(
-            elevation: 12,
+            elevation: 2,
             shape: CircleBorder(),
             color: Colors.blue,
             child: SizedBox(

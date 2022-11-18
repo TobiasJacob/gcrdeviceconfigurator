@@ -45,11 +45,12 @@ class AxisDetail extends StatelessWidget {
         ]),
       ),
       Expanded(
-          child: Chart(
-              updateDataPoint: updateDataPoint,
-              dataPoints: axis.dataPoints,
-              createDataPoint: createDataPoint,
-              deleteDataPoint: deleteDataPoint))
+        child: Chart(
+            updateDataPoint: updateDataPoint,
+            dataPoints: axis.dataPoints,
+            createDataPoint: createDataPoint,
+            deleteDataPoint: deleteDataPoint),
+      )
     ]);
   }
 }

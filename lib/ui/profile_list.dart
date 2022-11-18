@@ -22,7 +22,7 @@ class ProfileList extends StatelessWidget {
   Widget build(BuildContext context) {
     var profileKeys = profiles.keys.toList();
     return ListView.separated(
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(16),
       itemCount: profiles.length,
       itemBuilder: (BuildContext context, int index) {
         return ProfileTile(
