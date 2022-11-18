@@ -50,19 +50,21 @@ class Chart extends StatelessWidget {
                           updateDataPoint(i, newPoint);
                         })))
                 .values,
-            ...dataPoints
-                .asMap()
-                .map((i, dataPoint) => MapEntry(
-                    i,
-                    ChartButton(
-                        dataPoint: dataPoint,
-                        size: constraints.biggest,
-                        text: "-",
-                        offset: const Offset(24.0, -16.0),
-                        onPressed: () {
-                          deleteDataPoint(i);
-                        })))
-                .values,
+            ...((dataPoints.length > 2)
+                ? dataPoints
+                    .asMap()
+                    .map((i, dataPoint) => MapEntry(
+                        i,
+                        ChartButton(
+                            dataPoint: dataPoint,
+                            size: constraints.biggest,
+                            text: "-",
+                            offset: const Offset(24.0, -16.0),
+                            onPressed: () {
+                              deleteDataPoint(i);
+                            })))
+                    .values
+                : const Iterable<Widget>.empty()),
             ...getMiddlePoints(dataPoints)
                 .asMap()
                 .map((i, dp) => MapEntry(

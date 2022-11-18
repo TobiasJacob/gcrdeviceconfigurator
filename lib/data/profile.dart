@@ -10,28 +10,28 @@ class Profile {
 
   Profile(this.name)
       : axes = {
-          "Gas": ControllerAxis(
+          "dkixm": ControllerAxis(
               "Gas",
               {
                 "kdn": DataPoint(0, 0),
                 "akn": DataPoint(0.3, 0.5),
                 "2xk": DataPoint(1.0, 1.0),
               }.values.toList()),
-          "Brake": ControllerAxis(
+          "qxlk": ControllerAxis(
               "Brake",
               {
                 "kdn": DataPoint(0, 0),
                 "akn": DataPoint(0.3, 0.5),
                 "2xk": DataPoint(1.0, 1.0),
               }.values.toList()),
-          "Clutch": ControllerAxis(
+          "xlkw": ControllerAxis(
               "Clutch",
               {
                 "kdn": DataPoint(0, 0),
                 "akn": DataPoint(0.3, 0.5),
                 "2xk": DataPoint(1.0, 1.0),
               }.values.toList()),
-          "HandBrake": ControllerAxis(
+          "xkwo": ControllerAxis(
               "HandBrake",
               {
                 "kdn": DataPoint(0, 0),

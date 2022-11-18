@@ -1,5 +1,6 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
 import 'package:gcrdeviceconfigurator/ui/axis_detail.dart';
 import 'package:gcrdeviceconfigurator/ui/axis_list.dart';
@@ -16,17 +17,18 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Map<String, Profile> profiles = {
-    "First Profile": Profile("First Profile"),
-    "Second Profile": Profile("Second Profile"),
-    "Third Profile": Profile("Third Profile")
+    "kdjeks": Profile("First Profile"),
+    "dfse": Profile("Second Profile"),
+    "skxi": Profile("Third Profile")
   };
 
-  String activeProfile = "First Profile";
-  String visibleAxis = "Gas";
+  String activeProfile = "kdjeks";
+  String visibleProfile = "kdjeks";
+  String visibleAxis = "dkixm";
 
   @override
   Widget build(BuildContext context) {
-    var currentProfile = profiles[activeProfile]!;
+    var currentProfile = profiles[visibleProfile]!;
     var currentAxis = currentProfile.axes[visibleAxis]!;
 
     return Row(
@@ -36,9 +38,14 @@ class _HomeState extends State<Home> {
           child: ProfileList(
             profiles: profiles,
             activeProfileId: activeProfile,
-            onChanged: (activeProfile) {
+            onChangeActiveProfile: (activeProfile) {
               setState(() {
                 this.activeProfile = activeProfile ?? "";
+              });
+            },
+            onChangeVisibleProfile: (visibleProfile) {
+              setState(() {
+                this.visibleProfile = visibleProfile ?? "";
               });
             },
           ),
@@ -48,7 +55,7 @@ class _HomeState extends State<Home> {
             child: AxisList(
               axes: currentProfile.axes,
               visibleAxis: visibleAxis,
-              onChanged: (visibleAxis) {
+              onChangeVisibleAxis: (visibleAxis) {
                 setState(() {
                   this.visibleAxis = visibleAxis!;
                 });
@@ -60,7 +67,21 @@ class _HomeState extends State<Home> {
                 axis: currentAxis,
                 updateDataPoint: (index, newDataPoint) {
                   setState(() {
-                    currentAxis.dataPoints[index] = newDataPoint;
+                    var x = newDataPoint.x;
+                    var y = newDataPoint.y;
+                    if (index > 0) {
+                      x = max(x, currentAxis.dataPoints[index - 1].x);
+                    } else {
+                      x = max(x, 0);
+                    }
+                    if (index < currentAxis.dataPoints.length - 1) {
+                      x = min(x, currentAxis.dataPoints[index + 1].x);
+                    } else {
+                      x = min(x, 1);
+                    }
+                    y = max(y, 0);
+                    y = min(y, 1);
+                    currentAxis.dataPoints[index] = DataPoint(x, y);
                   });
                 },
                 createDataPoint: (index) {

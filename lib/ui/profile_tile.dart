@@ -6,14 +6,16 @@ class ProfileTile extends StatelessWidget {
   final Profile profile;
   final String profileId;
   final String activeProfileId;
-  final Function(String?) onChanged;
+  final Function(String?) onChangeActiveProfile;
+  final Function(String?) onChangeVisibleProfile;
 
   const ProfileTile(
       {super.key,
       required this.profileId,
       required this.profile,
       required this.activeProfileId,
-      required this.onChanged});
+      required this.onChangeActiveProfile,
+      required this.onChangeVisibleProfile});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +29,15 @@ class ProfileTile extends StatelessWidget {
           Radio(
             value: profileId,
             groupValue: activeProfileId,
-            onChanged: onChanged,
+            onChanged: onChangeActiveProfile,
           ),
           Expanded(
               child: Text(profile.name,
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
-            onPressed: () {},
+            onPressed: () {
+              onChangeVisibleProfile(profileId);
+            },
             shape: const CircleBorder(),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             minWidth: 0,

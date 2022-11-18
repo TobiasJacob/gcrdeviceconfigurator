@@ -6,13 +6,15 @@ import '../data/profile.dart';
 class ProfileList extends StatelessWidget {
   final Map<String, Profile> profiles;
   final String activeProfileId;
-  final Function(String?) onChanged;
+  final Function(String?) onChangeActiveProfile;
+  final Function(String?) onChangeVisibleProfile;
 
   const ProfileList(
       {super.key,
       required this.profiles,
       required this.activeProfileId,
-      required this.onChanged});
+      required this.onChangeActiveProfile,
+      required this.onChangeVisibleProfile});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,8 @@ class ProfileList extends StatelessWidget {
         return ProfileTile(
           profile: profiles[profileKeys[index]]!,
           activeProfileId: activeProfileId,
-          onChanged: onChanged,
+          onChangeActiveProfile: onChangeActiveProfile,
+          onChangeVisibleProfile: onChangeVisibleProfile,
           profileId: profileKeys[index],
         );
       },

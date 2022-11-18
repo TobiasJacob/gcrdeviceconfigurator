@@ -4,14 +4,16 @@ import '../data/axis.dart';
 
 class AxisTile extends StatelessWidget {
   final ControllerAxis axis;
+  final String axisId;
   final String visibleAxis;
-  final Function(String?) onChanged;
+  final Function(String?) onChangeVisibleAxis;
 
   const AxisTile(
       {super.key,
       required this.axis,
+      required this.axisId,
       required this.visibleAxis,
-      required this.onChanged});
+      required this.onChangeVisibleAxis});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,9 @@ class AxisTile extends StatelessWidget {
               child: Text(axis.name,
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
-            onPressed: () {},
+            onPressed: () {
+              onChangeVisibleAxis(axisId);
+            },
             shape: const CircleBorder(),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
             minWidth: 0,
