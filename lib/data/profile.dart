@@ -10,13 +10,25 @@ class Profile {
 
   Profile(this.name)
       : axes = {
-          "Gas": ControllerAxis("Gas",
-              [DataPoint(0, 0), DataPoint(0.3, 0.5), DataPoint(1.0, 1.0)]),
-          "Brake": ControllerAxis("Brake",
-              [DataPoint(0, 0), DataPoint(0.3, 0.5), DataPoint(1.0, 1.0)]),
-          "Clutch": ControllerAxis("Clutch",
-              [DataPoint(0, 0), DataPoint(0.3, 0.5), DataPoint(1.0, 1.0)]),
-          "Hand-Brake": ControllerAxis("Hand-Brake",
-              [DataPoint(0, 0), DataPoint(0.3, 0.5), DataPoint(1.0, 1.0)]),
+          "Gas": ControllerAxis("Gas", {
+            "kdn": DataPoint(0, 0),
+            "akn": DataPoint(0.3, 0.5),
+            "2xk": DataPoint(1.0, 1.0),
+          }),
+          "Brake": ControllerAxis("Brake", {
+            "kdn": DataPoint(0, 0),
+            "akn": DataPoint(0.3, 0.5),
+            "2xk": DataPoint(1.0, 1.0),
+          }),
+          "Clutch": ControllerAxis("Clutch", {
+            "kdn": DataPoint(0, 0),
+            "akn": DataPoint(0.3, 0.5),
+            "2xk": DataPoint(1.0, 1.0),
+          }),
+          "HandBrake": ControllerAxis("HandBrake", {
+            "kdn": DataPoint(0, 0),
+            "akn": DataPoint(0.3, 0.5),
+            "2xk": DataPoint(1.0, 1.0),
+          }),
         };
 }

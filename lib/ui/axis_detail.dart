@@ -6,7 +6,7 @@ import '../data/data_point.dart';
 
 class AxisDetail extends StatelessWidget {
   final ControllerAxis axis;
-  final Function(int index, DataPoint newDataPoint) updateDataPoint;
+  final Function(String index, DataPoint newDataPoint) updateDataPoint;
 
   const AxisDetail(
       {super.key, required this.axis, required this.updateDataPoint});
