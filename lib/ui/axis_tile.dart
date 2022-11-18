@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 
-import '../data/profile.dart';
+import '../data/axis.dart';
 
-class ProfileTile extends StatelessWidget {
-  final Profile profile;
-  final String profileId;
-  final String activeProfileId;
+class AxisTile extends StatelessWidget {
+  final ControllerAxis axis;
+  final String visibleAxis;
   final Function(String?) onChanged;
 
-  const ProfileTile(
+  const AxisTile(
       {super.key,
-      required this.profileId,
-      required this.profile,
-      required this.activeProfileId,
+      required this.axis,
+      required this.visibleAxis,
       required this.onChanged});
 
   @override
@@ -24,13 +22,8 @@ class ProfileTile extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(10))),
       child: Row(
         children: [
-          Radio(
-            value: profileId,
-            groupValue: activeProfileId,
-            onChanged: onChanged,
-          ),
           Expanded(
-              child: Text(profile.name,
+              child: Text(axis.name,
                   style: const TextStyle(color: Colors.black, fontSize: 18)))
         ],
       ),
