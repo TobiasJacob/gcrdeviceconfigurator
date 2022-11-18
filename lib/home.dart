@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
           child: ProfileList(
             profiles: profiles,
             activeProfileId: activeProfileId,
-            visibleProfileId: visibleAxisId,
+            visibleProfileId: visibleProfileId,
             onChangeActiveProfile: (activeProfileId) {
               setState(() {
                 this.activeProfileId = activeProfileId ?? "";

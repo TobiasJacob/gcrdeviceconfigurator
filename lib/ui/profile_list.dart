@@ -28,6 +28,7 @@ class ProfileList extends StatelessWidget {
         return ProfileTile(
           profile: profiles[profileKeys[index]]!,
           activeProfileId: activeProfileId,
+          visibleProfileId: visibleProfileId,
           onChangeActiveProfile: onChangeActiveProfile,
           onChangeVisibleProfile: onChangeVisibleProfile,
           profileId: profileKeys[index],

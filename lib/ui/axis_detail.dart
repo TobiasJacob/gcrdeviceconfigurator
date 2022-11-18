@@ -20,16 +20,36 @@ class AxisDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+      Container(
+        width: 200,
+        padding: const EdgeInsets.all(8),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          DropdownButton(
+            onChanged: (value) {},
+            value: 0,
+            items: const [
+              DropdownMenuItem(
+                value: 0,
+                child: Text("Starke Glättung"),
+              ),
+              DropdownMenuItem(
+                value: 1,
+                child: Text("Mittlere Glättung"),
+              ),
+              DropdownMenuItem(
+                value: 2,
+                child: Text("Schwache Glättung"),
+              )
+            ],
+          )
+        ]),
+      ),
       Expanded(
           child: Chart(
               updateDataPoint: updateDataPoint,
               dataPoints: axis.dataPoints,
               createDataPoint: createDataPoint,
-              deleteDataPoint: deleteDataPoint)),
-      Container(
-        width: 200,
-        color: Colors.amber,
-      )
+              deleteDataPoint: deleteDataPoint))
     ]);
   }
 }

@@ -21,7 +21,8 @@ class AxisTile extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
           border: Border.all(),
-          borderRadius: const BorderRadius.all(Radius.circular(10))),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          color: axisId == visibleAxisId ? Colors.blue[100] : null),
       child: Row(
         children: [
           Expanded(

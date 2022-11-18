@@ -6,6 +6,7 @@ class ProfileTile extends StatelessWidget {
   final Profile profile;
   final String profileId;
   final String activeProfileId;
+  final String visibleProfileId;
   final Function(String?) onChangeActiveProfile;
   final Function(String?) onChangeVisibleProfile;
 
@@ -14,6 +15,7 @@ class ProfileTile extends StatelessWidget {
       required this.profileId,
       required this.profile,
       required this.activeProfileId,
+      required this.visibleProfileId,
       required this.onChangeActiveProfile,
       required this.onChangeVisibleProfile});
 
@@ -23,7 +25,8 @@ class ProfileTile extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
           border: Border.all(),
-          borderRadius: const BorderRadius.all(Radius.circular(10))),
+          borderRadius: const BorderRadius.all(Radius.circular(10)),
+          color: profileId == visibleProfileId ? Colors.blue[100] : null),
       child: Row(
         children: [
           Radio(

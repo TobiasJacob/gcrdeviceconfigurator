@@ -32,7 +32,7 @@ class Chart extends StatelessWidget {
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       return Container(
-        color: Colors.green,
+        color: Colors.grey[300],
         width: constraints.biggest.width,
         height: constraints.biggest.height,
         child: Stack(
