@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/data/axis.dart';
+import 'package:gcrdeviceconfigurator/ui/axis_detail.dart';
 import 'package:gcrdeviceconfigurator/ui/axis_list.dart';
 
 import 'data/profile.dart';
@@ -12,16 +14,19 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  Map<String, Profile> profiles = {
+    "First Profile": Profile("First Profile"),
+    "Second Profile": Profile("Second Profile"),
+    "Third Profile": Profile("Third Profile")
+  };
+
   String activeProfile = "First Profile";
-  String visibleAxis = "";
+  String visibleAxis = "Gas";
 
   @override
   Widget build(BuildContext context) {
-    var profiles = {
-      "First Profile": Profile("First Profile"),
-      "Second Profile": Profile("Second Profile"),
-      "Third Profile": Profile("Third Profile")
-    };
+    var currentProfile = profiles[activeProfile]!;
+    var currentAxis = currentProfile.axes[visibleAxis]!;
 
     return Row(
       children: [
@@ -40,7 +45,7 @@ class _HomeState extends State<Home> {
         Expanded(
             flex: 1,
             child: AxisList(
-              axes: profiles[activeProfile]?.axes ?? {},
+              axes: currentProfile.axes,
               visibleAxis: visibleAxis,
               onChanged: (visibleAxis) {
                 setState(() {
@@ -49,9 +54,15 @@ class _HomeState extends State<Home> {
               },
             )),
         Expanded(
-          flex: 3,
-          child: Container(color: Colors.blue),
-        ),
+            flex: 3,
+            child: AxisDetail(
+              axis: currentAxis,
+              updateDataPoint: (index, newDataPoint) {
+                setState(() {
+                  currentAxis.dataPoints[index] = newDataPoint;
+                });
+              },
+            )),
       ],
     );
   }

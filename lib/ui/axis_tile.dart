@@ -24,7 +24,16 @@ class AxisTile extends StatelessWidget {
         children: [
           Expanded(
               child: Text(axis.name,
-                  style: const TextStyle(color: Colors.black, fontSize: 18)))
+                  style: const TextStyle(color: Colors.black, fontSize: 18))),
+          MaterialButton(
+            onPressed: () {},
+            shape: const CircleBorder(),
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            minWidth: 0,
+            child: const Icon(
+              Icons.arrow_right_rounded,
+            ),
+          ),
         ],
       ),
     );
