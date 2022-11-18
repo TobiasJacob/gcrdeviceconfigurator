@@ -22,14 +22,14 @@ class _HomeState extends State<Home> {
     "skxi": Profile("Third Profile")
   };
 
-  String activeProfile = "kdjeks";
-  String visibleProfile = "kdjeks";
-  String visibleAxis = "dkixm";
+  String activeProfileId = "kdjeks";
+  String visibleProfileId = "kdjeks";
+  String visibleAxisId = "dkixm";
 
   @override
   Widget build(BuildContext context) {
-    var currentProfile = profiles[visibleProfile]!;
-    var currentAxis = currentProfile.axes[visibleAxis]!;
+    var currentProfile = profiles[activeProfileId]!;
+    var currentAxis = currentProfile.axes[visibleAxisId]!;
 
     return Row(
       children: [
@@ -37,15 +37,16 @@ class _HomeState extends State<Home> {
           flex: 1,
           child: ProfileList(
             profiles: profiles,
-            activeProfileId: activeProfile,
-            onChangeActiveProfile: (activeProfile) {
+            activeProfileId: activeProfileId,
+            visibleProfileId: visibleAxisId,
+            onChangeActiveProfile: (activeProfileId) {
               setState(() {
-                this.activeProfile = activeProfile ?? "";
+                this.activeProfileId = activeProfileId ?? "";
               });
             },
-            onChangeVisibleProfile: (visibleProfile) {
+            onChangeVisibleProfile: (visibleProfileId) {
               setState(() {
-                this.visibleProfile = visibleProfile ?? "";
+                this.visibleProfileId = visibleProfileId ?? "";
               });
             },
           ),
@@ -54,10 +55,10 @@ class _HomeState extends State<Home> {
             flex: 1,
             child: AxisList(
               axes: currentProfile.axes,
-              visibleAxis: visibleAxis,
-              onChangeVisibleAxis: (visibleAxis) {
+              visibleAxisId: visibleAxisId,
+              onChangeVisibleAxis: (visibleAxisId) {
                 setState(() {
-                  this.visibleAxis = visibleAxis!;
+                  this.visibleAxisId = visibleAxisId!;
                 });
               },
             )),

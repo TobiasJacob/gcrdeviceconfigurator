@@ -5,14 +5,14 @@ import '../data/axis.dart';
 class AxisTile extends StatelessWidget {
   final ControllerAxis axis;
   final String axisId;
-  final String visibleAxis;
+  final String visibleAxisId;
   final Function(String?) onChangeVisibleAxis;
 
   const AxisTile(
       {super.key,
       required this.axis,
       required this.axisId,
-      required this.visibleAxis,
+      required this.visibleAxisId,
       required this.onChangeVisibleAxis});
 
   @override

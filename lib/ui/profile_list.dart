@@ -6,6 +6,7 @@ import '../data/profile.dart';
 class ProfileList extends StatelessWidget {
   final Map<String, Profile> profiles;
   final String activeProfileId;
+  final String visibleProfileId;
   final Function(String?) onChangeActiveProfile;
   final Function(String?) onChangeVisibleProfile;
 
@@ -13,6 +14,7 @@ class ProfileList extends StatelessWidget {
       {super.key,
       required this.profiles,
       required this.activeProfileId,
+      required this.visibleProfileId,
       required this.onChangeActiveProfile,
       required this.onChangeVisibleProfile});
 

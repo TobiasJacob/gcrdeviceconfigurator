@@ -5,13 +5,13 @@ import '../data/axis.dart';
 
 class AxisList extends StatelessWidget {
   final Map<String, ControllerAxis> axes;
-  final String visibleAxis;
+  final String visibleAxisId;
   final Function(String?) onChangeVisibleAxis;
 
   const AxisList(
       {super.key,
       required this.axes,
-      required this.visibleAxis,
+      required this.visibleAxisId,
       required this.onChangeVisibleAxis});
 
   @override
@@ -25,7 +25,7 @@ class AxisList extends StatelessWidget {
         return AxisTile(
           axis: axes[axesKeys[index]]!,
           axisId: axesKeys[index],
-          visibleAxis: visibleAxis,
+          visibleAxisId: visibleAxisId,
           onChangeVisibleAxis: onChangeVisibleAxis,
         );
       },
