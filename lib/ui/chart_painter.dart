@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
 
 class ChartPainter extends CustomPainter {
-  final List<DataPoint> dataPoints;
+  final ControllerAxis axis;
   final double margin;
 
-  ChartPainter(this.dataPoints, this.margin);
+  ChartPainter(this.axis, this.margin);
 
   @override
   void paint(Canvas canvas, Size size) {
+    final dataPoints = axis.dataPoints;
     final width = size.width - 2 * margin;
     final height = size.height - 2 * margin;
     Paint paint = Paint()

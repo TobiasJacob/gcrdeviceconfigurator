@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
 
 import 'chart_button.dart';
@@ -15,20 +18,14 @@ List<DataPoint> getMiddlePoints(List<DataPoint> dataPointList) {
 }
 
 class Chart extends StatelessWidget {
-  final List<DataPoint> dataPoints;
-  final Function(int index, DataPoint newDataPoint) updateDataPoint;
-  final Function(int index) createDataPoint;
-  final Function(int index) deleteDataPoint;
+  final ControllerAxis axis;
+  final Function(ControllerAxis axis) updateAxis;
 
-  const Chart(
-      {super.key,
-      required this.updateDataPoint,
-      required this.dataPoints,
-      required this.createDataPoint,
-      required this.deleteDataPoint});
+  const Chart({super.key, required this.axis, required this.updateAxis});
 
   @override
   Widget build(BuildContext context) {
+    final dataPoints = axis.dataPoints;
     const margin = 16.0;
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
@@ -41,7 +38,7 @@ class Chart extends StatelessWidget {
             Container(
                 margin: const EdgeInsets.all(margin), color: Colors.grey[300]),
             CustomPaint(
-                painter: ChartPainter(dataPoints, margin), child: Container()),
+                painter: ChartPainter(axis, margin), child: Container()),
             ...dataPoints
                 .asMap()
                 .map((i, dataPoint) => MapEntry(
@@ -50,12 +47,28 @@ class Chart extends StatelessWidget {
                       dataPoint: dataPoint,
                       size: constraints.biggest,
                       margin: margin,
-                      updateDataPoint: (newPoint) {
-                        updateDataPoint(i, newPoint);
+                      updateDataPoint: (newDataPoint) {
+                        var x = newDataPoint.x;
+                        var y = newDataPoint.y;
+                        if (i > 0) {
+                          x = max(x, axis.dataPoints[i - 1].x);
+                        } else {
+                          x = max(x, 0);
+                        }
+                        if (i < axis.dataPoints.length - 1) {
+                          x = min(x, axis.dataPoints[i + 1].x);
+                        } else {
+                          x = min(x, 1);
+                        }
+                        y = max(y, 0);
+                        y = min(y, 1);
+                        axis.dataPoints[i] = DataPoint(x, y);
+                        updateAxis(axis);
                       },
                       onPressed: () {
                         if (dataPoints.length > 2) {
-                          deleteDataPoint(i);
+                          axis.dataPoints.removeAt(i);
+                          updateAxis(axis);
                         }
                       },
                     )))
@@ -70,7 +83,17 @@ class Chart extends StatelessWidget {
                         margin: margin,
                         text: "+",
                         onPressed: () {
-                          createDataPoint(i);
+                          axis.dataPoints.insert(
+                              i + 1,
+                              DataPoint(
+                                (axis.dataPoints[i].x +
+                                        axis.dataPoints[i + 1].x) /
+                                    2,
+                                (axis.dataPoints[i].y +
+                                        axis.dataPoints[i + 1].y) /
+                                    2,
+                              ));
+                          updateAxis(axis);
                         },
                       ),
                     ))

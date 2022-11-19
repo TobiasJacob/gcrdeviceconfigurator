@@ -6,16 +6,9 @@ import '../data/data_point.dart';
 
 class AxisDetail extends StatelessWidget {
   final ControllerAxis axis;
-  final Function(int index, DataPoint newDataPoint) updateDataPoint;
-  final Function(int index) createDataPoint;
-  final Function(int index) deleteDataPoint;
+  final Function(ControllerAxis axis) updateAxis;
 
-  const AxisDetail(
-      {super.key,
-      required this.axis,
-      required this.updateDataPoint,
-      required this.createDataPoint,
-      required this.deleteDataPoint});
+  const AxisDetail({super.key, required this.axis, required this.updateAxis});
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +39,9 @@ class AxisDetail extends StatelessWidget {
       ),
       Expanded(
         child: Chart(
-            updateDataPoint: updateDataPoint,
-            dataPoints: axis.dataPoints,
-            createDataPoint: createDataPoint,
-            deleteDataPoint: deleteDataPoint),
+          axis: axis,
+          updateAxis: updateAxis,
+        ),
       )
     ]);
   }

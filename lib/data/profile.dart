@@ -16,27 +16,35 @@ class Profile {
                 "kdn": DataPoint(0, 0),
                 "akn": DataPoint(0.3, 0.5),
                 "2xk": DataPoint(1.0, 1.0),
-              }.values.toList()),
+              }.values.toList(),
+              Smoothing.Normal,
+              0.1),
           "qxlk": ControllerAxis(
               "Brake",
               {
                 "kdn": DataPoint(0, 0),
                 "akn": DataPoint(0.3, 0.5),
                 "2xk": DataPoint(1.0, 1.0),
-              }.values.toList()),
+              }.values.toList(),
+              Smoothing.Normal,
+              0.2),
           "xlkw": ControllerAxis(
               "Clutch",
               {
                 "kdn": DataPoint(0, 0),
                 "akn": DataPoint(0.3, 0.5),
                 "2xk": DataPoint(1.0, 1.0),
-              }.values.toList()),
+              }.values.toList(),
+              Smoothing.Normal,
+              0.3),
           "xkwo": ControllerAxis(
               "HandBrake",
               {
                 "kdn": DataPoint(0, 0),
                 "akn": DataPoint(0.3, 0.5),
                 "2xk": DataPoint(1.0, 1.0),
-              }.values.toList()),
+              }.values.toList(),
+              Smoothing.Normal,
+              0.4)
         };
 }

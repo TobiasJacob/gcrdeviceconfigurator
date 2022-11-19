@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
 import 'package:gcrdeviceconfigurator/ui/axis_detail.dart';
 import 'package:gcrdeviceconfigurator/ui/axis_list.dart';
@@ -16,6 +18,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late Timer updateAxisValues;
+  late Random random;
+
   Map<String, Profile> profiles = {
     "kdjeks": Profile("First Profile"),
     "dfse": Profile("Second Profile"),
@@ -25,6 +30,23 @@ class _HomeState extends State<Home> {
   String activeProfileId = "kdjeks";
   String visibleProfileId = "kdjeks";
   String visibleAxisId = "dkixm";
+
+  @override
+  void initState() {
+    super.initState();
+    random = Random();
+
+    updateAxisValues =
+        Timer.periodic(const Duration(milliseconds: 50), (timer) {
+      setState(() {
+        final newVal =
+            profiles[activeProfileId]!.axes[visibleAxisId]!.currentValue +
+                random.nextDouble();
+        profiles[activeProfileId]!.axes[visibleAxisId]!.currentValue =
+            max(min(newVal, 1), 0);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,44 +88,11 @@ class _HomeState extends State<Home> {
             flex: 3,
             child: AxisDetail(
                 axis: currentAxis,
-                updateDataPoint: (index, newDataPoint) {
+                updateAxis: (ControllerAxis axis) {
                   setState(() {
-                    var x = newDataPoint.x;
-                    var y = newDataPoint.y;
-                    if (index > 0) {
-                      x = max(x, currentAxis.dataPoints[index - 1].x);
-                    } else {
-                      x = max(x, 0);
-                    }
-                    if (index < currentAxis.dataPoints.length - 1) {
-                      x = min(x, currentAxis.dataPoints[index + 1].x);
-                    } else {
-                      x = min(x, 1);
-                    }
-                    y = max(y, 0);
-                    y = min(y, 1);
-                    currentAxis.dataPoints[index] = DataPoint(x, y);
+                    currentProfile.axes[visibleAxisId] = axis;
                   });
-                },
-                createDataPoint: (index) {
-                  setState(() {
-                    currentAxis.dataPoints.insert(
-                        index + 1,
-                        DataPoint(
-                          (currentAxis.dataPoints[index].x +
-                                  currentAxis.dataPoints[index + 1].x) /
-                              2,
-                          (currentAxis.dataPoints[index].y +
-                                  currentAxis.dataPoints[index + 1].y) /
-                              2,
-                        ));
-                  });
-                },
-                deleteDataPoint: ((index) {
-                  setState(() {
-                    currentAxis.dataPoints.removeAt(index);
-                  });
-                }))),
+                })),
       ],
     );
   }
