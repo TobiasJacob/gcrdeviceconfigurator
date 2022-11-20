@@ -18,7 +18,7 @@ class Profile {
                 "2xk": DataPoint(1.0, 1.0),
               }.values.toList(),
               Smoothing.Normal,
-              0.1),
+              0.5),
           "qxlk": ControllerAxis(
               "Brake",
               {

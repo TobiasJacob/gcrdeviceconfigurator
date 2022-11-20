@@ -39,9 +39,11 @@ class _HomeState extends State<Home> {
     updateAxisValues =
         Timer.periodic(const Duration(milliseconds: 50), (timer) {
       setState(() {
-        final newVal =
+        var newVal =
             profiles[activeProfileId]!.axes[visibleAxisId]!.currentValue +
-                random.nextDouble();
+                (random.nextDouble() - 0.5) * 0.03;
+
+        newVal += (0.5 - newVal) * 0.002;
         profiles[activeProfileId]!.axes[visibleAxisId]!.currentValue =
             max(min(newVal, 1), 0);
       });

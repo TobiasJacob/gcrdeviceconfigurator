@@ -13,6 +13,8 @@ class ChartPainter extends CustomPainter {
     final dataPoints = axis.dataPoints;
     final width = size.width - 2 * margin;
     final height = size.height - 2 * margin;
+
+    // Draw Graph
     Paint paint = Paint()
       ..color = Colors.black
       ..strokeWidth = 2;
@@ -31,6 +33,19 @@ class ChartPainter extends CustomPainter {
     p1 = Offset(dataPoints[i].x * width + margin,
         (1 - dataPoints[i].y) * height + margin);
     p2 = Offset(1.0 * width + margin, (1 - dataPoints[i].y) * height + margin);
+    canvas.drawLine(p1, p2, paint);
+
+    // Draw Value Line
+    paint = Paint()
+      ..color = Colors.red
+      ..strokeWidth = 2;
+    final x = axis.currentValue;
+    p1 = Offset(x * width + margin, margin);
+    p2 = Offset(x * width + margin, height + margin);
+    canvas.drawLine(p1, p2, paint);
+    final y = axis.getY();
+    p1 = Offset(margin, height * (1 - y) + margin);
+    p2 = Offset(width + margin, height * (1 - y) + margin);
     canvas.drawLine(p1, p2, paint);
   }
 
