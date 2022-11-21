@@ -12,7 +12,10 @@ class ControllerAxis {
   Smoothing smoothing;
   double currentValue;
 
-  ControllerAxis(this.name, this.dataPoints, this.smoothing, this.currentValue);
+  ControllerAxis(this.name)
+      : dataPoints = [DataPoint(0, 0), DataPoint(1, 1)],
+        smoothing = Smoothing.normal,
+        currentValue = 0.5;
 
   double getY() {
     final x = currentValue;

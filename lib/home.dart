@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
 
   String activeProfileId = "kdjeks";
   String visibleProfileId = "kdjeks";
-  String visibleAxisId = "dkixm";
+  String visibleAxisId = "GasAxis";
 
   @override
   void initState() {
@@ -37,7 +37,7 @@ class _HomeState extends State<Home> {
     random = Random();
 
     updateAxisValues =
-        Timer.periodic(const Duration(milliseconds: 50), (timer) {
+        Timer.periodic(const Duration(milliseconds: 100), (timer) {
       setState(() {
         var newVal =
             profiles[activeProfileId]!.axes[visibleAxisId]!.currentValue +
@@ -60,20 +60,24 @@ class _HomeState extends State<Home> {
         Expanded(
           flex: 1,
           child: ProfileList(
-            profiles: profiles,
-            activeProfileId: activeProfileId,
-            visibleProfileId: visibleProfileId,
-            onChangeActiveProfile: (activeProfileId) {
-              setState(() {
-                this.activeProfileId = activeProfileId ?? "";
-              });
-            },
-            onChangeVisibleProfile: (visibleProfileId) {
-              setState(() {
-                this.visibleProfileId = visibleProfileId ?? "";
-              });
-            },
-          ),
+              profiles: profiles,
+              activeProfileId: activeProfileId,
+              visibleProfileId: visibleProfileId,
+              onChangeActiveProfile: (activeProfileId) {
+                setState(() {
+                  this.activeProfileId = activeProfileId ?? "";
+                });
+              },
+              onChangeVisibleProfile: (visibleProfileId) {
+                setState(() {
+                  this.visibleProfileId = visibleProfileId ?? "";
+                });
+              },
+              onUpdateProfiles: (profiles) {
+                setState(() {
+                  this.profiles = profiles;
+                });
+              }),
         ),
         const VerticalDivider(),
         Expanded(
