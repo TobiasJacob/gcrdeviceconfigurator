@@ -1,0 +1,31 @@
+name: "tagged-release"
+
+on:
+  push:
+    tags:
+      - "v*"
+    branches:
+      - main
+
+jobs:
+ build:
+   runs-on: windows-latest
+   steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+      - run: flutter config --enable-windows-desktop
+      - run: flutter build windows
+      - uses: vimtor/action-zip@v1
+        with:
+          files: build/windows/runner/Release LICENSE.txt
+          dest: GetCloserRacingDeviceConfigurator.zip
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            LICENSE.txt
+            GetCloserRacingDeviceConfigurator.zip
