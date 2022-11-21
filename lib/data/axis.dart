@@ -1,9 +1,9 @@
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
 
 enum Smoothing {
-  HighSpeed,
-  Normal,
-  HighAccuracy,
+  highSpeed,
+  normal,
+  highAccuracy,
 }
 
 class ControllerAxis {

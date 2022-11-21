@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/ui/chart.dart';
 
-import '../data/data_point.dart';
-
 class AxisDetail extends StatelessWidget {
   final ControllerAxis axis;
   final Function(ControllerAxis axis) updateAxis;
@@ -18,20 +16,23 @@ class AxisDetail extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           DropdownButton(
-            onChanged: (value) {},
-            value: 0,
+            onChanged: (value) {
+              axis.smoothing = value ?? Smoothing.normal;
+              updateAxis(axis);
+            },
+            value: axis.smoothing,
             items: const [
               DropdownMenuItem(
-                value: 0,
-                child: Text("Starke Glättung"),
+                value: Smoothing.highAccuracy,
+                child: Text("Genauer"),
               ),
               DropdownMenuItem(
-                value: 1,
-                child: Text("Mittlere Glättung"),
+                value: Smoothing.normal,
+                child: Text("Ausgewogen"),
               ),
               DropdownMenuItem(
-                value: 2,
-                child: Text("Schwache Glättung"),
+                value: Smoothing.highSpeed,
+                child: Text("Schneller"),
               )
             ],
           )

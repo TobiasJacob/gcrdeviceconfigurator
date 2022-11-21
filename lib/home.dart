@@ -75,6 +75,7 @@ class _HomeState extends State<Home> {
             },
           ),
         ),
+        const VerticalDivider(),
         Expanded(
             flex: 1,
             child: AxisList(
@@ -86,6 +87,7 @@ class _HomeState extends State<Home> {
                 });
               },
             )),
+        const VerticalDivider(),
         Expanded(
             flex: 3,
             child: AxisDetail(

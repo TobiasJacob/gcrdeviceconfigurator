@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
 
 import 'axis.dart';
@@ -17,7 +15,7 @@ class Profile {
                 "akn": DataPoint(0.3, 0.5),
                 "2xk": DataPoint(1.0, 1.0),
               }.values.toList(),
-              Smoothing.Normal,
+              Smoothing.normal,
               0.5),
           "qxlk": ControllerAxis(
               "Brake",
@@ -26,7 +24,7 @@ class Profile {
                 "akn": DataPoint(0.3, 0.5),
                 "2xk": DataPoint(1.0, 1.0),
               }.values.toList(),
-              Smoothing.Normal,
+              Smoothing.normal,
               0.2),
           "xlkw": ControllerAxis(
               "Clutch",
@@ -35,7 +33,7 @@ class Profile {
                 "akn": DataPoint(0.3, 0.5),
                 "2xk": DataPoint(1.0, 1.0),
               }.values.toList(),
-              Smoothing.Normal,
+              Smoothing.normal,
               0.3),
           "xkwo": ControllerAxis(
               "HandBrake",
@@ -44,7 +42,7 @@ class Profile {
                 "akn": DataPoint(0.3, 0.5),
                 "2xk": DataPoint(1.0, 1.0),
               }.values.toList(),
-              Smoothing.Normal,
+              Smoothing.normal,
               0.4)
         };
 }
