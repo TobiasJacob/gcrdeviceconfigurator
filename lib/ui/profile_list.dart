@@ -16,8 +16,8 @@ class ProfileList extends StatelessWidget {
   final Map<String, Profile> profiles;
   final String activeProfileId;
   final String visibleProfileId;
-  final Function(String?) onChangeActiveProfile;
-  final Function(String?) onChangeVisibleProfile;
+  final Function(String) onChangeActiveProfile;
+  final Function(String) onChangeVisibleProfile;
   final Function(Map<String, Profile>) onUpdateProfiles;
 
   const ProfileList(
@@ -66,7 +66,7 @@ class ProfileList extends StatelessWidget {
                   if (profiles.containsKey(profileId)) {
                     continue;
                   }
-                  profiles[profileId] = Profile("New profile");
+                  profiles[profileId] = Profile.empty("New profile");
                   onUpdateProfiles(profiles);
                   break;
                 }

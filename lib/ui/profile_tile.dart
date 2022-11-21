@@ -7,8 +7,8 @@ class ProfileTile extends StatelessWidget {
   final String profileId;
   final String activeProfileId;
   final String visibleProfileId;
-  final Function(String?) onChangeActiveProfile;
-  final Function(String?) onChangeVisibleProfile;
+  final Function(String) onChangeActiveProfile;
+  final Function(String) onChangeVisibleProfile;
 
   const ProfileTile(
       {super.key,
@@ -32,7 +32,9 @@ class ProfileTile extends StatelessWidget {
           Radio(
             value: profileId,
             groupValue: activeProfileId,
-            onChanged: onChangeActiveProfile,
+            onChanged: (value) {
+              onChangeActiveProfile(value!);
+            },
           ),
           Expanded(
               child: Text(profile.name,

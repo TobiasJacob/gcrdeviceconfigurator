@@ -12,10 +12,23 @@ class ControllerAxis {
   Smoothing smoothing;
   double currentValue;
 
-  ControllerAxis(this.name)
-      : dataPoints = [DataPoint(0, 0), DataPoint(1, 1)],
-        smoothing = Smoothing.normal,
-        currentValue = 0.5;
+  ControllerAxis(this.name, this.dataPoints, this.smoothing, this.currentValue);
+
+  static ControllerAxis empty(name) {
+    return ControllerAxis(
+        name, [DataPoint(0, 0), DataPoint(1, 1)], Smoothing.normal, 0.5);
+  }
+
+  static ControllerAxis fromJSON(Map<String, dynamic> axisData) {
+    String name = axisData["name"];
+    List<DataPoint> dataPoints = (axisData["dataPoints"] as List)
+        .map((e) => DataPoint.fromJSON(e))
+        .toList();
+    Smoothing smoothing = Smoothing.values[axisData["smoothing"]];
+    double currentValue = 0.5;
+
+    return ControllerAxis(name, dataPoints, smoothing, currentValue);
+  }
 
   double getY() {
     final x = currentValue;
@@ -34,5 +47,14 @@ class ControllerAxis {
     }
 
     return dataPoints[dataPoints.length - 1].y;
+  }
+
+  Map<String, dynamic> toJSON() {
+    final jsonDataPoints = dataPoints.map((dp) => dp.toJSON()).toList();
+    return {
+      "name": name,
+      "dataPoints": jsonDataPoints,
+      "smoothing": smoothing.index
+    };
   }
 }
