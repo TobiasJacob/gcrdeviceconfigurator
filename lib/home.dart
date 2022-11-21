@@ -20,6 +20,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   late Timer updateAxisValues;
   late Random random;
+  final TextEditingController profileNameController = TextEditingController();
 
   Map<String, Profile> profiles = {
     "kdjeks": Profile("First Profile"),
@@ -71,6 +72,7 @@ class _HomeState extends State<Home> {
               onChangeVisibleProfile: (visibleProfileId) {
                 setState(() {
                   this.visibleProfileId = visibleProfileId ?? "";
+                  profileNameController.text = profiles[visibleProfileId]!.name;
                 });
               },
               onUpdateProfiles: (profiles) {
@@ -93,14 +95,23 @@ class _HomeState extends State<Home> {
             )),
         const VerticalDivider(),
         Expanded(
-            flex: 3,
-            child: AxisDetail(
-                axis: currentAxis,
-                updateAxis: (ControllerAxis axis) {
-                  setState(() {
-                    currentProfile.axes[visibleAxisId] = axis;
-                  });
-                })),
+          flex: 3,
+          child: AxisDetail(
+            axis: currentAxis,
+            profile: currentProfile,
+            profileNameController: profileNameController,
+            updateAxis: (ControllerAxis axis) {
+              setState(() {
+                currentProfile.axes[visibleAxisId] = axis;
+              });
+            },
+            updateProfile: (profile) {
+              setState(() {
+                profiles[visibleProfileId] = profile;
+              });
+            },
+          ),
+        ),
       ],
     );
   }
