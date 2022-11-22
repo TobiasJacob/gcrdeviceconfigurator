@@ -88,8 +88,10 @@ class ProfileList extends StatelessWidget {
                   icon: const Icon(Icons.remove),
                   color: Colors.white,
                   onPressed: () {
-                    profiles.remove(visibleProfileId);
-                    onUpdateProfiles(profiles);
+                    if (profiles.keys.length > 1) {
+                      profiles.remove(visibleProfileId);
+                      onUpdateProfiles(profiles);
+                    }
                   },
                 ),
               ),
