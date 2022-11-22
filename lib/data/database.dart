@@ -29,16 +29,7 @@ class Database {
     activeProfileId = uiState["activeProfileId"] ?? "";
     // visibleProfileId = uiState["visibleProfileId"] ?? "";
     // visibleAxisId = uiState["visibleAxisId"] ?? "";
-
-    if (!profiles.containsKey(activeProfileId)) {
-      activeProfileId = profiles.keys.first;
-    }
-    if (!profiles.containsKey(visibleProfileId)) {
-      visibleProfileId = profiles.keys.first;
-    }
-    if (!profiles[activeProfileId]!.axes.containsKey(visibleAxisId)) {
-      visibleAxisId = profiles[activeProfileId]!.axes.keys.first;
-    }
+    makeValid();
   }
 
   Future save() async {
@@ -54,5 +45,17 @@ class Database {
       visibleProfileId: visibleProfileId,
       visibleAxisId: visibleAxisId,
     });
+  }
+
+  void makeValid() {
+    if (!profiles.containsKey(activeProfileId)) {
+      activeProfileId = profiles.keys.first;
+    }
+    if (!profiles.containsKey(visibleProfileId)) {
+      visibleProfileId = profiles.keys.first;
+    }
+    if (!profiles[activeProfileId]!.axes.containsKey(visibleAxisId)) {
+      visibleAxisId = profiles[activeProfileId]!.axes.keys.first;
+    }
   }
 }

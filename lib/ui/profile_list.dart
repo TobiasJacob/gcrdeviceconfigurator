@@ -50,29 +50,51 @@ class ProfileList extends StatelessWidget {
       ),
       Align(
         alignment: Alignment.bottomRight,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Ink(
-            decoration: const ShapeDecoration(
-              color: Colors.blue,
-              shape: CircleBorder(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Ink(
+                decoration: const ShapeDecoration(
+                  color: Colors.blue,
+                  shape: CircleBorder(),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.add),
+                  color: Colors.white,
+                  onPressed: () {
+                    for (var i = 0; i < 100; i++) {
+                      final profileId = generateRandomString();
+                      if (profiles.containsKey(profileId)) {
+                        continue;
+                      }
+                      profiles[profileId] = Profile.empty("New profile");
+                      onUpdateProfiles(profiles);
+                      break;
+                    }
+                  },
+                ),
+              ),
             ),
-            child: IconButton(
-              icon: const Icon(Icons.add),
-              color: Colors.white,
-              onPressed: () {
-                for (var i = 0; i < 100; i++) {
-                  final profileId = generateRandomString();
-                  if (profiles.containsKey(profileId)) {
-                    continue;
-                  }
-                  profiles[profileId] = Profile.empty("New profile");
-                  onUpdateProfiles(profiles);
-                  break;
-                }
-              },
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Ink(
+                decoration: const ShapeDecoration(
+                  color: Colors.blue,
+                  shape: CircleBorder(),
+                ),
+                child: IconButton(
+                  icon: const Icon(Icons.remove),
+                  color: Colors.white,
+                  onPressed: () {
+                    profiles.remove(visibleProfileId);
+                    onUpdateProfiles(profiles);
+                  },
+                ),
+              ),
             ),
-          ),
+          ],
         ),
       ),
     ]);

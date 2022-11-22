@@ -113,6 +113,8 @@ class _HomeState extends State<Home> {
                         onUpdateProfiles: (profiles) {
                           setState(() {
                             database.profiles = profiles;
+                            database.makeValid();
+                            database.save();
                           });
                         }),
               ),
