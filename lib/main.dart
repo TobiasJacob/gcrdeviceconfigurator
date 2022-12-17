@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/home.dart';
 import 'package:dartusbhid/enumerate.dart';
+import 'package:gcrdeviceconfigurator/i18n/languages.dart';
+import 'package:gcrdeviceconfigurator/settings_page.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'home_page.dart';
 import 'i18n/app_localization_delegate.dart';
 
 void test() async {
+  return;
   final devices = await enumerateDevices(0, 0);
   print(devices.length);
   for (final device in devices) {
@@ -31,24 +36,11 @@ void main() {
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  static void setLocale(BuildContext context, Locale newLocale) {
-    var state = context.findAncestorStateOfType<_MyAppState>();
-    state?.setLocale(newLocale);
-  }
-
   @override
   State<StatefulWidget> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  Locale _locale = const Locale.fromSubtags(languageCode: "en");
-
-  void setLocale(Locale locale) {
-    setState(() {
-      _locale = locale;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     const title = "Get Closer Racing Configurator";
@@ -59,18 +51,14 @@ class _MyAppState extends State<MyApp> {
       ),
       title: 'Multi Language',
       debugShowCheckedModeBanner: true,
-      locale: _locale,
-      home: Scaffold(
-          appBar: AppBar(
-            title: const Text(title),
-          ),
-          body: const Home()),
-      supportedLocales: const [
-        Locale('en', ''),
-        Locale('ar', ''),
-        Locale('hi', '')
+      locale: const Locale("de", "DE"),
+      home: const HomePage(title: title),
+      supportedLocales: const [Locale('en', 'EN'), Locale('de', 'DE')],
+      localizationsDelegates: const [
+        AppLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
       ],
-      localizationsDelegates: const [AppLocalizationsDelegate()],
       localeResolutionCallback: (locale, supportedLocales) {
         for (var supportedLocale in supportedLocales) {
           if (supportedLocale.languageCode == locale?.languageCode &&

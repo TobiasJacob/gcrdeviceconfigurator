@@ -12,4 +12,6 @@ abstract class Languages {
   String get labelInfo;
 
   String get labelSelectLanguage;
+
+  String get english;
 }

@@ -1,4 +1,5 @@
 import 'package:gcrdeviceconfigurator/data/profile.dart';
+import 'package:gcrdeviceconfigurator/data/settings.dart';
 import 'package:localstorage/localstorage.dart';
 
 class Database {
@@ -7,6 +8,8 @@ class Database {
   String activeProfileId = "Default";
   String visibleProfileId = "Default";
   String visibleAxisId = "GasAxis";
+  Settings settings = Settings.defaultSettings();
+
   final storage = LocalStorage('data.json');
 
   Future<void> load() async {
@@ -25,11 +28,21 @@ class Database {
     }
 
     final uiState = storage.getItem("uiState");
-
+    if (uiState == null || uiState.isEmpty) {
+      save();
+      return;
+    }
     activeProfileId = uiState["activeProfileId"] ?? "";
     // visibleProfileId = uiState["visibleProfileId"] ?? "";
     // visibleAxisId = uiState["visibleAxisId"] ?? "";
     makeValid();
+
+    final settingsJSON = storage.getItem("settings") ?? {};
+    if (settingsJSON == null || settingsJSON.isEmpty) {
+      save();
+      return;
+    }
+    settings = Settings.fromJSON(settingsJSON);
   }
 
   Future save() async {
@@ -45,6 +58,7 @@ class Database {
       visibleProfileId: visibleProfileId,
       visibleAxisId: visibleAxisId,
     });
+    await storage.setItem("settings", settings.toJSON());
   }
 
   void makeValid() {
