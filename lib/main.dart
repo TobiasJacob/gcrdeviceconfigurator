@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/home.dart';
 import 'package:dartusbhid/enumerate.dart';
@@ -5,6 +8,7 @@ import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 import 'package:gcrdeviceconfigurator/settings_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'data/database.dart';
 import 'home_page.dart';
 import 'i18n/app_localization_delegate.dart';
 
@@ -41,6 +45,34 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late Database database;
+  late Future loadFuture;
+  late Random random;
+  late Timer updateAxisValues;
+
+  @override
+  void initState() {
+    super.initState();
+    database = Database();
+    loadFuture = database.load();
+    random = Random();
+    updateAxisValues =
+        Timer.periodic(const Duration(milliseconds: 100), (timer) {
+      setState(() {
+        var newVal = (database.profiles[database.visibleProfileId]
+                    ?.axes[database.visibleAxisId]?.currentValue ??
+                0.5) +
+            (random.nextDouble() - 0.5) * 0.03;
+
+        newVal += (0.5 - newVal) * 0.002;
+        database
+            .profiles[database.visibleProfileId]
+            ?.axes[database.visibleAxisId]
+            ?.currentValue = max(min(newVal, 1), 0);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     const title = "Get Closer Racing Configurator";
@@ -52,7 +84,18 @@ class _MyAppState extends State<MyApp> {
       title: 'Multi Language',
       debugShowCheckedModeBanner: true,
       locale: const Locale("de", "DE"),
-      home: const HomePage(title: title),
+      home: FutureBuilder(
+          future: loadFuture,
+          builder: ((context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+              return HomePage(title: title, database: database);
+            } else {
+              return const CircularProgressIndicator();
+            }
+          })),
       supportedLocales: const [Locale('en', 'EN'), Locale('de', 'DE')],
       localizationsDelegates: const [
         AppLocalizationsDelegate(),

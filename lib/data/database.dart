@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/profile.dart';
 import 'package:gcrdeviceconfigurator/data/settings.dart';
 import 'package:localstorage/localstorage.dart';
