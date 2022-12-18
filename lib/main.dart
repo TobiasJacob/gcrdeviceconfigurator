@@ -83,7 +83,8 @@ class _MyAppState extends State<MyApp> {
       ),
       title: 'Multi Language',
       debugShowCheckedModeBanner: true,
-      locale: const Locale("de", "DE"),
+      locale:
+          Locale(database.settings.languageCode, database.settings.countryCode),
       home: FutureBuilder(
           future: loadFuture,
           builder: ((context, snapshot) {
@@ -91,7 +92,13 @@ class _MyAppState extends State<MyApp> {
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               }
-              return HomePage(title: title, database: database);
+              return HomePage(
+                title: title,
+                database: database,
+                updateLanguage: () {
+                  setState(() {});
+                },
+              );
             } else {
               return const CircularProgressIndicator();
             }
@@ -100,6 +107,7 @@ class _MyAppState extends State<MyApp> {
       localizationsDelegates: const [
         AppLocalizationsDelegate(),
         GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
       ],
       localeResolutionCallback: (locale, supportedLocales) {

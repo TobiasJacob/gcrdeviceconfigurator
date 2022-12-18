@@ -7,11 +7,14 @@ import 'settings_page.dart';
 class HomePage extends StatelessWidget {
   final Database database;
 
-  const HomePage({
-    Key? key,
-    required this.title,
-    required this.database,
-  }) : super(key: key);
+  final Function updateLanguage;
+
+  const HomePage(
+      {Key? key,
+      required this.title,
+      required this.database,
+      required this.updateLanguage})
+      : super(key: key);
 
   final String title;
 
@@ -28,11 +31,17 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const SettingsPage()));
+                        builder: (context) => SettingsPage(
+                              database: database,
+                              updateLanguage: updateLanguage,
+                            )));
               },
             ),
           ],
         ),
-        body: Home(database: database));
+        body: Home(
+          database: database,
+          updateLanguage: updateLanguage,
+        ));
   }
 }
