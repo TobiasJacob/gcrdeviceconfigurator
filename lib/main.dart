@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'data/database.dart';
 import 'home_page.dart';
 import 'i18n/app_localization_delegate.dart';
+import 'package:provider/provider.dart';
 
 void test() async {
   return;
@@ -92,13 +93,15 @@ class _MyAppState extends State<MyApp> {
               if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               }
-              return HomePage(
-                title: title,
-                database: database,
-                updateLanguage: () {
-                  setState(() {});
-                },
-              );
+              return ChangeNotifierProvider(
+                  create: (context) => Database(),
+                  child: HomePage(
+                    title: title,
+                    database: database,
+                    updateLanguage: () {
+                      setState(() {});
+                    },
+                  ));
             } else {
               return const CircularProgressIndicator();
             }

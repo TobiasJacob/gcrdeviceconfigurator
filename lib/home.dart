@@ -38,7 +38,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final database = widget.database;
+    final database = Database.of(context);
 
     final profiles = database.profiles;
     final activeProfileId = database.activeProfileId;

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/profile.dart';
 import 'package:gcrdeviceconfigurator/data/settings.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:provider/provider.dart';
 
-class Database {
+class Database extends ChangeNotifier {
   Map<String, Profile> profiles = {"Default": Profile.empty("Default")};
 
   String activeProfileId = "Default";
@@ -12,6 +13,10 @@ class Database {
   Settings settings = Settings.defaultSettings();
 
   final storage = LocalStorage('data.json');
+
+  static Database of(context) {
+    return Provider.of<Database>(context);
+  }
 
   Future<void> load() async {
     await storage.ready;
@@ -60,6 +65,8 @@ class Database {
       visibleAxisId: visibleAxisId,
     });
     await storage.setItem("settings", settings.toJSON());
+
+    notifyListeners();
   }
 
   void makeValid() {
