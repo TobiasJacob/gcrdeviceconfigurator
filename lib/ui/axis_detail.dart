@@ -17,10 +17,11 @@ class _AxisDetailState extends State<AxisDetail> {
 
   @override
   Widget build(BuildContext context) {
-    final database = Database.of(context);
+    final profile = Profile.of(context);
+    final axis = ControllerAxis.of(context);
 
-    if (profileNameController.text != database.visibleProfile.name) {
-      profileNameController.text = database.visibleProfile.name;
+    if (profileNameController.text != profile.name) {
+      profileNameController.text = profile.name;
     }
 
     return Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
@@ -30,11 +31,11 @@ class _AxisDetailState extends State<AxisDetail> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           TextField(
             controller: profileNameController,
-            onChanged: database.updateProfileName,
+            onChanged: profile.updateName,
           ),
           DropdownButton<Smoothing>(
-            onChanged: database.setAxisSmoothing,
-            value: database.visibleAxis.smoothing,
+            onChanged: axis.setAxisSmoothing,
+            value: axis.smoothing,
             items: const [
               DropdownMenuItem(
                 value: Smoothing.highAccuracy,

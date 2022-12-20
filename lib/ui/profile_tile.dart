@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/pages/profile_page.dart';
+import 'package:provider/provider.dart';
 
 import '../data/database.dart';
 import '../data/profile.dart';
@@ -11,15 +13,12 @@ class ProfileTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final database = Database.of(context);
-    final backgroundColor =
-        profile == database.visibleProfile ? Colors.blue[100] : null;
 
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
           border: Border.all(),
-          borderRadius: const BorderRadius.all(Radius.circular(10)),
-          color: backgroundColor),
+          borderRadius: const BorderRadius.all(Radius.circular(10))),
       child: Row(
         children: [
           Radio<Profile>(
@@ -34,7 +33,23 @@ class ProfileTile extends StatelessWidget {
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
             onPressed: () {
-              database.setVisibleProfile(profile);
+              // TODO: Alert
+              database.deleteProfileIfMoreThanOne(profile);
+            },
+            shape: const CircleBorder(),
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            minWidth: 0,
+            child: const Icon(
+              Icons.delete,
+            ),
+          ),
+          MaterialButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ChangeNotifierProvider.value(
+                          value: profile, child: const ProfilePage())));
             },
             shape: const CircleBorder(),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

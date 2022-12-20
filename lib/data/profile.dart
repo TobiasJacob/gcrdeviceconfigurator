@@ -1,10 +1,17 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'axis.dart';
 
-class Profile {
+class Profile extends ChangeNotifier {
   String name;
   Map<String, ControllerAxis> axes;
 
   Profile(this.name, this.axes);
+
+  static Profile of(context) {
+    return Provider.of<Profile>(context);
+  }
 
   static Profile empty(String name) {
     return Profile(name, {
@@ -35,5 +42,10 @@ class Profile {
     }
 
     return {"axes": jsonAxes, "name": name};
+  }
+
+  void updateName(String name) {
+    this.name = name;
+    notifyListeners();
   }
 }

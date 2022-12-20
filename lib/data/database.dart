@@ -19,8 +19,6 @@ class Database extends ChangeNotifier {
   Map<String, Profile> profiles = {"Default": Profile.empty("Default")};
 
   late Profile activeProfile;
-  late Profile visibleProfile;
-  late ControllerAxis visibleAxis;
   Settings settings = Settings.defaultSettings();
 
   bool edited = false;
@@ -29,9 +27,7 @@ class Database extends ChangeNotifier {
 
   Database() {
     activeProfile = profiles.values.first;
-    visibleProfile = profiles.values.first;
-    visibleAxis = activeProfile.axes.values.first;
-    makeValid();
+    profiles.values.first.addListener(onProfileChanged);
   }
 
   static Database of(context) {
@@ -50,7 +46,9 @@ class Database extends ChangeNotifier {
 
     profiles = {};
     for (final k in jsonProfiles.keys) {
-      profiles[k] = Profile.fromJSON(jsonProfiles[k]);
+      var profile = Profile.fromJSON(jsonProfiles[k]);
+      profiles[k] = profile;
+      profile.addListener(onProfileChanged);
     }
 
     final uiState = storage.getItem("uiState");
@@ -59,7 +57,9 @@ class Database extends ChangeNotifier {
       return;
     }
     // activeProfileId = uiState["activeProfileId"] ?? "";
-    makeValid();
+    if (!profiles.containsValue(activeProfile)) {
+      activeProfile = profiles.values.first;
+    }
 
     final settingsJSON = storage.getItem("settings") ?? {};
     if (settingsJSON == null || settingsJSON.isEmpty) {
@@ -84,31 +84,11 @@ class Database extends ChangeNotifier {
     notifyListeners();
   }
 
-  void makeValid() {
-    if (!profiles.containsValue(activeProfile)) {
-      activeProfile = profiles.values.first;
-    }
-
-    if (!profiles.containsValue(visibleProfile)) {
-      visibleProfile = profiles.values.first;
-    }
-
-    if (!visibleProfile.axes.containsValue(visibleAxis)) {
-      visibleAxis = visibleProfile.axes.values.first;
-    }
-  }
-
   // Actions profiles
   void setActiveProfile(Profile profile) {
     assert(profiles.containsValue(profile));
     activeProfile = profile;
     edited = true;
-    notifyListeners();
-  }
-
-  void setVisibleProfile(Profile profile) {
-    assert(profiles.containsValue(profile));
-    visibleProfile = profile;
     notifyListeners();
   }
 
@@ -119,79 +99,23 @@ class Database extends ChangeNotifier {
       if (profiles.containsKey(profileId)) {
         continue;
       }
-      profiles[profileId] = Profile.empty("New profile");
-      visibleProfile = profiles[profileId]!;
+      var profile = Profile.empty("New profile");
+      profiles[profileId] = profile;
+      profile.addListener(onProfileChanged);
       break;
     }
     edited = true;
     notifyListeners();
   }
 
-  void deleteProfileIfMoreThanOne() {
+  void deleteProfileIfMoreThanOne(Profile profile) {
     if (profiles.keys.length > 1) {
-      profiles.remove(visibleProfile);
-      visibleProfile = profiles.values.first;
+      profiles.remove(profile);
       notifyListeners();
     }
   }
 
-  // Actions chart
-  void updateChartDataPoint(int i, DataPoint point) {
-    var x = point.x;
-    var y = point.y;
-    if (i > 0) {
-      x = max(x, visibleAxis.dataPoints[i - 1].x);
-    } else {
-      x = max(x, 0);
-    }
-    if (i < visibleAxis.dataPoints.length - 1) {
-      x = min(x, visibleAxis.dataPoints[i + 1].x);
-    } else {
-      x = min(x, 1);
-    }
-    y = max(y, 0);
-    y = min(y, 1);
-    visibleAxis.dataPoints[i] = DataPoint(x, y);
+  void onProfileChanged() {
     edited = true;
-    notifyListeners();
-  }
-
-  void deleteChartDataPointIfMoreThanTwo(int i) {
-    if (visibleAxis.dataPoints.length > 2) {
-      visibleAxis.dataPoints.removeAt(i);
-    }
-    edited = true;
-    notifyListeners();
-  }
-
-  void addChartDataPointAfter(int i) {
-    visibleAxis.dataPoints.insert(
-        i + 1,
-        DataPoint(
-          (visibleAxis.dataPoints[i].x + visibleAxis.dataPoints[i + 1].x) / 2,
-          (visibleAxis.dataPoints[i].y + visibleAxis.dataPoints[i + 1].y) / 2,
-        ));
-    edited = true;
-    notifyListeners();
-  }
-
-  // Actions axes
-  void changeVisibleAxis(ControllerAxis axis) {
-    assert(visibleProfile.axes.containsValue(axis));
-    visibleAxis = axis;
-    notifyListeners();
-  }
-
-  // Actions detail axis
-  void updateProfileName(String profileName) {
-    visibleProfile.name = profileName;
-    edited = true;
-    notifyListeners();
-  }
-
-  void setAxisSmoothing(Smoothing? smoothing) {
-    visibleAxis.smoothing = smoothing ?? Smoothing.normal;
-    edited = true;
-    notifyListeners();
   }
 }

@@ -41,13 +41,6 @@ class HomePage extends StatelessWidget {
                     )
                   : const ProfileList(),
             ),
-            const VerticalDivider(),
-            const Expanded(flex: 1, child: AxisList()),
-            const VerticalDivider(),
-            const Expanded(
-              flex: 3,
-              child: AxisDetail(),
-            ),
           ],
         ));
   }

@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
 import 'package:gcrdeviceconfigurator/usb/usb_status.dart';
 
-import '../data/database.dart';
 import 'chart_button.dart';
 import 'chart_drag_ball.dart';
 import 'chart_painter.dart';
@@ -24,10 +21,9 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final database = Database.of(context);
     final usbStatus = USBStatus.of(context);
+    final axis = ControllerAxis.of(context);
 
-    final axis = database.visibleAxis;
     final dataPoints = axis.dataPoints;
     const margin = 16.0;
     return LayoutBuilder(
@@ -52,10 +48,10 @@ class Chart extends StatelessWidget {
                       size: constraints.biggest,
                       margin: margin,
                       updateDataPoint: (newDataPoint) {
-                        database.updateChartDataPoint(i, newDataPoint);
+                        axis.updateChartDataPoint(i, newDataPoint);
                       },
                       onPressed: () {
-                        database.deleteChartDataPointIfMoreThanTwo(i);
+                        axis.deleteChartDataPointIfMoreThanTwo(i);
                       },
                     )))
                 .values,
@@ -69,7 +65,7 @@ class Chart extends StatelessWidget {
                         margin: margin,
                         text: "+",
                         onPressed: () {
-                          database.addChartDataPointAfter(i);
+                          axis.addChartDataPointAfter(i);
                         },
                       ),
                     ))

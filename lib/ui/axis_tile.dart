@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../data/axis.dart';
-import '../data/database.dart';
 
 class AxisTile extends StatelessWidget {
+  final Function(ControllerAxis axis) onSelect;
+
   final ControllerAxis axis;
 
-  const AxisTile({super.key, required this.axis});
+  const AxisTile({super.key, required this.axis, required this.onSelect});
 
   @override
   Widget build(BuildContext context) {
-    final database = Database.of(context);
+    final visibleAxis = ControllerAxis.of(context);
 
-    final backgroundColor =
-        axis == database.visibleAxis ? Colors.blue[100] : null;
+    final backgroundColor = axis == visibleAxis ? Colors.blue[100] : null;
 
     return Container(
       padding: const EdgeInsets.all(8.0),
@@ -28,7 +28,7 @@ class AxisTile extends StatelessWidget {
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
             onPressed: () {
-              database.changeVisibleAxis(axis);
+              onSelect(axis);
             },
             shape: const CircleBorder(),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

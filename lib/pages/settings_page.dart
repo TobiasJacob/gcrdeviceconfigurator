@@ -19,7 +19,6 @@ class SettingsPage extends StatelessWidget {
       body: Center(
           child: DropdownButton<String>(
         onChanged: (value) {
-          print(value);
           final String languageCode = value!;
           var countryCode = "US";
           if (value == "de") {

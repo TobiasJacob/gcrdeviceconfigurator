@@ -48,11 +48,6 @@ class ProfileList extends StatelessWidget {
                   color: Colors.blue,
                   shape: CircleBorder(),
                 ),
-                child: IconButton(
-                  icon: const Icon(Icons.remove),
-                  color: Colors.white,
-                  onPressed: database.deleteProfileIfMoreThanOne,
-                ),
               ),
             ),
           ],
