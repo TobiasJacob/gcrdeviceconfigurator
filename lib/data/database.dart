@@ -27,7 +27,6 @@ class Database extends ChangeNotifier {
 
   Database() {
     activeProfile = profiles.values.first;
-    profiles.values.first.addListener(onProfileChanged);
   }
 
   static Database of(context) {
@@ -48,7 +47,6 @@ class Database extends ChangeNotifier {
     for (final k in jsonProfiles.keys) {
       var profile = Profile.fromJSON(jsonProfiles[k]);
       profiles[k] = profile;
-      profile.addListener(onProfileChanged);
     }
 
     final uiState = storage.getItem("uiState");
@@ -92,7 +90,7 @@ class Database extends ChangeNotifier {
     notifyListeners();
   }
 
-  void createNewProfile() {
+  Profile createNewProfile() {
     // 100 tries to find a random key not in the Dict
     for (var i = 0; i < 100; i++) {
       final profileId = generateRandomString();
@@ -101,11 +99,11 @@ class Database extends ChangeNotifier {
       }
       var profile = Profile.empty("New profile");
       profiles[profileId] = profile;
-      profile.addListener(onProfileChanged);
-      break;
+      edited = true;
+      notifyListeners();
+      return profile;
     }
-    edited = true;
-    notifyListeners();
+    throw Exception("Error creating profile. Consider deleting profiles.");
   }
 
   void deleteProfileIfMoreThanOne(Profile profile) {
@@ -115,7 +113,22 @@ class Database extends ChangeNotifier {
     }
   }
 
-  void onProfileChanged() {
-    edited = true;
+  bool thisOrDependencyEdited() {
+    if (edited) {
+      return true;
+    }
+    for (final profile in profiles.values) {
+      if (profile.thisOrDependencyEdited()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void resetEdited() {
+    for (final profile in profiles.values) {
+      profile.resetEdited();
+    }
+    edited = false;
   }
 }

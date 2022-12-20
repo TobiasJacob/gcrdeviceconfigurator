@@ -30,18 +30,6 @@ class HomePage extends StatelessWidget {
             ),
           ],
         ),
-        body: Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: database.edited
-                  ? SaveOrResetButtons(
-                      onSave: database.save,
-                      onDiscard: database.load,
-                    )
-                  : const ProfileList(),
-            ),
-          ],
-        ));
+        body: const ProfileList());
   }
 }

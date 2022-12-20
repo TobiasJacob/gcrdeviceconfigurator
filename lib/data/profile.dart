@@ -6,6 +6,7 @@ import 'axis.dart';
 class Profile extends ChangeNotifier {
   String name;
   Map<String, ControllerAxis> axes;
+  bool edited = false;
 
   Profile(this.name, this.axes);
 
@@ -46,6 +47,26 @@ class Profile extends ChangeNotifier {
 
   void updateName(String name) {
     this.name = name;
+    edited = true;
     notifyListeners();
+  }
+
+  bool thisOrDependencyEdited() {
+    if (edited) {
+      return true;
+    }
+    for (final axis in axes.values) {
+      if (axis.thisOrDependencyEdited()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void resetEdited() {
+    for (final axis in axes.values) {
+      axis.resetEdited();
+    }
+    edited = false;
   }
 }

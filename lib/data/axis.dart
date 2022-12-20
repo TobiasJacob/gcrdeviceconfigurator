@@ -15,6 +15,8 @@ class ControllerAxis extends ChangeNotifier {
   final List<DataPoint> dataPoints;
   Smoothing smoothing;
 
+  bool edited = false;
+
   ControllerAxis(this.name, this.dataPoints, this.smoothing);
 
   static ControllerAxis of(context) {
@@ -82,6 +84,7 @@ class ControllerAxis extends ChangeNotifier {
     y = max(y, 0);
     y = min(y, 1);
     dataPoints[i] = DataPoint(x, y);
+    edited = true;
     notifyListeners();
   }
 
@@ -89,6 +92,7 @@ class ControllerAxis extends ChangeNotifier {
     if (dataPoints.length > 2) {
       dataPoints.removeAt(i);
     }
+    edited = true;
     notifyListeners();
   }
 
@@ -105,5 +109,13 @@ class ControllerAxis extends ChangeNotifier {
   void setAxisSmoothing(Smoothing? smoothing) {
     smoothing = smoothing ?? Smoothing.normal;
     notifyListeners();
+  }
+
+  bool thisOrDependencyEdited() {
+    return edited;
+  }
+
+  void resetEdited() {
+    edited = false;
   }
 }

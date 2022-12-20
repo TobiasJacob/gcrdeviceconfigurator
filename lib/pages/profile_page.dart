@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/axis.dart';
+import 'package:gcrdeviceconfigurator/data/database.dart';
 import 'package:provider/provider.dart';
 
 import '../data/profile.dart';
@@ -26,27 +27,63 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Configurator"),
-        ),
-        body: ChangeNotifierProvider.value(
-            value: axis,
-            child: Row(
-              children: [
-                Expanded(
-                    flex: 1,
-                    child: AxisList(onSelect: (axis) {
-                      setState(() {
-                        this.axis = axis;
-                      });
-                    })),
-                const VerticalDivider(),
-                const Expanded(
-                  flex: 3,
-                  child: AxisDetail(),
-                ),
-              ],
-            )));
+    final profile = Profile.of(context);
+    return WillPopScope(
+        onWillPop: () => showExitPopup(context),
+        child: Scaffold(
+            appBar: AppBar(
+              title: Text("Edit ${profile.name}"),
+            ),
+            body: ChangeNotifierProvider.value(
+                value: axis,
+                child: Row(
+                  children: [
+                    Expanded(
+                        flex: 1,
+                        child: AxisList(onSelect: (axis) {
+                          setState(() {
+                            this.axis = axis;
+                          });
+                        })),
+                    const VerticalDivider(),
+                    const Expanded(
+                      flex: 3,
+                      child: AxisDetail(),
+                    ),
+                  ],
+                ))));
+  }
+
+  Future<bool> showExitPopup(BuildContext context) async {
+    final database = Provider.of<Database>(context, listen: false);
+    if (!database.thisOrDependencyEdited()) {
+      return true;
+    }
+    return await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Exit App'),
+            content: const Text('Do you want to save the profile?'),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  database.load();
+                  return Navigator.of(context).pop(true);
+                },
+                //return false when click on "NO"
+                child: const Text('No'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  database.save();
+                  return Navigator.of(context).pop(true);
+                },
+                //return true when click on "Yes"
+                child: const Text('Yes'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
   }
 }
