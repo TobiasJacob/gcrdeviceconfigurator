@@ -17,7 +17,8 @@ class AxisList extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       itemCount: profile.axes.length,
       itemBuilder: (BuildContext context, int index) {
-        return AxisTile(axis: profile.axes[index], onSelect: onSelect);
+        return AxisTile(
+            index: index, axis: profile.axes[index], onSelect: onSelect);
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),
     );

@@ -16,7 +16,7 @@ class Profile extends ChangeNotifier {
 
   static Profile empty(String name) {
     return Profile(
-        name, [for (var i = 0; i < 10; i += 1) ControllerAxis.empty(i)]);
+        name, [for (var i = 0; i < 10; i += 1) ControllerAxis.empty()]);
   }
 
   static Profile fromJSON(Map<String, dynamic> profileData) {

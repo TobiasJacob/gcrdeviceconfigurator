@@ -13,7 +13,6 @@ enum Smoothing {
 enum Usage { none, gas, brake, clutch, handbrake }
 
 class ControllerAxis extends ChangeNotifier {
-  final int index;
   final List<DataPoint> dataPoints;
 
   Smoothing smoothing;
@@ -21,15 +20,15 @@ class ControllerAxis extends ChangeNotifier {
 
   bool edited = false;
 
-  ControllerAxis(this.index, this.dataPoints, this.smoothing, this.usage);
+  ControllerAxis(this.dataPoints, this.smoothing, this.usage);
 
   static ControllerAxis of(context) {
     return Provider.of<ControllerAxis>(context);
   }
 
-  static ControllerAxis empty(name) {
+  static ControllerAxis empty() {
     return ControllerAxis(
-        name, [DataPoint(0, 0), DataPoint(1, 1)], Smoothing.normal, Usage.none);
+        [DataPoint(0, 0), DataPoint(1, 1)], Smoothing.normal, Usage.none);
   }
 
   static ControllerAxis fromJSON(Map<String, dynamic> axisData) {
@@ -40,7 +39,7 @@ class ControllerAxis extends ChangeNotifier {
     Smoothing smoothing = Smoothing.values[axisData["smoothing"]];
     Usage usage = Usage.values[axisData["usage"]];
 
-    return ControllerAxis(index, dataPoints, smoothing, usage);
+    return ControllerAxis(dataPoints, smoothing, usage);
   }
 
   double getY(double x) {
@@ -64,7 +63,6 @@ class ControllerAxis extends ChangeNotifier {
   Map<String, dynamic> toJSON() {
     final jsonDataPoints = dataPoints.map((dp) => dp.toJSON()).toList();
     return {
-      "index": index,
       "dataPoints": jsonDataPoints,
       "smoothing": smoothing.index,
       "usage": usage.index

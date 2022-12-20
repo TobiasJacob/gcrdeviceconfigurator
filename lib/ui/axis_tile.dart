@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import '../data/axis.dart';
 
 class AxisTile extends StatelessWidget {
+  final int index;
+  final ControllerAxis axis;
   final Function(ControllerAxis axis) onSelect;
 
-  final ControllerAxis axis;
-
-  const AxisTile({super.key, required this.axis, required this.onSelect});
+  const AxisTile(
+      {super.key,
+      required this.index,
+      required this.axis,
+      required this.onSelect});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +28,7 @@ class AxisTile extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-              child: Text("${axis.index}: ${axis.usage.name}",
+              child: Text("${index}: ${axis.usage.name}",
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
             onPressed: () {
