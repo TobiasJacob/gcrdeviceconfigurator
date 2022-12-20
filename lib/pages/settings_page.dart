@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/database.dart';
 import 'package:gcrdeviceconfigurator/i18n/language_settings.dart';
 
-import 'i18n/languages.dart';
+import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gcrdeviceconfigurator/i18n/language_settings.dart';
 
-import '../home_page.dart';
+import '../pages/home_page.dart';
 import '../i18n/app_localization_delegate.dart';
 
 class MyApp extends StatelessWidget {

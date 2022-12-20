@@ -22,8 +22,9 @@ class Database extends ChangeNotifier {
   late Profile visibleProfile;
   late ControllerAxis visibleAxis;
   Settings settings = Settings.defaultSettings();
-  Random random = Random();
 
+  bool edited = false;
+  Random random = Random();
   final storage = LocalStorage('data.json');
 
   Database() {
@@ -66,6 +67,8 @@ class Database extends ChangeNotifier {
       return;
     }
     settings = Settings.fromJSON(settingsJSON);
+    edited = false;
+    notifyListeners();
   }
 
   Future save() async {
@@ -77,6 +80,8 @@ class Database extends ChangeNotifier {
     await storage.setItem("profiles", jsonProfiles);
     // await storage.setItem("uiState", {"activeProfileId": activeProfileId});
     await storage.setItem("settings", settings.toJSON());
+    edited = false;
+    notifyListeners();
   }
 
   void makeValid() {
@@ -106,6 +111,7 @@ class Database extends ChangeNotifier {
   void setActiveProfile(Profile profile) {
     assert(profiles.containsValue(profile));
     activeProfile = profile;
+    edited = true;
     notifyListeners();
   }
 
@@ -126,6 +132,7 @@ class Database extends ChangeNotifier {
       visibleProfile = profiles[profileId]!;
       break;
     }
+    edited = true;
     notifyListeners();
   }
 
@@ -154,6 +161,7 @@ class Database extends ChangeNotifier {
     y = max(y, 0);
     y = min(y, 1);
     visibleAxis.dataPoints[i] = DataPoint(x, y);
+    edited = true;
     notifyListeners();
   }
 
@@ -161,6 +169,7 @@ class Database extends ChangeNotifier {
     if (visibleAxis.dataPoints.length > 2) {
       visibleAxis.dataPoints.removeAt(i);
     }
+    edited = true;
     notifyListeners();
   }
 
@@ -171,6 +180,7 @@ class Database extends ChangeNotifier {
           (visibleAxis.dataPoints[i].x + visibleAxis.dataPoints[i + 1].x) / 2,
           (visibleAxis.dataPoints[i].y + visibleAxis.dataPoints[i + 1].y) / 2,
         ));
+    edited = true;
     notifyListeners();
   }
 
@@ -184,11 +194,13 @@ class Database extends ChangeNotifier {
   // Actions detail axis
   void updateProfileName(String profileName) {
     visibleProfile.name = profileName;
+    edited = true;
     notifyListeners();
   }
 
   void setAxisSmoothing(Smoothing? smoothing) {
     visibleAxis.smoothing = smoothing ?? Smoothing.normal;
+    edited = true;
     notifyListeners();
   }
 }

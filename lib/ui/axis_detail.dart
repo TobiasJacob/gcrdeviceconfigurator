@@ -5,14 +5,20 @@ import 'package:gcrdeviceconfigurator/ui/chart.dart';
 
 import '../data/database.dart';
 
-class AxisDetail extends StatelessWidget {
-  final TextEditingController profileNameController;
+class AxisDetail extends StatefulWidget {
+  const AxisDetail({super.key});
 
-  const AxisDetail({super.key, required this.profileNameController});
+  @override
+  State<AxisDetail> createState() => _AxisDetailState();
+}
+
+class _AxisDetailState extends State<AxisDetail> {
+  final TextEditingController profileNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final database = Database.of(context);
+    profileNameController.text = database.visibleProfile.name;
 
     return Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Container(
