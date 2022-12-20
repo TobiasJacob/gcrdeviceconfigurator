@@ -18,7 +18,10 @@ class _AxisDetailState extends State<AxisDetail> {
   @override
   Widget build(BuildContext context) {
     final database = Database.of(context);
-    profileNameController.text = database.visibleProfile.name;
+
+    if (profileNameController.text != database.visibleProfile.name) {
+      profileNameController.text = database.visibleProfile.name;
+    }
 
     return Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Container(

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
+import 'package:gcrdeviceconfigurator/usb/usb_status.dart';
 
 import '../data/database.dart';
 import 'chart_button.dart';
@@ -24,6 +25,7 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final database = Database.of(context);
+    final usbStatus = USBStatus.of(context);
 
     final axis = database.visibleAxis;
     final dataPoints = axis.dataPoints;
@@ -39,7 +41,8 @@ class Chart extends StatelessWidget {
             Container(
                 margin: const EdgeInsets.all(margin), color: Colors.grey[300]),
             CustomPaint(
-                painter: ChartPainter(axis, margin), child: Container()),
+                painter: ChartPainter(axis, margin, usbStatus.currentValues[0]),
+                child: Container()),
             ...dataPoints
                 .asMap()
                 .map((i, dataPoint) => MapEntry(

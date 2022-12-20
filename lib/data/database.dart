@@ -98,15 +98,6 @@ class Database extends ChangeNotifier {
     }
   }
 
-  // Actions
-  void updateCurrentAxisValue() {
-    var newVal = visibleAxis.currentValue + (random.nextDouble() - 0.5) * 0.03;
-
-    newVal += (0.5 - newVal) * 0.002;
-    visibleAxis.currentValue = max(min(newVal, 1), 0);
-    notifyListeners();
-  }
-
   // Actions profiles
   void setActiveProfile(Profile profile) {
     assert(profiles.containsValue(profile));

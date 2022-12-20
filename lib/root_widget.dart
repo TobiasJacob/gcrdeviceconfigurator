@@ -45,7 +45,10 @@ class _RootWidgetState extends State<RootWidget> {
               ChangeNotifierProvider(
                   create: (context) => mainDataProvier.database),
               ChangeNotifierProvider(
-                  create: (context) => mainDataProvier.languageSettings)
+                  create: (context) => mainDataProvier.languageSettings),
+              ChangeNotifierProvider(
+                create: (context) => mainDataProvier.usbStatus,
+              )
             ],
             child: const MyApp(),
           );
