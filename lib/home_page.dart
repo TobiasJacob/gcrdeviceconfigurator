@@ -5,24 +5,14 @@ import 'home.dart';
 import 'settings_page.dart';
 
 class HomePage extends StatelessWidget {
-  final Database database;
-
-  final Function updateLanguage;
-
-  const HomePage(
-      {Key? key,
-      required this.title,
-      required this.database,
-      required this.updateLanguage})
-      : super(key: key);
-
-  final String title;
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final database = Database.of(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text(title),
+          title: const Text("Configurator"),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.settings),
@@ -31,17 +21,11 @@ class HomePage extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SettingsPage(
-                              database: database,
-                              updateLanguage: updateLanguage,
-                            )));
+                        builder: (context) => const SettingsPage()));
               },
             ),
           ],
         ),
-        body: Home(
-          database: database,
-          updateLanguage: updateLanguage,
-        ));
+        body: Home());
   }
 }

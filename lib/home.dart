@@ -7,10 +7,7 @@ import 'data/database.dart';
 import 'ui/profile_list.dart';
 
 class Home extends StatefulWidget {
-  final Database database;
-  final Function updateLanguage;
-
-  const Home({super.key, required this.database, required this.updateLanguage});
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -24,9 +21,7 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-
-    final database = widget.database;
-    profileNameController.text = database.visibleAxis.name;
+    profileNameController.text = "Asdf";
   }
 
   @override

@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gcrdeviceconfigurator/app.dart';
+import 'package:gcrdeviceconfigurator/apps/app.dart';
 
 import 'package:gcrdeviceconfigurator/main.dart';
 

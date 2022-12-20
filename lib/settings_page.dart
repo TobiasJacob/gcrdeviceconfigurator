@@ -1,37 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/database.dart';
+import 'package:gcrdeviceconfigurator/i18n/language_settings.dart';
 
 import 'i18n/languages.dart';
 
 class SettingsPage extends StatelessWidget {
-  final Database database;
-  final Function updateLanguage;
-
-  const SettingsPage(
-      {super.key, required this.updateLanguage, required this.database});
+  const SettingsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final lang = Languages.of(context);
+    final langSettings = LanguageSettings.of(context);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
       ),
       body: Center(
-          child: DropdownButton(
+          child: DropdownButton<String>(
         onChanged: (value) {
           print(value);
-          database.settings.languageCode = value!;
+          final String languageCode = value!;
+          var countryCode = "US";
           if (value == "de") {
-            database.settings.countryCode = "DE";
-          } else {
-            database.settings.countryCode = "US";
+            countryCode = "DE";
           }
-          database.save();
-          updateLanguage();
+          langSettings.updateLanguage(languageCode, countryCode);
         },
-        value: database.settings.languageCode,
+        value: langSettings.languageCode,
         items: [
           DropdownMenuItem(
             value: "en",

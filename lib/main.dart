@@ -1,17 +1,9 @@
-import 'dart:async';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/home.dart';
 import 'package:dartusbhid/enumerate.dart';
-import 'package:gcrdeviceconfigurator/i18n/languages.dart';
-import 'package:gcrdeviceconfigurator/settings_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:gcrdeviceconfigurator/root_widget.dart';
 
-import 'app.dart';
-import 'data/database.dart';
-import 'home_page.dart';
-import 'i18n/app_localization_delegate.dart';
+import 'apps/app.dart';
 import 'package:provider/provider.dart';
 
 void test() async {
@@ -36,5 +28,5 @@ void main() {
 
   test();
 
-  runApp(const MyApp());
+  runApp(const RootWidget());
 }
