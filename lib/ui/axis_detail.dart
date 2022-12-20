@@ -50,6 +50,13 @@ class _AxisDetailState extends State<AxisDetail> {
                 child: Text("Schneller"),
               )
             ],
+          ),
+          DropdownButton<Usage>(
+            onChanged: axis.setUsage,
+            value: axis.usage,
+            items: Usage.values
+                .map((e) => DropdownMenuItem(value: e, child: Text(e.name)))
+                .toList(),
           )
         ]),
       ),

@@ -15,9 +15,9 @@ enum Usage { none, gas, brake, clutch, handbrake }
 class ControllerAxis extends ChangeNotifier {
   final int index;
   final List<DataPoint> dataPoints;
-  final Usage usage;
 
   Smoothing smoothing;
+  Usage usage;
 
   bool edited = false;
 
@@ -108,11 +108,19 @@ class ControllerAxis extends ChangeNotifier {
           (dataPoints[i].x + dataPoints[i + 1].x) / 2,
           (dataPoints[i].y + dataPoints[i + 1].y) / 2,
         ));
+    edited = true;
     notifyListeners();
   }
 
   void setAxisSmoothing(Smoothing? smoothing) {
-    smoothing = smoothing ?? Smoothing.normal;
+    this.smoothing = smoothing ?? Smoothing.normal;
+    edited = true;
+    notifyListeners();
+  }
+
+  void setUsage(Usage? usage) {
+    this.usage = usage ?? Usage.none;
+    edited = true;
     notifyListeners();
   }
 
