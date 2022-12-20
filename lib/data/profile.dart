@@ -5,7 +5,7 @@ import 'axis.dart';
 
 class Profile extends ChangeNotifier {
   String name;
-  Map<String, ControllerAxis> axes;
+  List<ControllerAxis> axes;
   bool edited = false;
 
   Profile(this.name, this.axes);
@@ -15,31 +15,27 @@ class Profile extends ChangeNotifier {
   }
 
   static Profile empty(String name) {
-    return Profile(name, {
-      "GasAxis": ControllerAxis.empty("Gas"),
-      "BrakeAxis": ControllerAxis.empty("Brake"),
-      "ClutchAxis": ControllerAxis.empty("Clutch"),
-      "HandBrakeAxis": ControllerAxis.empty("HandBrake"),
-    });
+    return Profile(
+        name, [for (var i = 0; i < 10; i += 1) ControllerAxis.empty(i)]);
   }
 
   static Profile fromJSON(Map<String, dynamic> profileData) {
     String name = profileData["name"];
-    Map<String, ControllerAxis> axes = {};
+    List<ControllerAxis> axes = [];
     if (profileData.isEmpty) {
       return Profile.empty("Default");
     }
-    for (final k in profileData["axes"].keys) {
-      axes[k] = ControllerAxis.fromJSON(profileData["axes"][k]);
+    for (final a in profileData["axes"]) {
+      axes.add(ControllerAxis.fromJSON(a));
     }
     return Profile(name, axes);
   }
 
   Map<String, dynamic> toJSON() {
-    final jsonAxes = {};
+    final jsonAxes = [];
 
-    for (final k in axes.keys) {
-      jsonAxes[k] = axes[k]!.toJSON();
+    for (final a in axes) {
+      jsonAxes.add(a.toJSON());
     }
 
     return {"axes": jsonAxes, "name": name};
@@ -55,7 +51,7 @@ class Profile extends ChangeNotifier {
     if (edited) {
       return true;
     }
-    for (final axis in axes.values) {
+    for (final axis in axes) {
       if (axis.thisOrDependencyEdited()) {
         return true;
       }
@@ -64,7 +60,7 @@ class Profile extends ChangeNotifier {
   }
 
   void resetEdited() {
-    for (final axis in axes.values) {
+    for (final axis in axes) {
       axis.resetEdited();
     }
     edited = false;

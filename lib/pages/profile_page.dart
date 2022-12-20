@@ -22,7 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     final profile = Provider.of<Profile>(context, listen: false);
 
-    axis = profile.axes.values.first;
+    axis = profile.axes[0];
   }
 
   @override
