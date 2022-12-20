@@ -6,6 +6,7 @@ import 'package:gcrdeviceconfigurator/main.dart';
 import 'package:gcrdeviceconfigurator/main_data_provider.dart';
 
 import 'apps/app.dart';
+import 'apps/app_error.dart';
 import 'data/database.dart';
 import 'package:provider/provider.dart';
 
@@ -30,19 +31,24 @@ class _RootWidgetState extends State<RootWidget> {
 
   @override
   Widget build(BuildContext context) {
-    switch (mainDataProvier.state) {
-      case MainDataProviderState.loading:
-        return AppLoading(errorMsg: mainDataProvier.errorMsg);
-      case MainDataProviderState.finished:
-        return MultiProvider(
-          providers: [
-            ChangeNotifierProvider(
-                create: (context) => mainDataProvier.database),
-            ChangeNotifierProvider(
-                create: (context) => mainDataProvier.languageSettings)
-          ],
-          child: const MyApp(),
-        );
-    }
+    return FutureBuilder(
+        future: mainDataProvier.loadFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const AppLoading();
+          }
+          if (snapshot.hasError) {
+            return AppError(errorMsg: snapshot.error.toString());
+          }
+          return MultiProvider(
+            providers: [
+              ChangeNotifierProvider(
+                  create: (context) => mainDataProvier.database),
+              ChangeNotifierProvider(
+                  create: (context) => mainDataProvier.languageSettings)
+            ],
+            child: const MyApp(),
+          );
+        });
   }
 }

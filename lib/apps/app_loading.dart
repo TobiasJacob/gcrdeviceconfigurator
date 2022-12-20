@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 
 class AppLoading extends StatelessWidget {
-  String errorMsg;
-
-  AppLoading({super.key, required this.errorMsg});
+  const AppLoading({super.key});
 
   @override
   Widget build(BuildContext context) {
     const title = "Get Closer Racing Configurator";
     return MaterialApp(
         title: title,
-        home: Center(
-            child: Column(children: [
-          const CircularProgressIndicator(),
-          Text(errorMsg)
-        ])));
+        home: Scaffold(
+            appBar: AppBar(
+              title: const Text("Error"),
+            ),
+            body: const Padding(
+                padding: EdgeInsets.all(12),
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ))));
   }
 }

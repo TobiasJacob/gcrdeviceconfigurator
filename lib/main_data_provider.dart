@@ -16,7 +16,7 @@ class MainDataProvider {
   String errorMsg = "";
 
   MainDataProvider() {
-    loadData();
+    loadFuture = loadData();
   }
 
   Future<void> loadData() async {
