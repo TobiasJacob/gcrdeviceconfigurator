@@ -15,6 +15,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final TextEditingController profileNameController = TextEditingController();
   late ControllerAxis axis;
 
   @override
@@ -28,6 +29,11 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final profile = Profile.of(context);
+
+    if (profileNameController.text != profile.name) {
+      profileNameController.text = profile.name;
+    }
+
     return WillPopScope(
         onWillPop: () => showExitPopup(context),
         child: Scaffold(
@@ -40,11 +46,24 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     Expanded(
                         flex: 1,
-                        child: AxisList(onSelect: (axis) {
-                          setState(() {
-                            this.axis = axis;
-                          });
-                        })),
+                        child: Column(
+                          children: [
+                            Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: TextField(
+                                  controller: profileNameController,
+                                  onChanged: profile.updateName,
+                                )),
+                            const Divider(),
+                            Expanded(
+                              child: AxisList(onSelect: (axis) {
+                                setState(() {
+                                  this.axis = axis;
+                                });
+                              }),
+                            )
+                          ],
+                        )),
                     const VerticalDivider(),
                     const Expanded(
                       flex: 3,

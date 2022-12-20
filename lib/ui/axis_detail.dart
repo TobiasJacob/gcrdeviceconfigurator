@@ -13,26 +13,16 @@ class AxisDetail extends StatefulWidget {
 }
 
 class _AxisDetailState extends State<AxisDetail> {
-  final TextEditingController profileNameController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final profile = Profile.of(context);
     final axis = ControllerAxis.of(context);
-
-    if (profileNameController.text != profile.name) {
-      profileNameController.text = profile.name;
-    }
 
     return Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Container(
         width: 200,
         padding: const EdgeInsets.all(8),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          TextField(
-            controller: profileNameController,
-            onChanged: profile.updateName,
-          ),
           DropdownButton<Smoothing>(
             onChanged: axis.setAxisSmoothing,
             value: axis.smoothing,

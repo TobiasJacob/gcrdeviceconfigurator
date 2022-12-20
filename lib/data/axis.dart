@@ -32,7 +32,6 @@ class ControllerAxis extends ChangeNotifier {
   }
 
   static ControllerAxis fromJSON(Map<String, dynamic> axisData) {
-    int index = axisData["index"];
     List<DataPoint> dataPoints = (axisData["dataPoints"] as List)
         .map((e) => DataPoint.fromJSON(e))
         .toList();
