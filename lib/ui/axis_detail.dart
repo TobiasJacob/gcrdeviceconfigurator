@@ -3,23 +3,17 @@ import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/data/profile.dart';
 import 'package:gcrdeviceconfigurator/ui/chart.dart';
 
+import '../data/database.dart';
+
 class AxisDetail extends StatelessWidget {
   final TextEditingController profileNameController;
-  final Profile profile;
-  final ControllerAxis axis;
-  final Function(ControllerAxis axis) updateAxis;
-  final Function(Profile profile) updateProfile;
 
-  const AxisDetail(
-      {super.key,
-      required this.profile,
-      required this.axis,
-      required this.updateAxis,
-      required this.updateProfile,
-      required this.profileNameController});
+  const AxisDetail({super.key, required this.profileNameController});
 
   @override
   Widget build(BuildContext context) {
+    final database = Database.of(context);
+
     return Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
       Container(
         width: 200,
@@ -27,17 +21,11 @@ class AxisDetail extends StatelessWidget {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           TextField(
             controller: profileNameController,
-            onChanged: (value) {
-              profile.name = value;
-              updateProfile(profile);
-            },
+            onChanged: database.updateProfileName,
           ),
-          DropdownButton(
-            onChanged: (value) {
-              axis.smoothing = value ?? Smoothing.normal;
-              updateAxis(axis);
-            },
-            value: axis.smoothing,
+          DropdownButton<Smoothing>(
+            onChanged: database.setAxisSmoothing,
+            value: database.visibleAxis.smoothing,
             items: const [
               DropdownMenuItem(
                 value: Smoothing.highAccuracy,
@@ -55,11 +43,8 @@ class AxisDetail extends StatelessWidget {
           )
         ]),
       ),
-      Expanded(
-        child: Chart(
-          axis: axis,
-          updateAxis: updateAxis,
-        ),
+      const Expanded(
+        child: Chart(),
       )
     ]);
   }

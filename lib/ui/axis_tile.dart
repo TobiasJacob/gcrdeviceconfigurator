@@ -1,28 +1,26 @@
 import 'package:flutter/material.dart';
 
 import '../data/axis.dart';
+import '../data/database.dart';
 
 class AxisTile extends StatelessWidget {
   final ControllerAxis axis;
-  final String axisId;
-  final String visibleAxisId;
-  final Function(String?) onChangeVisibleAxis;
 
-  const AxisTile(
-      {super.key,
-      required this.axis,
-      required this.axisId,
-      required this.visibleAxisId,
-      required this.onChangeVisibleAxis});
+  const AxisTile({super.key, required this.axis});
 
   @override
   Widget build(BuildContext context) {
+    final database = Database.of(context);
+
+    final backgroundColor =
+        axis == database.visibleAxis ? Colors.blue[100] : null;
+
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
           border: Border.all(),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
-          color: axisId == visibleAxisId ? Colors.blue[100] : null),
+          color: backgroundColor),
       child: Row(
         children: [
           Expanded(
@@ -30,7 +28,7 @@ class AxisTile extends StatelessWidget {
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
             onPressed: () {
-              onChangeVisibleAxis(axisId);
+              database.changeVisibleAxis(axis);
             },
             shape: const CircleBorder(),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

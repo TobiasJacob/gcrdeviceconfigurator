@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
 
+import '../data/database.dart';
 import 'chart_button.dart';
 import 'chart_drag_ball.dart';
 import 'chart_painter.dart';
@@ -18,13 +19,13 @@ List<DataPoint> getMiddlePoints(List<DataPoint> dataPointList) {
 }
 
 class Chart extends StatelessWidget {
-  final ControllerAxis axis;
-  final Function(ControllerAxis axis) updateAxis;
-
-  const Chart({super.key, required this.axis, required this.updateAxis});
+  const Chart({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final database = Database.of(context);
+
+    final axis = database.visibleAxis;
     final dataPoints = axis.dataPoints;
     const margin = 16.0;
     return LayoutBuilder(
@@ -48,28 +49,10 @@ class Chart extends StatelessWidget {
                       size: constraints.biggest,
                       margin: margin,
                       updateDataPoint: (newDataPoint) {
-                        var x = newDataPoint.x;
-                        var y = newDataPoint.y;
-                        if (i > 0) {
-                          x = max(x, axis.dataPoints[i - 1].x);
-                        } else {
-                          x = max(x, 0);
-                        }
-                        if (i < axis.dataPoints.length - 1) {
-                          x = min(x, axis.dataPoints[i + 1].x);
-                        } else {
-                          x = min(x, 1);
-                        }
-                        y = max(y, 0);
-                        y = min(y, 1);
-                        axis.dataPoints[i] = DataPoint(x, y);
-                        updateAxis(axis);
+                        database.updateChartDataPoint(i, newDataPoint);
                       },
                       onPressed: () {
-                        if (dataPoints.length > 2) {
-                          axis.dataPoints.removeAt(i);
-                          updateAxis(axis);
-                        }
+                        database.deleteChartDataPointIfMoreThanTwo(i);
                       },
                     )))
                 .values,
@@ -83,17 +66,7 @@ class Chart extends StatelessWidget {
                         margin: margin,
                         text: "+",
                         onPressed: () {
-                          axis.dataPoints.insert(
-                              i + 1,
-                              DataPoint(
-                                (axis.dataPoints[i].x +
-                                        axis.dataPoints[i + 1].x) /
-                                    2,
-                                (axis.dataPoints[i].y +
-                                        axis.dataPoints[i + 1].y) /
-                                    2,
-                              ));
-                          updateAxis(axis);
+                          database.addChartDataPointAfter(i);
                         },
                       ),
                     ))

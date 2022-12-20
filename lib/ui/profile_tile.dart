@@ -1,39 +1,32 @@
 import 'package:flutter/material.dart';
 
+import '../data/database.dart';
 import '../data/profile.dart';
 
 class ProfileTile extends StatelessWidget {
   final Profile profile;
-  final String profileId;
-  final String activeProfileId;
-  final String visibleProfileId;
-  final Function(String) onChangeActiveProfile;
-  final Function(String) onChangeVisibleProfile;
 
-  const ProfileTile(
-      {super.key,
-      required this.profileId,
-      required this.profile,
-      required this.activeProfileId,
-      required this.visibleProfileId,
-      required this.onChangeActiveProfile,
-      required this.onChangeVisibleProfile});
+  const ProfileTile({super.key, required this.profile});
 
   @override
   Widget build(BuildContext context) {
+    final database = Database.of(context);
+    final backgroundColor =
+        profile == database.visibleProfile ? Colors.blue[100] : null;
+
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
           border: Border.all(),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
-          color: profileId == visibleProfileId ? Colors.blue[100] : null),
+          color: backgroundColor),
       child: Row(
         children: [
-          Radio(
-            value: profileId,
-            groupValue: activeProfileId,
+          Radio<Profile>(
+            value: profile,
+            groupValue: database.activeProfile,
             onChanged: (value) {
-              onChangeActiveProfile(value!);
+              database.setActiveProfile(value!);
             },
           ),
           Expanded(
@@ -41,7 +34,7 @@ class ProfileTile extends StatelessWidget {
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
             onPressed: () {
-              onChangeVisibleProfile(profileId);
+              database.setVisibleProfile(profile);
             },
             shape: const CircleBorder(),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

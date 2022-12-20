@@ -56,20 +56,10 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     database = Database();
     loadFuture = database.load();
-    random = Random();
     updateAxisValues =
         Timer.periodic(const Duration(milliseconds: 100), (timer) {
       setState(() {
-        var newVal = (database.profiles[database.visibleProfileId]
-                    ?.axes[database.visibleAxisId]?.currentValue ??
-                0.5) +
-            (random.nextDouble() - 0.5) * 0.03;
-
-        newVal += (0.5 - newVal) * 0.002;
-        database
-            .profiles[database.visibleProfileId]
-            ?.axes[database.visibleAxisId]
-            ?.currentValue = max(min(newVal, 1), 0);
+        database.updateCurrentAxisValue();
       });
     });
   }
