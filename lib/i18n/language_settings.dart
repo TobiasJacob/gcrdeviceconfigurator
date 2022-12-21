@@ -29,5 +29,7 @@ class LanguageSettings extends ChangeNotifier {
 
     await storage.setItem("languageCode", languageCode);
     await storage.setItem("countryCode", countryCode);
+
+    notifyListeners();
   }
 }
