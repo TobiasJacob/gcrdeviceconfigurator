@@ -106,9 +106,10 @@ class Database extends ChangeNotifier {
     throw Exception("Error creating profile. Consider deleting profiles.");
   }
 
-  void deleteProfileIfMoreThanOne(Profile profile) {
+  void deleteProfileIfMoreThanOne(String profileKey) {
     if (profiles.keys.length > 1) {
-      profiles.remove(profile);
+      profiles.remove(profileKey);
+      save();
       notifyListeners();
     }
   }

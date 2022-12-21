@@ -7,8 +7,10 @@ import '../data/profile.dart';
 
 class ProfileTile extends StatelessWidget {
   final Profile profile;
+  final String profileKey;
 
-  const ProfileTile({super.key, required this.profile});
+  const ProfileTile(
+      {super.key, required this.profile, required this.profileKey});
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +35,7 @@ class ProfileTile extends StatelessWidget {
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
             onPressed: () {
-              // TODO: Alert
-              database.deleteProfileIfMoreThanOne(profile);
+              database.deleteProfileIfMoreThanOne(profileKey);
             },
             shape: const CircleBorder(),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

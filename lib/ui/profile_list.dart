@@ -19,6 +19,7 @@ class ProfileList extends StatelessWidget {
         itemCount: profileKeys.length,
         itemBuilder: (BuildContext context, int index) {
           return ProfileTile(
+            profileKey: profileKeys[index],
             profile: database.profiles[profileKeys[index]]!,
           );
         },
