@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/pages/settings/channel_tile.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/language_settings_tile.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -14,7 +15,8 @@ class SettingsPage extends StatelessWidget {
         children: const [
           LanguageSettingTile(),
           Divider(),
-          LanguageSettingTile()
+          ChannelTile(),
+          Divider()
         ],
       ),
     );

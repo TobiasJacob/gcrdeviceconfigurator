@@ -28,7 +28,7 @@ class AxisTile extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-              child: Text("${index}: ${axis.usage.name}",
+              child: Text("$index",
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
             onPressed: () {

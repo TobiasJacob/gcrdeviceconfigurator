@@ -2,13 +2,17 @@ import 'package:provider/provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:flutter/material.dart';
 
+enum Usage { none, gas, brake, clutch, handbrake }
+
 class AppSettings extends ChangeNotifier {
   String languageCode;
   String countryCode;
+  List<Usage> channelSettings;
 
   final LocalStorage storage;
 
-  AppSettings(this.languageCode, this.countryCode, this.storage);
+  AppSettings(
+      this.languageCode, this.countryCode, this.channelSettings, this.storage);
 
   static AppSettings of(context) {
     return Provider.of<AppSettings>(context);
@@ -20,7 +24,12 @@ class AppSettings extends ChangeNotifier {
 
     final languageCode = await storage.getItem("languageCode") ?? "en";
     final countryCode = await storage.getItem("countryCode") ?? "US";
-    return AppSettings(languageCode, countryCode, storage);
+    final channelSettings =
+        (await storage.getItem("channelSettings") as List<dynamic>?)
+                ?.map((i) => Usage.values[i]) ??
+            List.generate(10, (index) => Usage.none);
+    return AppSettings(
+        languageCode, countryCode, channelSettings.toList(), storage);
   }
 
   Future updateLanguage(String languageCode, String countryCode) async {
@@ -29,6 +38,15 @@ class AppSettings extends ChangeNotifier {
 
     await storage.setItem("languageCode", languageCode);
     await storage.setItem("countryCode", countryCode);
+
+    notifyListeners();
+  }
+
+  Future updateChannelUsage(int index, Usage usage) async {
+    channelSettings[index] = usage;
+
+    await storage.setItem(
+        "channelSettings", channelSettings.map((e) => e.index).toList());
 
     notifyListeners();
   }

@@ -9,21 +9,24 @@ class SettingsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Expanded(
           flex: 1,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: Text(
               title,
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: Theme.of(context).textTheme.titleMedium,
             ),
           ),
         ),
         Expanded(
           flex: 3,
-          child: child,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: child,
+          ),
         )
       ],
     );

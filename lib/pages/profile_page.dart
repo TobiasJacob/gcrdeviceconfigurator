@@ -5,7 +5,6 @@ import 'package:gcrdeviceconfigurator/ui/chart.dart';
 import 'package:provider/provider.dart';
 
 import '../data/profile.dart';
-import 'settings/axis_detail.dart';
 import '../ui/axis_list.dart';
 
 class ProfilePage extends StatefulWidget {
