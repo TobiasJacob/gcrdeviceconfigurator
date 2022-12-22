@@ -10,7 +10,13 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: const Center(child: LanguageSettingTile()),
+      body: Column(
+        children: const [
+          LanguageSettingTile(),
+          Divider(),
+          LanguageSettingTile()
+        ],
+      ),
     );
   }
 }
