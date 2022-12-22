@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gcrdeviceconfigurator/data/language_settings.dart';
+import 'package:gcrdeviceconfigurator/data/settings.dart';
 
 import '../pages/home_page.dart';
 import '../i18n/app_localization_delegate.dart';
