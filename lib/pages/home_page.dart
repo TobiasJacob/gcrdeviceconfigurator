@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/data/database.dart';
 
-import '../ui/axis_detail.dart';
-import '../ui/axis_list.dart';
 import '../ui/profile_list.dart';
-import '../ui/save_buttons.dart';
 import 'settings_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -12,8 +8,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final database = Database.of(context);
-
     return Scaffold(
         appBar: AppBar(
           title: const Text("Configurator"),

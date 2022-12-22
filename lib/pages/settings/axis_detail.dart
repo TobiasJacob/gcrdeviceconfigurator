@@ -3,7 +3,7 @@ import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/data/profile.dart';
 import 'package:gcrdeviceconfigurator/ui/chart.dart';
 
-import '../data/database.dart';
+import '../../data/database.dart';
 
 class AxisDetail extends StatefulWidget {
   const AxisDetail({super.key});
