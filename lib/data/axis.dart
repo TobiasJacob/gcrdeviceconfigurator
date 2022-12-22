@@ -4,41 +4,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
 import 'package:provider/provider.dart';
 
-enum Smoothing {
-  highSpeed,
-  normal,
-  highAccuracy,
-}
-
 enum Usage { none, gas, brake, clutch, handbrake }
 
 class ControllerAxis extends ChangeNotifier {
   final List<DataPoint> dataPoints;
 
-  Smoothing smoothing;
   Usage usage;
 
   bool edited = false;
 
-  ControllerAxis(this.dataPoints, this.smoothing, this.usage);
+  ControllerAxis(this.dataPoints, this.usage);
 
   static ControllerAxis of(context) {
     return Provider.of<ControllerAxis>(context);
   }
 
   static ControllerAxis empty() {
-    return ControllerAxis(
-        [DataPoint(0, 0), DataPoint(1, 1)], Smoothing.normal, Usage.none);
+    return ControllerAxis([DataPoint(0, 0), DataPoint(1, 1)], Usage.none);
   }
 
   static ControllerAxis fromJSON(Map<String, dynamic> axisData) {
     List<DataPoint> dataPoints = (axisData["dataPoints"] as List)
         .map((e) => DataPoint.fromJSON(e))
         .toList();
-    Smoothing smoothing = Smoothing.values[axisData["smoothing"]];
     Usage usage = Usage.values[axisData["usage"]];
 
-    return ControllerAxis(dataPoints, smoothing, usage);
+    return ControllerAxis(dataPoints, usage);
   }
 
   double getY(double x) {
@@ -61,11 +52,7 @@ class ControllerAxis extends ChangeNotifier {
 
   Map<String, dynamic> toJSON() {
     final jsonDataPoints = dataPoints.map((dp) => dp.toJSON()).toList();
-    return {
-      "dataPoints": jsonDataPoints,
-      "smoothing": smoothing.index,
-      "usage": usage.index
-    };
+    return {"dataPoints": jsonDataPoints, "usage": usage.index};
   }
 
   // UI Actions
@@ -105,12 +92,6 @@ class ControllerAxis extends ChangeNotifier {
           (dataPoints[i].x + dataPoints[i + 1].x) / 2,
           (dataPoints[i].y + dataPoints[i + 1].y) / 2,
         ));
-    edited = true;
-    notifyListeners();
-  }
-
-  void setAxisSmoothing(Smoothing? smoothing) {
-    this.smoothing = smoothing ?? Smoothing.normal;
     edited = true;
     notifyListeners();
   }

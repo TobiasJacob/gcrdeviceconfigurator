@@ -23,24 +23,6 @@ class _AxisDetailState extends State<AxisDetail> {
         width: 200,
         padding: const EdgeInsets.all(8),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          DropdownButton<Smoothing>(
-            onChanged: axis.setAxisSmoothing,
-            value: axis.smoothing,
-            items: const [
-              DropdownMenuItem(
-                value: Smoothing.highAccuracy,
-                child: Text("Genauer"),
-              ),
-              DropdownMenuItem(
-                value: Smoothing.normal,
-                child: Text("Ausgewogen"),
-              ),
-              DropdownMenuItem(
-                value: Smoothing.highSpeed,
-                child: Text("Schneller"),
-              )
-            ],
-          ),
           DropdownButton<Usage>(
             onChanged: axis.setUsage,
             value: axis.usage,
