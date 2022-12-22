@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const title = "Get Closer Racing Configurator";
-    final LanguageSettings languageSettings = LanguageSettings.of(context);
+    final AppSettings languageSettings = AppSettings.of(context);
 
     return MaterialApp(
       theme: ThemeData(

@@ -9,7 +9,7 @@ enum MainDataProviderState { loading, finished }
 
 class MainDataProvider {
   late Database database;
-  late LanguageSettings languageSettings;
+  late AppSettings languageSettings;
   late USBStatus usbStatus;
 
   late Future loadFuture;
@@ -23,7 +23,7 @@ class MainDataProvider {
     database = Database();
     // Use await database.save(); here to reset to factory
     await database.load();
-    languageSettings = await LanguageSettings.load();
+    languageSettings = await AppSettings.load();
     usbStatus = USBStatus();
 
     updateUserInterface();

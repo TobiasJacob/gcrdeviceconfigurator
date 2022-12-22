@@ -2,25 +2,25 @@ import 'package:provider/provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:flutter/material.dart';
 
-class LanguageSettings extends ChangeNotifier {
+class AppSettings extends ChangeNotifier {
   String languageCode;
   String countryCode;
 
   final LocalStorage storage;
 
-  LanguageSettings(this.languageCode, this.countryCode, this.storage);
+  AppSettings(this.languageCode, this.countryCode, this.storage);
 
-  static LanguageSettings of(context) {
-    return Provider.of<LanguageSettings>(context);
+  static AppSettings of(context) {
+    return Provider.of<AppSettings>(context);
   }
 
-  static Future<LanguageSettings> load() async {
+  static Future<AppSettings> load() async {
     final storage = LocalStorage('language.json');
     await storage.ready;
 
     final languageCode = await storage.getItem("languageCode") ?? "en";
     final countryCode = await storage.getItem("countryCode") ?? "US";
-    return LanguageSettings(languageCode, countryCode, storage);
+    return AppSettings(languageCode, countryCode, storage);
   }
 
   Future updateLanguage(String languageCode, String countryCode) async {

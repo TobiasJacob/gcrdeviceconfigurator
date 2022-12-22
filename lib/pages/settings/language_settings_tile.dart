@@ -8,7 +8,7 @@ class LanguageSettingTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lang = Languages.of(context);
-    final langSettings = LanguageSettings.of(context);
+    final langSettings = AppSettings.of(context);
 
     return DropdownButton<String>(
       onChanged: (value) {
