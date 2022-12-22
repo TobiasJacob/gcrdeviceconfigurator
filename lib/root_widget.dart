@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gcrdeviceconfigurator/apps/app_loading.dart';
-import 'package:gcrdeviceconfigurator/data/settings.dart';
+import 'package:gcrdeviceconfigurator/data/app_settings.dart';
 import 'package:gcrdeviceconfigurator/main.dart';
 import 'package:gcrdeviceconfigurator/main_data_provider.dart';
 

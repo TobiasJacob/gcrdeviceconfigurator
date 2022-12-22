@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:gcrdeviceconfigurator/usb/usb_status.dart';
 
 import 'data/database.dart';
-import 'data/settings.dart';
+import 'data/app_settings.dart';
 
 enum MainDataProviderState { loading, finished }
 
