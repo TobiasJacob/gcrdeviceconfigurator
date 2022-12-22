@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/database.dart';
-import 'package:gcrdeviceconfigurator/i18n/language_settings.dart';
+import 'package:gcrdeviceconfigurator/data/language_settings.dart';
 import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 
 class LanguageSettingTile extends StatelessWidget {
