@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/data/database.dart';
+import 'package:gcrdeviceconfigurator/ui/chart.dart';
 import 'package:provider/provider.dart';
 
 import '../data/profile.dart';
@@ -67,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     const VerticalDivider(),
                     const Expanded(
                       flex: 3,
-                      child: AxisDetail(),
+                      child: Chart(),
                     ),
                   ],
                 ))));
