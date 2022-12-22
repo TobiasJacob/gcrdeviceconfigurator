@@ -1,10 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/data/axis.dart';
-import 'package:gcrdeviceconfigurator/data/data_point.dart';
 import 'package:gcrdeviceconfigurator/data/profile.dart';
-import 'package:gcrdeviceconfigurator/data/settings.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 
@@ -16,13 +13,11 @@ String generateRandomString() {
 }
 
 class Database extends ChangeNotifier {
+  late Profile activeProfile;
+
   Map<String, Profile> profiles = {"Default": Profile.empty("Default")};
 
-  late Profile activeProfile;
-  Settings settings = Settings.defaultSettings();
-
   bool edited = false;
-  Random random = Random();
   final storage = LocalStorage('data.json');
 
   Database() {
@@ -64,7 +59,6 @@ class Database extends ChangeNotifier {
       save();
       return;
     }
-    settings = Settings.fromJSON(settingsJSON);
     edited = false;
     notifyListeners();
   }
@@ -77,7 +71,6 @@ class Database extends ChangeNotifier {
     }
     await storage.setItem("profiles", jsonProfiles);
     // await storage.setItem("uiState", {"activeProfileId": activeProfileId});
-    await storage.setItem("settings", settings.toJSON());
     edited = false;
     notifyListeners();
   }
