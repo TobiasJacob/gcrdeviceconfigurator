@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 
 import 'home/profile_list.dart';
 import 'settings_page.dart';
@@ -8,9 +9,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = Languages.of(context);
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Configurator"),
+          title: Text(lang.appName),
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.settings),

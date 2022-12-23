@@ -5,7 +5,7 @@ class AppLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const title = "Get Closer Racing Configurator";
+    const title = "Pedal Config";
     return MaterialApp(
         title: title,
         home: Scaffold(
