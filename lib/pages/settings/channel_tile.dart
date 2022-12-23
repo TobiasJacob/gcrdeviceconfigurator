@@ -11,6 +11,7 @@ class ChannelItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = Languages.of(context);
     final appSettings = AppSettings.of(context);
 
     return Row(
@@ -25,7 +26,8 @@ class ChannelItem extends StatelessWidget {
           onChanged: (value) => appSettings.updateChannelUsage(index, value!),
           value: appSettings.channelSettings[index],
           items: Usage.values
-              .map((e) => DropdownMenuItem(value: e, child: Text(e.name)))
+              .map(
+                  (e) => DropdownMenuItem(value: e, child: Text(lang.usage(e))))
               .toList(),
         )
       ],

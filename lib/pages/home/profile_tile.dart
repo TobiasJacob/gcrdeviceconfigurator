@@ -8,6 +8,7 @@ import 'dart:io';
 
 import '../../data/database.dart';
 import '../../data/profile.dart';
+import '../../i18n/languages.dart';
 
 class ProfileTile extends StatelessWidget {
   final Profile profile;
@@ -18,6 +19,7 @@ class ProfileTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = Languages.of(context);
     final database = Database.of(context);
 
     return Container(
@@ -53,7 +55,7 @@ class ProfileTile extends StatelessWidget {
               return {'Export', 'Delete'}.map((String choice) {
                 return PopupMenuItem<String>(
                   value: choice,
-                  child: Text(choice),
+                  child: Text(lang.axisTileOptions(choice)),
                 );
               }).toList();
             },

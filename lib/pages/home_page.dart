@@ -16,7 +16,6 @@ class HomePage extends StatelessWidget {
           actions: <Widget>[
             IconButton(
               icon: const Icon(Icons.settings),
-              tooltip: 'Show Settings',
               onPressed: () {
                 Navigator.push(
                     context,
