@@ -12,7 +12,7 @@ class LanguageSettingTile extends StatelessWidget {
     final appSettings = AppSettings.of(context);
 
     return SettingsTile(
-        title: "Language",
+        title: lang.languageSettings,
         child: DropdownButton<String>(
           onChanged: (value) {
             final String languageCode = value!;

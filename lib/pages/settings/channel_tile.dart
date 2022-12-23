@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
 
 import '../../data/app_settings.dart';
+import '../../i18n/languages.dart';
 
 class ChannelItem extends StatelessWidget {
   final int index;
@@ -37,10 +38,11 @@ class ChannelTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = Languages.of(context);
     final appSettings = AppSettings.of(context);
 
     return SettingsTile(
-        title: "Channel setup",
+        title: lang.channelSettings,
         child: Column(children: [
           for (var i = 0; i < appSettings.channelSettings.length; i++)
             ChannelItem(

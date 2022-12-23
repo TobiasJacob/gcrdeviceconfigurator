@@ -7,7 +7,10 @@ abstract class Languages {
 
   String get appName;
 
+  // Settings
+  String get settings;
   String get english;
-
   String get german;
+  String get languageSettings;
+  String get channelSettings;
 }
