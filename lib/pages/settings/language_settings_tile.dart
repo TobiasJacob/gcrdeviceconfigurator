@@ -28,9 +28,9 @@ class LanguageSettingTile extends StatelessWidget {
               value: "en",
               child: Text(lang.english),
             ),
-            const DropdownMenuItem(
+            DropdownMenuItem(
               value: "de",
-              child: Text("German"),
+              child: Text(lang.german),
             ),
           ],
         ));

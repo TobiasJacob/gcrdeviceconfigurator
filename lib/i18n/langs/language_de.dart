@@ -5,14 +5,8 @@ class LanguageDe extends Languages {
   String get appName => "Multi-languages";
 
   @override
-  String get labelWelcome => "Wilkommen";
-
-  @override
-  String get labelSelectLanguage => "Sprache Wählen";
-
-  @override
-  String get labelInfo => "This is multi-languages demo application";
-
-  @override
   String get english => "Englisch";
+
+  @override
+  String get german => "Deutsch";
 }
