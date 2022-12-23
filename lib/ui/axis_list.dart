@@ -1,24 +1,20 @@
 import 'package:flutter/widgets.dart';
 import 'package:gcrdeviceconfigurator/ui/axis_tile.dart';
 
-import '../data/axis.dart';
-import '../data/profile.dart';
+import '../data/app_settings.dart';
 
 class AxisList extends StatelessWidget {
-  final Function(ControllerAxis axis) onSelect;
+  final Function(Usage usage) onSelect;
 
   const AxisList({super.key, required this.onSelect});
 
   @override
   Widget build(BuildContext context) {
-    final profile = Profile.of(context);
-
     return ListView.separated(
       padding: const EdgeInsets.all(16),
-      itemCount: profile.axes.length,
+      itemCount: Usage.values.length - 1,
       itemBuilder: (BuildContext context, int index) {
-        return AxisTile(
-            index: index, axis: profile.axes[index], onSelect: onSelect);
+        return AxisTile(usage: Usage.values[index + 1], onSelect: onSelect);
       },
       separatorBuilder: (context, index) => const SizedBox(height: 8),
     );

@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/data/app_settings.dart';
+import 'package:gcrdeviceconfigurator/data/profile.dart';
 
 import '../data/axis.dart';
 
 class AxisTile extends StatelessWidget {
-  final int index;
-  final ControllerAxis axis;
-  final Function(ControllerAxis axis) onSelect;
+  final Usage usage;
+  final Function(Usage usage) onSelect;
 
-  const AxisTile(
-      {super.key,
-      required this.index,
-      required this.axis,
-      required this.onSelect});
+  const AxisTile({super.key, required this.usage, required this.onSelect});
 
   @override
   Widget build(BuildContext context) {
+    final profile = Profile.of(context);
     final visibleAxis = ControllerAxis.of(context);
 
-    final backgroundColor = axis == visibleAxis ? Colors.blue[100] : null;
+    final backgroundColor =
+        profile.axes[usage] == visibleAxis ? Colors.blue[100] : null;
 
     return Container(
       padding: const EdgeInsets.all(8.0),
@@ -28,11 +27,11 @@ class AxisTile extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-              child: Text("$index",
+              child: Text(usage.name,
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
             onPressed: () {
-              onSelect(axis);
+              onSelect(usage);
             },
             shape: const CircleBorder(),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

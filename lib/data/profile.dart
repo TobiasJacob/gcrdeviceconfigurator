@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'app_settings.dart';
 import 'axis.dart';
 
 class Profile extends ChangeNotifier {
   String name;
-  List<ControllerAxis> axes;
+  Map<Usage, ControllerAxis> axes;
   bool edited = false;
 
   Profile(this.name, this.axes);
@@ -15,27 +16,38 @@ class Profile extends ChangeNotifier {
   }
 
   static Profile empty(String name) {
-    return Profile(
-        name, [for (var i = 0; i < 10; i += 1) ControllerAxis.empty()]);
+    return Profile(name, {
+      for (var i = 0; i < Usage.values.length; i += 1)
+        Usage.values[i]: ControllerAxis.empty()
+    });
   }
 
   static Profile fromJSON(Map<String, dynamic> profileData) {
     String name = profileData["name"];
-    List<ControllerAxis> axes = [];
+    Map<Usage, ControllerAxis> axes = {};
     if (profileData.isEmpty) {
       return Profile.empty("Default");
     }
-    for (final a in profileData["axes"]) {
-      axes.add(ControllerAxis.fromJSON(a));
+    final jsonAxes = profileData["axes"] ?? {};
+    for (final usage in Usage.values) {
+      if (usage == Usage.none) {
+        continue;
+      }
+      final key = usage.index.toString();
+      if (jsonAxes.containsKey(key)) {
+        axes[usage] = ControllerAxis.fromJSON(jsonAxes[key]!);
+      } else {
+        axes[usage] = ControllerAxis.empty();
+      }
     }
     return Profile(name, axes);
   }
 
   Map<String, dynamic> toJSON() {
-    final jsonAxes = [];
+    final jsonAxes = {};
 
-    for (final a in axes) {
-      jsonAxes.add(a.toJSON());
+    for (final a in axes.entries) {
+      jsonAxes[a.key.index.toString()] = a.value.toJSON();
     }
 
     return {"axes": jsonAxes, "name": name};
@@ -51,7 +63,7 @@ class Profile extends ChangeNotifier {
     if (edited) {
       return true;
     }
-    for (final axis in axes) {
+    for (final axis in axes.values) {
       if (axis.thisOrDependencyEdited()) {
         return true;
       }
@@ -60,7 +72,7 @@ class Profile extends ChangeNotifier {
   }
 
   void resetEdited() {
-    for (final axis in axes) {
+    for (final axis in axes.values) {
       axis.resetEdited();
     }
     edited = false;

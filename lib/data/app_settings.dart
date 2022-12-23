@@ -22,12 +22,12 @@ class AppSettings extends ChangeNotifier {
     final storage = LocalStorage('language.json');
     await storage.ready;
 
-    final languageCode = await storage.getItem("languageCode") ?? "en";
-    final countryCode = await storage.getItem("countryCode") ?? "US";
+    final languageCode = storage.getItem("languageCode") ?? "en";
+    final countryCode = storage.getItem("countryCode") ?? "US";
     final channelSettings =
         (await storage.getItem("channelSettings") as List<dynamic>?)
                 ?.map((i) => Usage.values[i]) ??
-            List.generate(10, (index) => Usage.none);
+            [for (var i = 0; i < 10; i++) Usage.none];
     return AppSettings(
         languageCode, countryCode, channelSettings.toList(), storage);
   }

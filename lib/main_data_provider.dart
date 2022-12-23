@@ -22,6 +22,7 @@ class MainDataProvider {
   Future<void> loadData() async {
     database = Database();
     // Use await database.save(); here to reset to factory
+    // await database.save();
     await database.load();
     languageSettings = await AppSettings.load();
     usbStatus = USBStatus();

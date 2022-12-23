@@ -1,7 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
 
 import '../../data/app_settings.dart';
@@ -44,12 +41,11 @@ class ChannelTile extends StatelessWidget {
 
     return SettingsTile(
         title: "Channel setup",
-        child: Column(
-          children: List<Widget>.generate(
-              appSettings.channelSettings.length,
-              (index) => ChannelItem(
-                    index: index,
-                  )),
-        ));
+        child: Column(children: [
+          for (var i = 0; i < appSettings.channelSettings.length; i++)
+            ChannelItem(
+              index: i,
+            )
+        ]));
   }
 }

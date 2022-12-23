@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/data/database.dart';
 import 'package:gcrdeviceconfigurator/ui/chart.dart';
 import 'package:provider/provider.dart';
 
+import '../data/app_settings.dart';
 import '../data/profile.dart';
 import '../ui/axis_list.dart';
 
@@ -16,19 +16,19 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final TextEditingController profileNameController = TextEditingController();
-  late ControllerAxis axis;
+  late Usage currentUsage;
 
   @override
   void initState() {
     super.initState();
-    final profile = Provider.of<Profile>(context, listen: false);
 
-    axis = profile.axes[0];
+    currentUsage = Usage.gas;
   }
 
   @override
   Widget build(BuildContext context) {
     final profile = Profile.of(context);
+    final axis = profile.axes[currentUsage]!;
 
     if (profileNameController.text != profile.name) {
       profileNameController.text = profile.name;
@@ -56,9 +56,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 )),
                             const Divider(),
                             Expanded(
-                              child: AxisList(onSelect: (axis) {
+                              child: AxisList(onSelect: (usage) {
                                 setState(() {
-                                  this.axis = axis;
+                                  currentUsage = usage;
                                 });
                               }),
                             )

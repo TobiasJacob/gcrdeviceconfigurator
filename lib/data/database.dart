@@ -34,7 +34,6 @@ class Database extends ChangeNotifier {
     final jsonProfiles = storage.getItem("profiles");
     // Empty database
     if (jsonProfiles == null || jsonProfiles.isEmpty) {
-      save();
       return;
     }
 
@@ -44,22 +43,14 @@ class Database extends ChangeNotifier {
       profiles[k] = profile;
     }
 
-    final uiState = storage.getItem("uiState");
-    if (uiState == null || uiState.isEmpty) {
-      save();
-      return;
-    }
-    // activeProfileId = uiState["activeProfileId"] ?? "";
-    if (!profiles.containsValue(activeProfile)) {
+    final activeProfileId = storage.getItem("activeProfileId");
+    if (activeProfileId is String && profiles.containsKey(activeProfileId)) {
+      activeProfile = profiles[activeProfileId]!;
+    } else {
       activeProfile = profiles.values.first;
     }
 
-    final settingsJSON = storage.getItem("settings") ?? {};
-    if (settingsJSON == null || settingsJSON.isEmpty) {
-      save();
-      return;
-    }
-    edited = false;
+    resetEdited();
     notifyListeners();
   }
 
@@ -70,8 +61,12 @@ class Database extends ChangeNotifier {
       jsonProfiles[k] = profiles[k]!.toJSON();
     }
     await storage.setItem("profiles", jsonProfiles);
-    // await storage.setItem("uiState", {"activeProfileId": activeProfileId});
-    edited = false;
+    for (var k in profiles.keys) {
+      if (profiles[k] == activeProfile) {
+        await storage.setItem("activeProfileId", k);
+      }
+    }
+    resetEdited();
     notifyListeners();
   }
 

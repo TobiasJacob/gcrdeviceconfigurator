@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dartusbhid/enumerate.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gcrdeviceconfigurator/root_widget.dart';
-
-import 'apps/app.dart';
-import 'package:provider/provider.dart';
 
 void test() async {
   return;
