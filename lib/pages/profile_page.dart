@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/database.dart';
-import 'package:gcrdeviceconfigurator/ui/chart.dart';
+import 'package:gcrdeviceconfigurator/pages/profile/chart/chart.dart';
 import 'package:provider/provider.dart';
 
 import '../data/app_settings.dart';
 import '../data/profile.dart';
-import '../ui/axis_list.dart';
+import 'profile/axis_list.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

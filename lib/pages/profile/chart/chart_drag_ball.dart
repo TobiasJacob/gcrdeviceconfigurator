@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../data/data_point.dart';
+import '../../../data/data_point.dart';
 
 class DragBall extends StatefulWidget {
   final DataPoint dataPoint;

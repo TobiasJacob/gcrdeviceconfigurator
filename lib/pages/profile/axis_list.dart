@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:gcrdeviceconfigurator/ui/axis_tile.dart';
+import 'package:gcrdeviceconfigurator/pages/profile/axis_tile.dart';
 
-import '../data/app_settings.dart';
+import '../../data/app_settings.dart';
 
 class AxisList extends StatelessWidget {
   final Function(Usage usage) onSelect;

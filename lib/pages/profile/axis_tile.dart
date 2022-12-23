@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
 import 'package:gcrdeviceconfigurator/data/profile.dart';
 
-import '../data/axis.dart';
+import '../../data/axis.dart';
 
 class AxisTile extends StatelessWidget {
   final Usage usage;

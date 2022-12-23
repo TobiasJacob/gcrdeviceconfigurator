@@ -6,8 +6,8 @@ import 'package:gcrdeviceconfigurator/pages/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
-import '../data/database.dart';
-import '../data/profile.dart';
+import '../../data/database.dart';
+import '../../data/profile.dart';
 
 class ProfileTile extends StatelessWidget {
   final Profile profile;

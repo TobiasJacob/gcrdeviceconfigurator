@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/ui/profile_tile.dart';
+import 'package:gcrdeviceconfigurator/pages/home/profile_tile.dart';
 import 'package:provider/provider.dart';
 
-import '../data/database.dart';
-import '../pages/profile_page.dart';
+import '../../data/database.dart';
+import '../profile_page.dart';
 
 class ProfileList extends StatelessWidget {
   const ProfileList({super.key});

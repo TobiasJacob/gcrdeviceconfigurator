@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../ui/profile_list.dart';
+import 'home/profile_list.dart';
 import 'settings_page.dart';
 
 class HomePage extends StatelessWidget {
