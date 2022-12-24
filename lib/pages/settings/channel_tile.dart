@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/pages/settings/channels/channel_page.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
+import 'package:provider/provider.dart';
 
 import '../../data/app_settings.dart';
 import '../../i18n/languages.dart';
@@ -11,27 +13,31 @@ class ChannelItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lang = Languages.of(context);
     final appSettings = AppSettings.of(context);
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          "$index:",
-          style: Theme.of(context).textTheme.titleMedium,
+    return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+      Text(
+        "$index:",
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
+      const SizedBox(width: 16),
+      MaterialButton(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChangeNotifierProvider.value(
+                      value: appSettings.channelSettings[index],
+                      child: const ChannelPage())));
+        },
+        shape: const CircleBorder(),
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        minWidth: 0,
+        child: const Icon(
+          Icons.tune,
         ),
-        const SizedBox(width: 16),
-        DropdownButton<Usage>(
-          onChanged: (value) => appSettings.updateChannelUsage(index, value!),
-          value: appSettings.channelSettings[index],
-          items: Usage.values
-              .map(
-                  (e) => DropdownMenuItem(value: e, child: Text(lang.usage(e))))
-              .toList(),
-        )
-      ],
-    );
+      )
+    ]);
   }
 }
 
