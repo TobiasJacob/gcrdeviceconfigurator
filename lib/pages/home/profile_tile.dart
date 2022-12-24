@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/dialogs/ok_dialog.dart';
+import 'package:gcrdeviceconfigurator/dialogs/yes_no_dialog.dart';
 import 'package:gcrdeviceconfigurator/pages/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
@@ -40,13 +42,13 @@ class ProfileTile extends StatelessWidget {
               child: Text(profile.name,
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           PopupMenuButton<String>(
-            onSelected: (ev) {
+            onSelected: (ev) async {
               switch (ev) {
                 case "Export":
                   exportProfile(context);
                   break;
                 case "Delete":
-                  showDeleteConfirmation(context);
+                  deleteProfile(context);
                   break;
                 default:
               }
@@ -95,84 +97,29 @@ class ProfileTile extends StatelessWidget {
       }
       File returnedFile = File(outputFile);
       if (await returnedFile.exists()) {
-        final text = lang.fileExistsOverwrite(outputFile);
+        final confirmation = await showYesNoDialog(
+            context, lang.overwrite, lang.fileExistsOverwrite(outputFile));
 
-        AlertDialog alert = AlertDialog(
-          title: Text(lang.overwrite),
-          content: Text(text),
-          actions: [
-            TextButton(
-              child: Text(lang.no),
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-            ),
-            TextButton(
-              child: Text(lang.yes),
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-            ),
-          ],
-        );
-
-        // show the dialog
-        final confirmation = await showDialog<bool>(
-          context: context,
-          builder: (BuildContext context) {
-            return alert;
-          },
-        );
-
-        if (confirmation != true) {
-          return;
+        if (confirmation == true) {
+          await returnedFile
+              .writeAsBytes(jsonEncode(profile.toJSON()).codeUnits);
         }
       }
-      await returnedFile.writeAsBytes(jsonEncode(profile.toJSON()).codeUnits);
     } catch (e) {
-      AlertDialog alert = AlertDialog(
-        title: Text(lang.error),
-        content: Text(e.toString()),
-        actions: [
-          TextButton(
-            child: Text(lang.ok),
-            onPressed: () {},
-          ),
-        ],
-      );
-
-      // show the dialog
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
+      await showOkDialog(context, lang.error, e.toString());
     }
   }
 
-  Future<bool> showDeleteConfirmation(BuildContext context) async {
+  void deleteProfile(BuildContext context) async {
     final lang = Languages.of(context);
-    final database = Provider.of<Database>(context, listen: false);
-    return await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(lang.deleteProfile),
-            content: Text(lang.wantToDeleteProfile),
-            actions: [
-              ElevatedButton(
-                onPressed: () {},
-                child: Text(lang.yes),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  database.deleteProfileIfMoreThanOne(profileKey);
-                },
-                child: Text(lang.no),
-              ),
-            ],
-          ),
-        ) ??
-        false;
+    final database = Database.of(context, listen: false);
+    final confimation = await showYesNoDialog(
+      context,
+      lang.deleteProfile,
+      lang.wantToDeleteProfile,
+    );
+    if (confimation == true) {
+      database.deleteProfileIfMoreThanOne(profileKey);
+    }
   }
 }

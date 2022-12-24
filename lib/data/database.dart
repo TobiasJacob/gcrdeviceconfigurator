@@ -24,8 +24,8 @@ class Database extends ChangeNotifier {
     activeProfile = profiles.values.first;
   }
 
-  static Database of(context) {
-    return Provider.of<Database>(context);
+  static Database of(context, {bool listen = true}) {
+    return Provider.of<Database>(context, listen: listen);
   }
 
   Future<void> load() async {
