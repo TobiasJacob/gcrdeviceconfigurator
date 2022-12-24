@@ -77,4 +77,15 @@ class LanguageEn extends Languages {
 
   @override
   String get wantToDeleteProfile => "Do you want to delete the profile?";
+
+  @override
+  String editProfile(String profile) {
+    return "Edit $profile";
+  }
+
+  @override
+  String get saveProfile => "Save profile";
+
+  @override
+  String get wantToSaveProfile => "Do you want to save the profile?";
 }

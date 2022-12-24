@@ -25,10 +25,15 @@ abstract class Languages {
   // Usage
   String usage(Usage usage);
 
-  // Main Page
+  // Profile tile
   String get saveFile;
   String fileExistsOverwrite(String filename);
   String get overwrite;
   String get deleteProfile;
   String get wantToDeleteProfile;
+
+  // Profile Page
+  String editProfile(String profile);
+  String get saveProfile;
+  String get wantToSaveProfile;
 }

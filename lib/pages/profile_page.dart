@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/database.dart';
+import 'package:gcrdeviceconfigurator/dialogs/yes_no_dialog.dart';
+import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 import 'package:gcrdeviceconfigurator/pages/profile/chart/chart.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final lang = Languages.of(context);
     final profile = Profile.of(context);
     final axis = profile.axes[currentUsage]!;
 
@@ -38,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
         onWillPop: () => showExitPopup(context),
         child: Scaffold(
             appBar: AppBar(
-              title: Text("Edit ${profile.name}"),
+              title: Text(lang.editProfile(profile.name)),
             ),
             body: ChangeNotifierProvider.value(
                 value: axis,
@@ -74,35 +77,21 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<bool> showExitPopup(BuildContext context) async {
+    final lang = Languages.of(context);
     final database = Provider.of<Database>(context, listen: false);
+
     if (!database.thisOrDependencyEdited()) {
       return true;
     }
-    return await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Exit App'),
-            content: const Text('Do you want to save the profile?'),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  database.load();
-                  return Navigator.of(context).pop(true);
-                },
-                //return false when click on "NO"
-                child: const Text('No'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  database.save();
-                  return Navigator.of(context).pop(true);
-                },
-                //return true when click on "Yes"
-                child: const Text('Yes'),
-              ),
-            ],
-          ),
-        ) ??
-        false;
+
+    final confirmation = await showYesNoDialog(
+        context, lang.saveProfile, lang.wantToSaveProfile);
+
+    if (confirmation == true) {
+      database.save();
+    } else {
+      database.load();
+    }
+    return true;
   }
 }
