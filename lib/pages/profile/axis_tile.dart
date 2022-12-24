@@ -1,36 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/data/app_settings.dart';
+import 'package:gcrdeviceconfigurator/data/profile.dart';
+import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 
-import '../data/axis.dart';
+import '../../data/axis.dart';
 
 class AxisTile extends StatelessWidget {
-  final ControllerAxis axis;
-  final String axisId;
-  final String visibleAxisId;
-  final Function(String?) onChangeVisibleAxis;
+  final Usage usage;
+  final Function(Usage usage) onSelect;
 
-  const AxisTile(
-      {super.key,
-      required this.axis,
-      required this.axisId,
-      required this.visibleAxisId,
-      required this.onChangeVisibleAxis});
+  const AxisTile({super.key, required this.usage, required this.onSelect});
 
   @override
   Widget build(BuildContext context) {
+    final lang = Languages.of(context);
+    final profile = Profile.of(context);
+    final visibleAxis = ControllerAxis.of(context);
+
+    final backgroundColor =
+        profile.axes[usage] == visibleAxis ? Colors.blue[100] : null;
+
     return Container(
       padding: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
           border: Border.all(),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
-          color: axisId == visibleAxisId ? Colors.blue[100] : null),
+          color: backgroundColor),
       child: Row(
         children: [
           Expanded(
-              child: Text(axis.name,
+              child: Text(lang.usage(usage),
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
             onPressed: () {
-              onChangeVisibleAxis(axisId);
+              onSelect(usage);
             },
             shape: const CircleBorder(),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,

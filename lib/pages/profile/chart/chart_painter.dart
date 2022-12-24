@@ -5,8 +5,9 @@ import 'package:gcrdeviceconfigurator/data/data_point.dart';
 class ChartPainter extends CustomPainter {
   final ControllerAxis axis;
   final double margin;
+  final double currentValue;
 
-  ChartPainter(this.axis, this.margin);
+  ChartPainter(this.axis, this.margin, this.currentValue);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -39,11 +40,11 @@ class ChartPainter extends CustomPainter {
     paint = Paint()
       ..color = Colors.red
       ..strokeWidth = 2;
-    final x = axis.currentValue;
+    final x = currentValue;
     p1 = Offset(x * width + margin, margin);
     p2 = Offset(x * width + margin, height + margin);
     canvas.drawLine(p1, p2, paint);
-    final y = axis.getY();
+    final y = axis.getY(x);
     p1 = Offset(margin, height * (1 - y) + margin);
     p2 = Offset(width + margin, height * (1 - y) + margin);
     canvas.drawLine(p1, p2, paint);

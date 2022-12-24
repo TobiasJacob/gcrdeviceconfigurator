@@ -1,13 +1,32 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/profile.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:provider/provider.dart';
 
-class Database {
+String generateRandomString() {
+  const len = 16;
+  var r = Random.secure();
+  return String.fromCharCodes(
+      List.generate(len, (index) => r.nextInt(33) + 89));
+}
+
+class Database extends ChangeNotifier {
+  late Profile activeProfile;
+
   Map<String, Profile> profiles = {"Default": Profile.empty("Default")};
 
-  String activeProfileId = "Default";
-  String visibleProfileId = "Default";
-  String visibleAxisId = "GasAxis";
+  bool edited = false;
   final storage = LocalStorage('data.json');
+
+  Database() {
+    activeProfile = profiles.values.first;
+  }
+
+  static Database of(context, {bool listen = true}) {
+    return Provider.of<Database>(context, listen: listen);
+  }
 
   Future<void> load() async {
     await storage.ready;
@@ -15,21 +34,24 @@ class Database {
     final jsonProfiles = storage.getItem("profiles");
     // Empty database
     if (jsonProfiles == null || jsonProfiles.isEmpty) {
-      save();
       return;
     }
 
     profiles = {};
     for (final k in jsonProfiles.keys) {
-      profiles[k] = Profile.fromJSON(jsonProfiles[k]);
+      var profile = Profile.fromJSON(jsonProfiles[k]);
+      profiles[k] = profile;
     }
 
-    final uiState = storage.getItem("uiState");
+    final activeProfileId = storage.getItem("activeProfileId");
+    if (activeProfileId is String && profiles.containsKey(activeProfileId)) {
+      activeProfile = profiles[activeProfileId]!;
+    } else {
+      activeProfile = profiles.values.first;
+    }
 
-    activeProfileId = uiState["activeProfileId"] ?? "";
-    // visibleProfileId = uiState["visibleProfileId"] ?? "";
-    // visibleAxisId = uiState["visibleAxisId"] ?? "";
-    makeValid();
+    resetEdited();
+    notifyListeners();
   }
 
   Future save() async {
@@ -39,23 +61,63 @@ class Database {
       jsonProfiles[k] = profiles[k]!.toJSON();
     }
     await storage.setItem("profiles", jsonProfiles);
-
-    await storage.setItem("uiState", {
-      activeProfileId: activeProfileId,
-      visibleProfileId: visibleProfileId,
-      visibleAxisId: visibleAxisId,
-    });
+    for (var k in profiles.keys) {
+      if (profiles[k] == activeProfile) {
+        await storage.setItem("activeProfileId", k);
+      }
+    }
+    resetEdited();
+    notifyListeners();
   }
 
-  void makeValid() {
-    if (!profiles.containsKey(activeProfileId)) {
-      activeProfileId = profiles.keys.first;
+  // Actions profiles
+  void setActiveProfile(Profile profile) {
+    assert(profiles.containsValue(profile));
+    activeProfile = profile;
+    edited = true;
+    notifyListeners();
+  }
+
+  Profile createNewProfile(String name) {
+    // 100 tries to find a random key not in the Dict
+    for (var i = 0; i < 100; i++) {
+      final profileId = generateRandomString();
+      if (profiles.containsKey(profileId)) {
+        continue;
+      }
+      var profile = Profile.empty(name);
+      profiles[profileId] = profile;
+      edited = true;
+      notifyListeners();
+      return profile;
     }
-    if (!profiles.containsKey(visibleProfileId)) {
-      visibleProfileId = profiles.keys.first;
+    throw Exception("Error creating profile. Consider deleting profiles.");
+  }
+
+  void deleteProfileIfMoreThanOne(String profileKey) {
+    if (profiles.keys.length > 1) {
+      profiles.remove(profileKey);
+      save();
+      notifyListeners();
     }
-    if (!profiles[activeProfileId]!.axes.containsKey(visibleAxisId)) {
-      visibleAxisId = profiles[activeProfileId]!.axes.keys.first;
+  }
+
+  bool thisOrDependencyEdited() {
+    if (edited) {
+      return true;
     }
+    for (final profile in profiles.values) {
+      if (profile.thisOrDependencyEdited()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void resetEdited() {
+    for (final profile in profiles.values) {
+      profile.resetEdited();
+    }
+    edited = false;
   }
 }
