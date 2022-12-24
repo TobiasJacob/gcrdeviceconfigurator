@@ -7,6 +7,10 @@ abstract class Languages {
   }
 
   String get appName;
+  String get yes;
+  String get no;
+  String get error;
+  String get ok;
 
   // Main Page
   String axisTileOptions(String option);
@@ -20,4 +24,11 @@ abstract class Languages {
 
   // Usage
   String usage(Usage usage);
+
+  // Main Page
+  String get saveFile;
+  String fileExistsOverwrite(String filename);
+  String get overwrite;
+  String get deleteProfile;
+  String get wantToDeleteProfile;
 }

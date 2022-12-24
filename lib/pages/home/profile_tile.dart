@@ -81,8 +81,9 @@ class ProfileTile extends StatelessWidget {
   }
 
   Future<void> exportProfile(BuildContext context) async {
+    final lang = Languages.of(context);
     String? outputFile = await FilePicker.platform.saveFile(
-        dialogTitle: 'Save Your File to desired location',
+        dialogTitle: lang.saveFile,
         fileName: "${profile.name}.json",
         allowedExtensions: ["json"],
         type: FileType.custom);
@@ -94,20 +95,20 @@ class ProfileTile extends StatelessWidget {
       }
       File returnedFile = File(outputFile);
       if (await returnedFile.exists()) {
-        final text = "File $outputFile exists. Overwrite?";
+        final text = lang.fileExistsOverwrite(outputFile);
 
         AlertDialog alert = AlertDialog(
-          title: const Text("Overwrite"),
+          title: Text(lang.overwrite),
           content: Text(text),
           actions: [
             TextButton(
-              child: const Text("No"),
+              child: Text(lang.no),
               onPressed: () {
                 Navigator.pop(context, false);
               },
             ),
             TextButton(
-              child: const Text("Yes"),
+              child: Text(lang.yes),
               onPressed: () {
                 Navigator.pop(context, true);
               },
@@ -130,11 +131,11 @@ class ProfileTile extends StatelessWidget {
       await returnedFile.writeAsBytes(jsonEncode(profile.toJSON()).codeUnits);
     } catch (e) {
       AlertDialog alert = AlertDialog(
-        title: const Text("Error"),
+        title: Text(lang.error),
         content: Text(e.toString()),
         actions: [
           TextButton(
-            child: const Text("OK"),
+            child: Text(lang.ok),
             onPressed: () {},
           ),
         ],
@@ -151,24 +152,23 @@ class ProfileTile extends StatelessWidget {
   }
 
   Future<bool> showDeleteConfirmation(BuildContext context) async {
+    final lang = Languages.of(context);
     final database = Provider.of<Database>(context, listen: false);
     return await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Exit App'),
-            content: const Text('Do you want to delete the profile?'),
+            title: Text(lang.deleteProfile),
+            content: Text(lang.wantToDeleteProfile),
             actions: [
               ElevatedButton(
                 onPressed: () {},
-                //return false when click on "NO"
-                child: const Text('No'),
+                child: Text(lang.yes),
               ),
               ElevatedButton(
                 onPressed: () {
                   database.deleteProfileIfMoreThanOne(profileKey);
                 },
-                //return true when click on "Yes"
-                child: const Text('Yes'),
+                child: Text(lang.no),
               ),
             ],
           ),

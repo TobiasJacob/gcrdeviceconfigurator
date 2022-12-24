@@ -7,6 +7,18 @@ class LanguageEn extends Languages {
   String get appName => "Pedal Configurator";
 
   @override
+  String get yes => "Yes";
+
+  @override
+  String get no => "No";
+
+  @override
+  String get error => "Error";
+
+  @override
+  String get ok => "Ok";
+
+  @override
   String axisTileOptions(String option) {
     switch (option) {
       case "Export":
@@ -48,4 +60,21 @@ class LanguageEn extends Languages {
         return "Not used";
     }
   }
+
+  @override
+  String get saveFile => "Save File";
+
+  @override
+  String fileExistsOverwrite(String filename) {
+    return "File $filename exists. Overwrite?";
+  }
+
+  @override
+  String get overwrite => "Overwrite";
+
+  @override
+  String get deleteProfile => "Delete Profile";
+
+  @override
+  String get wantToDeleteProfile => "Do you want to delete the profile?";
 }
