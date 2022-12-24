@@ -19,6 +19,9 @@ class LanguageDe extends Languages {
   String get ok => "Ok";
 
   @override
+  String get newProfile => "Neues Profil";
+
+  @override
   String axisTileOptions(String option) {
     switch (option) {
       case "Export":

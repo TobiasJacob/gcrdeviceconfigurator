@@ -13,6 +13,7 @@ abstract class Languages {
   String get ok;
 
   // Main Page
+  String get newProfile;
   String axisTileOptions(String option);
 
   // Settings Page

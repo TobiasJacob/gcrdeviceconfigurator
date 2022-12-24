@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
 import 'package:gcrdeviceconfigurator/data/profile.dart';
+import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 
 import '../../data/axis.dart';
 
@@ -12,6 +13,7 @@ class AxisTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = Languages.of(context);
     final profile = Profile.of(context);
     final visibleAxis = ControllerAxis.of(context);
 
@@ -27,7 +29,7 @@ class AxisTile extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-              child: Text(usage.name,
+              child: Text(lang.usage(usage),
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
             onPressed: () {

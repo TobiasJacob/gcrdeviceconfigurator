@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 import 'package:gcrdeviceconfigurator/pages/home/profile_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +11,7 @@ class ProfileList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang = Languages.of(context);
     final database = Database.of(context);
     final profileKeys = database.profiles.keys.toList();
 
@@ -38,7 +40,7 @@ class ProfileList extends StatelessWidget {
                 icon: const Icon(Icons.add),
                 color: Colors.white,
                 onPressed: () {
-                  final profile = database.createNewProfile();
+                  final profile = database.createNewProfile(lang.newProfile);
                   Navigator.push(
                       context,
                       MaterialPageRoute(

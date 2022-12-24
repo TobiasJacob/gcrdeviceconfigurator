@@ -78,14 +78,14 @@ class Database extends ChangeNotifier {
     notifyListeners();
   }
 
-  Profile createNewProfile() {
+  Profile createNewProfile(String name) {
     // 100 tries to find a random key not in the Dict
     for (var i = 0; i < 100; i++) {
       final profileId = generateRandomString();
       if (profiles.containsKey(profileId)) {
         continue;
       }
-      var profile = Profile.empty("New profile");
+      var profile = Profile.empty(name);
       profiles[profileId] = profile;
       edited = true;
       notifyListeners();
