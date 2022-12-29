@@ -40,6 +40,7 @@ class AppSettings extends ChangeNotifier {
         ((await storage.getItem("channelSettings") as List<dynamic>?)
                 ?.map((el) => Channel.fromJSON(el)))?.toList() ??
             channelSettings;
+    edited = false;
   }
 
   Future<void> save() async {
