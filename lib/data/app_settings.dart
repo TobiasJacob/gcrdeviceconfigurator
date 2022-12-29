@@ -22,13 +22,15 @@ class AppSettings extends ChangeNotifier {
     return Provider.of<AppSettings>(context);
   }
 
-  static Future<AppSettings> load() async {
+  static Future<AppSettings> defaultSettings() async {
     final storage = LocalStorage('language.json');
     await storage.ready;
 
-    final appSettings = AppSettings(storage);
-    // Use await appSettings.save(); here to reset to factory
-    // appSettings.save();
+    return AppSettings(storage);
+  }
+
+  static Future<AppSettings> load() async {
+    final appSettings = await defaultSettings();
     await appSettings.reload();
     return appSettings;
   }

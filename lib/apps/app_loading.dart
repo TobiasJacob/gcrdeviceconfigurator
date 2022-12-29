@@ -10,7 +10,7 @@ class AppLoading extends StatelessWidget {
         title: title,
         home: Scaffold(
             appBar: AppBar(
-              title: const Text("Error"),
+              title: const Text("Loading"),
             ),
             body: const Padding(
                 padding: EdgeInsets.all(12),

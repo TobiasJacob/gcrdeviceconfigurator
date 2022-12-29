@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gcrdeviceconfigurator/apps/app_loading.dart';
-import 'package:gcrdeviceconfigurator/data/app_settings.dart';
-import 'package:gcrdeviceconfigurator/main.dart';
 import 'package:gcrdeviceconfigurator/main_data_provider.dart';
 
 import 'apps/app.dart';
 import 'apps/app_error.dart';
-import 'data/database.dart';
 import 'package:provider/provider.dart';
 
 class RootWidget extends StatefulWidget {
@@ -24,9 +20,13 @@ class _RootWidgetState extends State<RootWidget> {
   void initState() {
     super.initState();
     mainDataProvier = MainDataProvider();
-    mainDataProvier.updateUserInterface = () {
-      setState(() {});
-    };
+  }
+
+  void resetToFactory() async {
+    await MainDataProvider.resetToFactory();
+    setState(() {
+      mainDataProvier = MainDataProvider();
+    });
   }
 
   @override
@@ -38,7 +38,10 @@ class _RootWidgetState extends State<RootWidget> {
             return const AppLoading();
           }
           if (snapshot.hasError) {
-            return AppError(errorMsg: snapshot.error.toString());
+            return AppError(
+              errorMsg: snapshot.error.toString(),
+              resetToFactory: resetToFactory,
+            );
           }
           return MultiProvider(
             providers: [

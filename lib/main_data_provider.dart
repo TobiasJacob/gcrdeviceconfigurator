@@ -13,20 +13,24 @@ class MainDataProvider {
   late USBStatus usbStatus;
 
   late Future loadFuture;
-  late Function updateUserInterface;
 
   MainDataProvider() {
     loadFuture = loadData();
   }
 
+  static resetToFactory() async {
+    final database = Database();
+    await database.save();
+    final appSettings = await AppSettings.defaultSettings();
+    await appSettings.save();
+  }
+
   Future<void> loadData() async {
     database = Database();
-    // Use await database.save(); here to reset to factory
-    // await database.save();
     await database.load();
     languageSettings = await AppSettings.load();
     usbStatus = USBStatus();
 
-    updateUserInterface();
+    // throw Exception("Test error");
   }
 }
