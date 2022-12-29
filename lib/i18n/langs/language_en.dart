@@ -91,4 +91,30 @@ class LanguageEn extends Languages {
 
   @override
   String get wantToSaveProfile => "Do you want to save the profile?";
+
+  @override
+  String get saveSettings => "Save settings";
+
+  @override
+  String get wantToSaveSettings => "Do you want to save the settings?";
+
+  @override
+  String channel(int index) {
+    return "Channel $index";
+  }
+
+  @override
+  String get editChannel => "Edit channel";
+
+  @override
+  String get usageLabel => "Usage";
+
+  @override
+  String get minValue => "Minimum";
+
+  @override
+  String get maxValue => "Maximum";
+
+  @override
+  String get currentValue => "Current Value";
 }

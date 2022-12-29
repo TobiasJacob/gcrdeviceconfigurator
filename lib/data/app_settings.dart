@@ -2,17 +2,21 @@ import 'package:provider/provider.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:flutter/material.dart';
 
+import 'channel.dart';
+
 enum Usage { none, gas, brake, clutch, handbrake }
 
 class AppSettings extends ChangeNotifier {
-  String languageCode;
-  String countryCode;
-  List<Usage> channelSettings;
+  String languageCode = "en";
+  String countryCode = "US";
+  List<Channel> channelSettings;
 
   final LocalStorage storage;
 
-  AppSettings(
-      this.languageCode, this.countryCode, this.channelSettings, this.storage);
+  bool edited = false;
+
+  AppSettings(this.storage)
+      : channelSettings = [for (var i = 0; i < 10; i++) Channel.empty()];
 
   static AppSettings of(context) {
     return Provider.of<AppSettings>(context);
@@ -22,32 +26,56 @@ class AppSettings extends ChangeNotifier {
     final storage = LocalStorage('language.json');
     await storage.ready;
 
-    final languageCode = storage.getItem("languageCode") ?? "en";
-    final countryCode = storage.getItem("countryCode") ?? "US";
-    final channelSettings =
-        (await storage.getItem("channelSettings") as List<dynamic>?)
-                ?.map((i) => Usage.values[i]) ??
-            [for (var i = 0; i < 10; i++) Usage.none];
-    return AppSettings(
-        languageCode, countryCode, channelSettings.toList(), storage);
+    final appSettings = AppSettings(storage);
+    // Use await appSettings.save(); here to reset to factory
+    // appSettings.save();
+    await appSettings.reload();
+    return appSettings;
+  }
+
+  Future<void> reload() async {
+    languageCode = storage.getItem("languageCode") ?? languageCode;
+    countryCode = storage.getItem("countryCode") ?? countryCode;
+    channelSettings =
+        ((await storage.getItem("channelSettings") as List<dynamic>?)
+                ?.map((el) => Channel.fromJSON(el)))?.toList() ??
+            channelSettings;
+    edited = false;
+  }
+
+  Future<void> save() async {
+    await storage.setItem("languageCode", languageCode);
+    await storage.setItem("countryCode", countryCode);
+    await storage.setItem(
+        "channelSettings", channelSettings.map((e) => e.toJSON()).toList());
+
+    resetEdited();
+  }
+
+  bool thisOrDependencyEdited() {
+    if (edited) {
+      return true;
+    }
+    for (final chn in channelSettings) {
+      if (chn.thisOrDependencyEdited()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  void resetEdited() {
+    for (final chn in channelSettings) {
+      chn.resetEdited();
+    }
+    edited = false;
   }
 
   Future updateLanguage(String languageCode, String countryCode) async {
     this.languageCode = languageCode;
     this.countryCode = countryCode;
 
-    await storage.setItem("languageCode", languageCode);
-    await storage.setItem("countryCode", countryCode);
-
-    notifyListeners();
-  }
-
-  Future updateChannelUsage(int index, Usage usage) async {
-    channelSettings[index] = usage;
-
-    await storage.setItem(
-        "channelSettings", channelSettings.map((e) => e.index).toList());
-
+    edited = true;
     notifyListeners();
   }
 }

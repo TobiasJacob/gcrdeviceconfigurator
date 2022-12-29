@@ -91,4 +91,30 @@ class LanguageDe extends Languages {
 
   @override
   String get wantToSaveProfile => "Möchten Sie das Profil speichern?";
+
+  @override
+  String get saveSettings => "Einstellungen speichern";
+
+  @override
+  String get wantToSaveSettings => "Möchten Sie die Einstellungen speichern?";
+
+  @override
+  String channel(int index) {
+    return "Kanal $index";
+  }
+
+  @override
+  String get editChannel => "Kanal bearbeiten";
+
+  @override
+  String get usageLabel => "Funktion";
+
+  @override
+  String get minValue => "Minimum";
+
+  @override
+  String get maxValue => "Maximum";
+
+  @override
+  String get currentValue => "Aktueller Wert";
 }

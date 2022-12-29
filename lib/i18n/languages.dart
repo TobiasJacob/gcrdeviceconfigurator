@@ -37,4 +37,17 @@ abstract class Languages {
   String editProfile(String profile);
   String get saveProfile;
   String get wantToSaveProfile;
+
+  // App Settings
+  String get saveSettings;
+  String get wantToSaveSettings;
+
+  String channel(int index);
+
+  // Channel Settings
+  String get editChannel;
+  String get usageLabel;
+  String get minValue;
+  String get maxValue;
+  String get currentValue;
 }

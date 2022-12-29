@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/pages/settings/channels/channel_page.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
 
 import '../../data/app_settings.dart';
@@ -12,25 +13,29 @@ class ChannelItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lang = Languages.of(context);
-    final appSettings = AppSettings.of(context);
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          "$index:",
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
-        const SizedBox(width: 16),
-        DropdownButton<Usage>(
-          onChanged: (value) => appSettings.updateChannelUsage(index, value!),
-          value: appSettings.channelSettings[index],
-          items: Usage.values
-              .map(
-                  (e) => DropdownMenuItem(value: e, child: Text(lang.usage(e))))
-              .toList(),
-        )
-      ],
+    return MaterialButton(
+      onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChannelPage(
+                      index: index,
+                    )));
+      },
+      minWidth: 0,
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              lang.channel(index),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const Icon(
+              Icons.arrow_right_rounded,
+            )
+          ]),
     );
   }
 }
