@@ -114,4 +114,7 @@ class LanguageDe extends Languages {
 
   @override
   String get maxValue => "Maximum";
+
+  @override
+  String get currentValue => "Aktueller Wert";
 }

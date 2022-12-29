@@ -1,12 +1,17 @@
+import 'package:dartusbhid/usb_device.dart';
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/channel.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
+import 'package:gcrdeviceconfigurator/usb/usb_status.dart';
+import 'package:provider/provider.dart';
 
 import '../../../data/app_settings.dart';
 import '../../../i18n/languages.dart';
 
 class ChannelPage extends StatefulWidget {
-  const ChannelPage({super.key});
+  final int index;
+
+  const ChannelPage({super.key, required this.index});
 
   @override
   State<ChannelPage> createState() => _ChannelPageState();
@@ -16,17 +21,27 @@ class _ChannelPageState extends State<ChannelPage> {
   TextEditingController minController = TextEditingController();
   TextEditingController maxController = TextEditingController();
 
-  bool initialized = false;
+  bool autoUpdate = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final appSettings = Provider.of<AppSettings>(context, listen: false);
+      final channel = appSettings.channelSettings[widget.index];
+
+      minController.text = channel.minValue.toString();
+      maxController.text = channel.maxValue.toString();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final lang = Languages.of(context);
-    final channel = Channel.of(context);
-    if (!initialized) {
-      initialized = true;
-      minController.text = channel.minValue.toString();
-      maxController.text = channel.maxValue.toString();
-    }
+    final appSettings = AppSettings.of(context);
+    final channel = appSettings.channelSettings[widget.index];
+    final usbStatus = USBStatus.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -72,6 +87,14 @@ class _ChannelPageState extends State<ChannelPage> {
                   controller: maxController,
                 ),
               )),
+          SettingsTile(
+            title: lang.currentValue,
+            child: Column(
+              children: [
+                Text(usbStatus.currentValues[widget.index].toString())
+              ],
+            ),
+          )
         ],
       ),
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/channels/channel_page.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
-import 'package:provider/provider.dart';
 
 import '../../data/app_settings.dart';
 import '../../i18n/languages.dart';
@@ -13,7 +12,6 @@ class ChannelItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appSettings = AppSettings.of(context);
     final lang = Languages.of(context);
 
     return MaterialButton(
@@ -21,9 +19,9 @@ class ChannelItem extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ChangeNotifierProvider.value(
-                    value: appSettings.channelSettings[index],
-                    child: const ChannelPage())));
+                builder: (context) => ChannelPage(
+                      index: index,
+                    )));
       },
       minWidth: 0,
       child: Row(

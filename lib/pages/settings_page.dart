@@ -3,6 +3,7 @@ import 'package:gcrdeviceconfigurator/data/app_settings.dart';
 import 'package:gcrdeviceconfigurator/dialogs/yes_no_dialog.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/channel_tile.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/language_settings_tile.dart';
+import 'package:provider/provider.dart';
 
 import '../i18n/languages.dart';
 
@@ -31,7 +32,7 @@ class SettingsPage extends StatelessWidget {
 
   Future<bool> willPop(BuildContext context) async {
     final lang = Languages.of(context);
-    final appSettings = AppSettings.of(context);
+    final appSettings = Provider.of<AppSettings>(context, listen: false);
     final confirmation = await showYesNoDialog(
         context, lang.saveSettings, lang.wantToSaveSettings);
     if (confirmation == true) {

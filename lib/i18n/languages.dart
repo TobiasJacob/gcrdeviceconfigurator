@@ -49,4 +49,5 @@ abstract class Languages {
   String get usageLabel;
   String get minValue;
   String get maxValue;
+  String get currentValue;
 }
