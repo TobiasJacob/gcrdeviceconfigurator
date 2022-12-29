@@ -5,8 +5,8 @@ import 'app_settings.dart';
 
 class Channel extends ChangeNotifier {
   Usage usage;
-  double minValue;
-  double maxValue;
+  int minValue;
+  int maxValue;
 
   bool edited = false;
 
@@ -47,13 +47,13 @@ class Channel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setMinValue(double minValue) {
+  void setMinValue(int minValue) {
     this.minValue = minValue;
     edited = true;
     notifyListeners();
   }
 
-  void setMaxValue(double maxValue) {
+  void setMaxValue(int maxValue) {
     this.maxValue = maxValue;
     edited = true;
     notifyListeners();

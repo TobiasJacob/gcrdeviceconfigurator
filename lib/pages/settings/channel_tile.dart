@@ -14,30 +14,31 @@ class ChannelItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appSettings = AppSettings.of(context);
+    final lang = Languages.of(context);
 
-    return Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      Text(
-        "$index:",
-        style: Theme.of(context).textTheme.titleMedium,
-      ),
-      const SizedBox(width: 16),
-      MaterialButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ChangeNotifierProvider.value(
-                      value: appSettings.channelSettings[index],
-                      child: const ChannelPage())));
-        },
-        shape: const CircleBorder(),
-        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        minWidth: 0,
-        child: const Icon(
-          Icons.tune,
-        ),
-      )
-    ]);
+    return MaterialButton(
+      onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ChangeNotifierProvider.value(
+                    value: appSettings.channelSettings[index],
+                    child: const ChannelPage())));
+      },
+      minWidth: 0,
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              lang.channel(index),
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const Icon(
+              Icons.arrow_right_rounded,
+            )
+          ]),
+    );
   }
 }
 

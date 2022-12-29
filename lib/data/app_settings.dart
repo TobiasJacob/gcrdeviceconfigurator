@@ -27,7 +27,9 @@ class AppSettings extends ChangeNotifier {
     await storage.ready;
 
     final appSettings = AppSettings(storage);
-    appSettings.reload();
+    // Use await appSettings.save(); here to reset to factory
+    // appSettings.save();
+    await appSettings.reload();
     return appSettings;
   }
 

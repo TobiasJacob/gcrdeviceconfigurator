@@ -42,6 +42,11 @@ abstract class Languages {
   String get saveSettings;
   String get wantToSaveSettings;
 
+  String channel(int index);
+
   // Channel Settings
   String get editChannel;
+  String get usageLabel;
+  String get minValue;
+  String get maxValue;
 }
