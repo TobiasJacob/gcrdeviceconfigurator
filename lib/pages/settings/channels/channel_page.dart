@@ -25,6 +25,7 @@ class _ChannelPageState extends State<ChannelPage> {
     if (!initialized) {
       initialized = true;
       minController.text = channel.minValue.toString();
+      maxController.text = channel.maxValue.toString();
     }
 
     return Scaffold(
@@ -55,7 +56,20 @@ class _ChannelPageState extends State<ChannelPage> {
                 },
                 child: TextField(
                   controller: minController,
-                  onChanged: (value) {},
+                ),
+              )),
+          SettingsTile(
+              title: lang.maxValue,
+              child: FocusScope(
+                onFocusChange: (value) {
+                  final valueInt = int.tryParse(maxController.text);
+                  if (valueInt != null) {
+                    channel.setMaxValue(valueInt);
+                  }
+                  maxController.text = channel.maxValue.toString();
+                },
+                child: TextField(
+                  controller: maxController,
                 ),
               )),
         ],
