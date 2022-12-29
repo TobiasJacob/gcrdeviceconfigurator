@@ -33,7 +33,7 @@ class SettingsPage extends StatelessWidget {
   Future<bool> willPop(BuildContext context) async {
     final lang = Languages.of(context);
     final appSettings = Provider.of<AppSettings>(context, listen: false);
-    if (!appSettings.edited) {
+    if (!appSettings.thisOrDependencyEdited()) {
       return true;
     }
     final confirmation = await showYesNoDialog(

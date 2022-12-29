@@ -42,6 +42,18 @@ class _ChannelPageState extends State<ChannelPage> {
     final appSettings = AppSettings.of(context);
     final channel = appSettings.channelSettings[widget.index];
     final usbStatus = USBStatus.of(context);
+    final currentValue = usbStatus.currentValues[widget.index];
+
+    if (autoUpdate) {
+      if (currentValue < channel.minValue) {
+        channel.setMinValue(currentValue);
+        minController.text = channel.minValue.toString();
+      }
+      if (currentValue > channel.maxValue) {
+        channel.setMaxValue(currentValue);
+        maxController.text = channel.maxValue.toString();
+      }
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -91,7 +103,24 @@ class _ChannelPageState extends State<ChannelPage> {
             title: lang.currentValue,
             child: Column(
               children: [
-                Text(usbStatus.currentValues[widget.index].toString())
+                Text(currentValue.toString()),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Auto calibration"),
+                    Checkbox(
+                        value: autoUpdate,
+                        onChanged: (value) {
+                          if (value == true) {
+                            channel.setMinValue(currentValue);
+                            minController.text = channel.minValue.toString();
+                            channel.setMaxValue(currentValue);
+                            maxController.text = channel.maxValue.toString();
+                          }
+                          autoUpdate = value ?? false;
+                        })
+                  ],
+                ),
               ],
             ),
           )
