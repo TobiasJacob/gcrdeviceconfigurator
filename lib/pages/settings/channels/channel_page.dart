@@ -1,6 +1,7 @@
 import 'package:dartusbhid/usb_device.dart';
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/channel.dart';
+import 'package:gcrdeviceconfigurator/dialogs/ok_dialog.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
 import 'package:gcrdeviceconfigurator/usb/usb_status.dart';
 import 'package:provider/provider.dart';
@@ -64,7 +65,14 @@ class _ChannelPageState extends State<ChannelPage> {
           SettingsTile(
               title: lang.usageLabel,
               child: DropdownButton<Usage>(
-                onChanged: (value) => channel.setUsage(value!),
+                onChanged: (value) {
+                  try {
+                    appSettings.updateUsage(widget.index, value!);
+                  } on AlreadyInUseException {
+                    showOkDialog(
+                        context, lang.error, lang.alreadyInUse(value!));
+                  }
+                },
                 value: channel.usage,
                 items: Usage.values
                     .map((e) =>

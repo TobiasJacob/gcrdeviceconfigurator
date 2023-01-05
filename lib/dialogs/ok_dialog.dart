@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import '../i18n/languages.dart';
+
 Future<bool?> showOkDialog(
     BuildContext context, String title, String content) async {
+  final lang = Languages.of(context);
   return showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
@@ -10,17 +13,10 @@ Future<bool?> showOkDialog(
       actions: [
         ElevatedButton(
           onPressed: () {
-            return Navigator.of(context).pop(false);
-          },
-          //return false when click on "NO"
-          child: const Text('No'),
-        ),
-        ElevatedButton(
-          onPressed: () {
             return Navigator.of(context).pop(true);
           },
           //return true when click on "Yes"
-          child: const Text('Yes'),
+          child: Text(lang.ok),
         ),
       ],
     ),

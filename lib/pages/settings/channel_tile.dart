@@ -13,6 +13,7 @@ class ChannelItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final lang = Languages.of(context);
+    final appSettings = AppSettings.of(context);
 
     return MaterialButton(
       onPressed: () {
@@ -29,7 +30,7 @@ class ChannelItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              lang.channel(index),
+              '${lang.channel(index)}: ${lang.usage(appSettings.channelSettings[index].usage)}',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const Icon(

@@ -43,6 +43,7 @@ abstract class Languages {
   String get wantToSaveSettings;
 
   String channel(int index);
+  String alreadyInUse(Usage usage);
 
   // Channel Settings
   String get editChannel;

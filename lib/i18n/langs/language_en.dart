@@ -104,6 +104,11 @@ class LanguageEn extends Languages {
   }
 
   @override
+  String alreadyInUse(Usage usage) {
+    return "There already exists another channel for ${this.usage(usage)}";
+  }
+
+  @override
   String get editChannel => "Edit channel";
 
   @override

@@ -6,6 +6,8 @@ import 'channel.dart';
 
 enum Usage { none, gas, brake, clutch, handbrake }
 
+class AlreadyInUseException implements Exception {}
+
 class AppSettings extends ChangeNotifier {
   String languageCode = "en";
   String countryCode = "US";
@@ -73,11 +75,23 @@ class AppSettings extends ChangeNotifier {
     edited = false;
   }
 
-  Future updateLanguage(String languageCode, String countryCode) async {
+  void updateLanguage(String languageCode, String countryCode) {
     this.languageCode = languageCode;
     this.countryCode = countryCode;
 
     edited = true;
+    notifyListeners();
+  }
+
+  void updateUsage(int index, Usage usage) {
+    if (usage != Usage.none) {
+      for (var channel in channelSettings) {
+        if (channel.usage == usage) {
+          throw AlreadyInUseException();
+        }
+      }
+    }
+    channelSettings[index].setUsage(usage);
     notifyListeners();
   }
 }
