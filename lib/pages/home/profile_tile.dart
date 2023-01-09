@@ -100,10 +100,11 @@ class ProfileTile extends StatelessWidget {
         final confirmation = await showYesNoDialog(
             context, lang.overwrite, lang.fileExistsOverwrite(outputFile));
 
-        if (confirmation == true) {
-          await profile.export(returnedFile);
+        if (confirmation != true) {
+          return;
         }
       }
+      await profile.export(returnedFile);
     } catch (e) {
       await showOkDialog(context, lang.error, e.toString());
     }
