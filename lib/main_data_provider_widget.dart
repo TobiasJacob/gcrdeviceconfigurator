@@ -2,12 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../main_data_provider.dart';
-import 'app.dart';
+import 'main_data_provider.dart';
+import 'apps/app.dart';
 
-class AppLoaded extends StatelessWidget {
-  const AppLoaded({
+class MainDataProviderWidget extends StatelessWidget {
+  final Widget child;
+
+  const MainDataProviderWidget({
     Key? key,
+    required this.child,
     required this.mainDataProvier,
   }) : super(key: key);
 
@@ -25,7 +28,7 @@ class AppLoaded extends StatelessWidget {
           create: (context) => mainDataProvier.usbStatus,
         )
       ],
-      child: const MyApp(),
+      child: child,
     );
   }
 }

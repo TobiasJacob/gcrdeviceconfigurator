@@ -8,9 +8,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gcrdeviceconfigurator/apps/app.dart';
-import 'package:gcrdeviceconfigurator/apps/app_loaded.dart';
+import 'package:gcrdeviceconfigurator/main_data_provider_widget.dart';
 // import 'package:gcrdeviceconfigurator/apps/app_loading.dart';
 import 'package:gcrdeviceconfigurator/main_data_provider.dart';
+import 'package:gcrdeviceconfigurator/pages/home_page.dart';
 import 'package:gcrdeviceconfigurator/pages/profile_page.dart';
 import 'package:gcrdeviceconfigurator/pages/settings_page.dart';
 
@@ -26,7 +27,7 @@ void main() {
   testWidgets('Loaded Screen is App Screen', (WidgetTester tester) async {
     final mainDataProvier = MainDataProvider();
 
-    final app = AppLoaded(mainDataProvier: mainDataProvier);
+    final app = MainDataProviderWidget(mainDataProvier: mainDataProvier, child: MyApp(home: const HomePage()),);
 
     await tester.pumpWidget(app);
     expect(find.byType(MyApp), findsOneWidget);

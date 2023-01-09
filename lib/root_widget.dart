@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/apps/app_loading.dart';
 import 'package:gcrdeviceconfigurator/main_data_provider.dart';
+import 'package:gcrdeviceconfigurator/pages/home_page.dart';
 
 import 'apps/app.dart';
 import 'apps/app_error.dart';
 import 'package:provider/provider.dart';
 
-import 'apps/app_loaded.dart';
+import 'main_data_provider_widget.dart';
 
 class RootWidget extends StatefulWidget {
   const RootWidget({super.key});
@@ -54,7 +55,7 @@ class RootWidgetState extends State<RootWidget> {
               resetToFactory: resetToFactory,
             );
           }
-          return AppLoaded(mainDataProvier: mainDataProvier);
+          return MainDataProviderWidget(mainDataProvier: mainDataProvier, child: MyApp(home: const HomePage()),);
         });
   }
 }

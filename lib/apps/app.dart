@@ -6,7 +6,9 @@ import '../pages/home_page.dart';
 import '../i18n/app_localization_delegate.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  Widget home;
+
+  MyApp({super.key, required this.home});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: true,
       locale:
           Locale(languageSettings.languageCode, languageSettings.countryCode),
-      home: const HomePage(),
+      home: home,
       supportedLocales: const [Locale('en', 'EN'), Locale('de', 'DE')],
       localizationsDelegates: const [
         AppLocalizationsDelegate(),
