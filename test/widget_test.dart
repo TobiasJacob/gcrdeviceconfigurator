@@ -7,25 +7,34 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:gcrdeviceconfigurator/apps/app.dart';
+import 'package:gcrdeviceconfigurator/apps/app_loading.dart';
 
-import 'package:gcrdeviceconfigurator/main.dart';
+import 'package:gcrdeviceconfigurator/pages/profile_page.dart';
+import 'package:gcrdeviceconfigurator/pages/settings_page.dart';
+import 'package:gcrdeviceconfigurator/root_widget.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('Create new profile UI test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    const app = RootWidget();
+    await tester.pumpWidget(app);
+    expect(find.byType(AppLoading), findsOneWidget);
+
+    final RootWidgetState rootWidget = tester.state(find.byType(RootWidget));
+    await rootWidget.mainDataProvier.loadFuture;
+
+    await tester.pumpWidget(app);
 
     // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // expect(find.text('Default'), findsOneWidget);
+    // expect(find.text('1'), findsNothing);
 
     // Tap the '+' icon and trigger a frame.
     await tester.tap(find.byIcon(Icons.add));
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Verify that a new profile has been created.
+    expect(find.byType(SettingsPage), findsNothing);
+    expect(find.byType(ProfilePage), findsOneWidget);
   });
 }

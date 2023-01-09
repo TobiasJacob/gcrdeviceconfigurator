@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -76,5 +79,9 @@ class Profile extends ChangeNotifier {
       axis.resetEdited();
     }
     edited = false;
+  }
+
+  Future export(File file) async {
+    await file.writeAsBytes(jsonEncode(toJSON()).codeUnits);
   }
 }

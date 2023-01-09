@@ -10,10 +10,10 @@ class RootWidget extends StatefulWidget {
   const RootWidget({super.key});
 
   @override
-  State<StatefulWidget> createState() => _RootWidgetState();
+  State<StatefulWidget> createState() => RootWidgetState();
 }
 
-class _RootWidgetState extends State<RootWidget> {
+class RootWidgetState extends State<RootWidget> {
   late MainDataProvider mainDataProvier;
 
   @override

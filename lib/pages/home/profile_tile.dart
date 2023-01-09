@@ -101,8 +101,7 @@ class ProfileTile extends StatelessWidget {
             context, lang.overwrite, lang.fileExistsOverwrite(outputFile));
 
         if (confirmation == true) {
-          await returnedFile
-              .writeAsBytes(jsonEncode(profile.toJSON()).codeUnits);
+          await profile.export(returnedFile);
         }
       }
     } catch (e) {
