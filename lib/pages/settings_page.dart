@@ -41,7 +41,7 @@ class SettingsPage extends StatelessWidget {
     if (confirmation == true) {
       appSettings.save();
     } else {
-      appSettings.reload();
+      appSettings.load();
     }
     return true;
   }

@@ -18,7 +18,6 @@ class Database extends ChangeNotifier {
   Map<String, Profile> profiles = {"Default": Profile.empty("Default")};
 
   bool edited = false;
-  final storage = LocalStorage('data.json');
 
   Database() {
     activeProfile = profiles.values.first;
@@ -29,6 +28,7 @@ class Database extends ChangeNotifier {
   }
 
   Future<void> load() async {
+    final storage = LocalStorage('data.json');
     await storage.ready;
 
     final jsonProfiles = storage.getItem("profiles");
@@ -54,8 +54,10 @@ class Database extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future save() async {
+  Future<void> save() async {
+    final storage = LocalStorage('data.json');
     await storage.ready;
+  
     var jsonProfiles = {};
     for (final k in profiles.keys) {
       jsonProfiles[k] = profiles[k]!.toJSON();

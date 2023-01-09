@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/apps/app_loading.dart';
 import 'package:gcrdeviceconfigurator/main_data_provider.dart';
@@ -5,6 +7,8 @@ import 'package:gcrdeviceconfigurator/main_data_provider.dart';
 import 'apps/app.dart';
 import 'apps/app_error.dart';
 import 'package:provider/provider.dart';
+
+import 'apps/app_loaded.dart';
 
 class RootWidget extends StatefulWidget {
   const RootWidget({super.key});
@@ -15,11 +19,18 @@ class RootWidget extends StatefulWidget {
 
 class RootWidgetState extends State<RootWidget> {
   late MainDataProvider mainDataProvier;
+  late Future loadFuture;
+  late Timer updateAxisValues;
 
   @override
   void initState() {
     super.initState();
     mainDataProvier = MainDataProvider();
+    loadFuture = mainDataProvier.loadData();
+
+    
+    updateAxisValues =
+        Timer.periodic(const Duration(milliseconds: 100), mainDataProvier.usbStatus.updateValues);
   }
 
   void resetToFactory() async {
@@ -32,7 +43,7 @@ class RootWidgetState extends State<RootWidget> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: mainDataProvier.loadFuture,
+        future: loadFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return const AppLoading();
@@ -43,18 +54,7 @@ class RootWidgetState extends State<RootWidget> {
               resetToFactory: resetToFactory,
             );
           }
-          return MultiProvider(
-            providers: [
-              ChangeNotifierProvider(
-                  create: (context) => mainDataProvier.database),
-              ChangeNotifierProvider(
-                  create: (context) => mainDataProvier.languageSettings),
-              ChangeNotifierProvider(
-                create: (context) => mainDataProvier.usbStatus,
-              )
-            ],
-            child: const MyApp(),
-          );
+          return AppLoaded(mainDataProvier: mainDataProvier);
         });
   }
 }

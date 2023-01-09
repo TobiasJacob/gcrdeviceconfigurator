@@ -6,13 +6,7 @@ import 'package:flutter/material.dart';
 
 class USBStatus extends ChangeNotifier {
   List<int> currentValues = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-  late Timer updateAxisValues;
   Random random = Random();
-
-  USBStatus() {
-    updateAxisValues =
-        Timer.periodic(const Duration(milliseconds: 100), updateValues);
-  }
 
   void updateValues(Timer timer) {
     for (var i = 0; i < currentValues.length; i++) {

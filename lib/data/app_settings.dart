@@ -11,33 +11,18 @@ class AlreadyInUseException implements Exception {}
 class AppSettings extends ChangeNotifier {
   String languageCode = "en";
   String countryCode = "US";
-  List<Channel> channelSettings;
-
-  final LocalStorage storage;
+  List<Channel> channelSettings = [for (var i = 0; i < 10; i++) Channel.empty()];
 
   bool edited = false;
-
-  AppSettings(this.storage)
-      : channelSettings = [for (var i = 0; i < 10; i++) Channel.empty()];
 
   static AppSettings of(context) {
     return Provider.of<AppSettings>(context);
   }
 
-  static Future<AppSettings> defaultSettings() async {
+  Future<void> load() async {
     final storage = LocalStorage('language.json');
     await storage.ready;
 
-    return AppSettings(storage);
-  }
-
-  static Future<AppSettings> load() async {
-    final appSettings = await defaultSettings();
-    await appSettings.reload();
-    return appSettings;
-  }
-
-  Future<void> reload() async {
     languageCode = storage.getItem("languageCode") ?? languageCode;
     countryCode = storage.getItem("countryCode") ?? countryCode;
     channelSettings =
@@ -48,6 +33,9 @@ class AppSettings extends ChangeNotifier {
   }
 
   Future<void> save() async {
+    final storage = LocalStorage('language.json');
+    await storage.ready;
+
     await storage.setItem("languageCode", languageCode);
     await storage.setItem("countryCode", countryCode);
     await storage.setItem(
