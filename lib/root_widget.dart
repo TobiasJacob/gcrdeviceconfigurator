@@ -21,17 +21,12 @@ class RootWidget extends StatefulWidget {
 class RootWidgetState extends State<RootWidget> {
   late MainDataProvider mainDataProvier;
   late Future loadFuture;
-  late Timer updateAxisValues;
 
   @override
   void initState() {
     super.initState();
     mainDataProvier = MainDataProvider();
     loadFuture = mainDataProvier.loadData();
-
-    
-    updateAxisValues =
-        Timer.periodic(const Duration(milliseconds: 100), mainDataProvier.usbStatus.updateValues);
   }
 
   void resetToFactory() async {

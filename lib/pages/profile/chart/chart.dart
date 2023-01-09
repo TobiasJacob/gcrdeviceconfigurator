@@ -38,7 +38,7 @@ class Chart extends StatelessWidget {
                 margin: const EdgeInsets.all(margin), color: Colors.grey[300]),
             CustomPaint(
                 painter: ChartPainter(
-                    axis, margin, usbStatus.currentValues[0] / 16384),
+                    axis, margin, usbStatus.currentValues[0] / 32768 / 2 + 0.5),
                 child: Container()),
             ...dataPoints
                 .asMap()
