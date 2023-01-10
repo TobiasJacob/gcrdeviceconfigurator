@@ -10,25 +10,25 @@ import 'crc32.dart';
 /// Serializes the current configuration of the device into a buffer.
 Uint8List serializeConfig(AppSettings appSettings, Database database) {
   final buffer = WriteBuffer();
-  // Report ID
-  buffer.putUint8(2);
-  
-  // Channel Data for 10 channels (10 * 3 * 4 = 120 bytes)
-  for (var channel in appSettings.channelSettings) {
-    // 0: Usage.gas, 1: Usage.brake, 2: Usage.clutch, 3: Usage.handbrake
-    buffer.putUint32(channel.usage.index);
-    buffer.putInt32(channel.maxValue);
-    buffer.putInt32(channel.minValue);
-  }
-  
   // Axis Data for each usage implemented on pcb (4 * (1 + n * 2) * 4 bytes)
   final usagesOnPCB = [Usage.gas, Usage.brake, Usage.clutch, Usage.handbrake];
   for (final usage in usagesOnPCB) {
     final axis = database.activeProfile.axes[usage]!;
-    buffer.putUint32(axis.dataPoints.length);
+    var channelIndex = -1;
+    for (var i = 0; i < appSettings.channelSettings.length; i++) {
+      if (appSettings.channelSettings[i].usage == usage) {
+        channelIndex = i;
+        break;
+      }
+    }
+  buffer.putUint8(channelIndex);
     for (final dataPoint in axis.dataPoints) {
-      buffer.putUint32((dataPoint.x * 4294967295).round());
-      buffer.putUint32((dataPoint.y * 4294967295).round());
+      buffer.putUint16((dataPoint.x * 1024).round());
+      buffer.putUint16((dataPoint.y * 1024).round());
+    }
+    for (var i = 0; i < 20 - axis.dataPoints.length; i++) {
+      buffer.putUint16(1024);
+      buffer.putUint16(1024);
     }
   }
 
