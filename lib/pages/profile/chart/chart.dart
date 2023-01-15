@@ -3,6 +3,8 @@ import 'package:gcrdeviceconfigurator/data/axis.dart';
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
 import 'package:gcrdeviceconfigurator/usb/usb_status.dart';
 
+import '../../../data/app_settings.dart';
+import '../../../data/profile.dart';
 import 'chart_button.dart';
 import 'chart_drag_ball.dart';
 import 'chart_painter.dart';
@@ -22,7 +24,30 @@ class Chart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final usbStatus = USBStatus.of(context);
+    final profile = Profile.of(context);
     final axis = ControllerAxis.of(context);
+    final appSettings = AppSettings.of(context);
+
+    // Todo: Make this more efficient
+    var usage = Usage.none;
+    for (final element in profile.axes.entries) {
+      if (element.value == axis) {
+        usage = element.key;
+        break;
+      }
+    }
+    var channelIndex = -1;
+    for (var i = 0; i < appSettings.channelSettings.length; i++) {
+      if (appSettings.channelSettings[i].usage == usage) {
+        channelIndex = i;
+        break;
+      }
+    }
+    var value = 0.0;
+    if (channelIndex >= 0) {
+      var channelSettings = appSettings.channelSettings[channelIndex];
+      value = (usbStatus.currentValues[channelIndex] - channelSettings.minValue) / (channelSettings.maxValue - channelSettings.minValue);
+    }
 
     final dataPoints = axis.dataPoints;
     const margin = 16.0;
@@ -38,7 +63,7 @@ class Chart extends StatelessWidget {
                 margin: const EdgeInsets.all(margin), color: Colors.grey[300]),
             CustomPaint(
                 painter: ChartPainter(
-                    axis, margin, usbStatus.currentValues[0] / 32768 / 2 + 0.5),
+                    axis, margin, value),
                 child: Container()),
             ...dataPoints
                 .asMap()

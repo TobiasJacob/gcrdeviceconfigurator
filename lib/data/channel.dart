@@ -17,13 +17,13 @@ class Channel extends ChangeNotifier {
   }
 
   static Channel empty() {
-    return Channel(Usage.none, 0, 16384);
+    return Channel(Usage.none, 0, 4096);
   }
 
   static Channel fromJSON(Map<String, dynamic> data) {
     final usage = Usage.values[data["usage"] ?? 0];
     final minValue = data["minValue"] ?? 0;
-    final maxValue = data["maxValue"] ?? 16384;
+    final maxValue = data["maxValue"] ?? 4096;
 
     return Channel(usage, minValue, maxValue);
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 
 import 'home/profile_list.dart';
+import 'home/update_device_button.dart';
 import 'settings_page.dart';
 
 class HomePage extends StatelessWidget {
@@ -14,6 +15,7 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           title: Text(lang.appName),
           actions: <Widget>[
+            const UpdateDeviceWidget(),
             IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {

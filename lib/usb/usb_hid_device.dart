@@ -51,13 +51,17 @@ class GcrUsbHidDevice {
   GcrUsbHidDevice();
 
   Future<void> open() async {
-    simulated = false;
     final devices = await enumerateDevices(productId, vendorId);
+    if (devices.isEmpty) {
+      throw Exception('No compatible game controller found');
+    }
     device = await devices.first.open();
+    simulated = false;
   }
 
   Future<void> close() async {
     if (!simulated) {
+      simulated = true;
       await device.close();
     }
   }
