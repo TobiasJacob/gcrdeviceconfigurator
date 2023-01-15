@@ -42,6 +42,16 @@ void test() async {
     final adcValues = await device.receiveRawADCValues();
     debugPrint("Received raw adc values: $adcValues");
 
+    // Receive config from device
+    debugPrint("Receive initial config...");
+    final receivedInitialConfig = await device.readSerializedConfig();
+    for (int i = 0; i < receivedInitialConfig.length; i++) {
+      if (receivedInitialConfig[i] != buffer[i]) {
+        debugPrint("Received config differs at index $i");
+        break;
+      }
+    }
+
     // Send config to device
     debugPrint("Send config...");
     await device.sendSerializedConfig(buffer);
