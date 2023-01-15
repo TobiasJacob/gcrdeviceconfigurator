@@ -33,7 +33,7 @@ void main() {
 
     await tester.pumpWidget(widget);
     await tester.pumpAndSettle();
-    print(tester.getSize(find.byType(ProfileTile)));
+    print("ProfileTile size: ${tester.getSize(find.byType(ProfileTile))}");
 
     await tester.tap(find.byType(PopupMenuButton<String>));
     await tester.pumpAndSettle();

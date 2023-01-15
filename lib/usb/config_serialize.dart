@@ -21,7 +21,14 @@ Uint8List serializeConfig(AppSettings appSettings, Database database) {
         break;
       }
     }
-  buffer.putUint8(channelIndex);
+    buffer.putUint8(channelIndex);
+    if (channelIndex == -1) {
+      buffer.putUint16(0);
+      buffer.putUint16(1024);
+    } else {
+      buffer.putUint16(appSettings.channelSettings[channelIndex].minValue);
+      buffer.putUint16(appSettings.channelSettings[channelIndex].maxValue);
+    }
     for (final dataPoint in axis.dataPoints) {
       buffer.putUint16((dataPoint.x * 1024).round());
       buffer.putUint16((dataPoint.y * 1024).round());
