@@ -45,6 +45,7 @@ enum UsbHidCommands {
 class GcrUsbHidDevice {
   late OpenUSBDevice device;
   bool simulated = true;
+  int joystickvalscounter = 0;
 
   Uint8List simulatedSerializedConfig = Uint8List(0);
 
@@ -71,7 +72,7 @@ class GcrUsbHidDevice {
     int maxTries = 100;
     while (true) {
       response = await device.readReport(100);
-      debugPrint('Response: $response');
+      // debugPrint('Response: $response');
       if (response.isEmpty) {
         debugPrint('Empty response');
         continue;
@@ -79,10 +80,13 @@ class GcrUsbHidDevice {
 
       if (response[0] == HidReportIdDeviceToHost.currentJoystickValues.value) {
         // This case is not used in this app. It is just used to tell windows about the current joystick values.
-        debugPrint('Current Joystick Values: ${response.sublist(1)}');
+        joystickvalscounter++;
+        if (joystickvalscounter % 10 == 0) {
+          debugPrint('Current Joystick Values: ${response.sublist(1)}');
+        }
       } else if (response[0] == HidReportIdDeviceToHost.data.value) {
         // This case has to be handled by the code calling this function.
-        debugPrint('Data: $response');
+        // debugPrint('Data: $response');
         if (response[1] != command.value) {
           debugPrint('Unexpected command: ${response[1]}');
           throw Exception('Unexpected command: ${response[1]}');

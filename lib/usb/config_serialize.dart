@@ -24,18 +24,18 @@ Uint8List serializeConfig(AppSettings appSettings, Database database) {
     buffer.putUint8(channelIndex);
     if (channelIndex == -1) {
       buffer.putUint16(0);
-      buffer.putUint16(1024);
+      buffer.putUint16(4095);
     } else {
       buffer.putUint16(appSettings.channelSettings[channelIndex].minValue);
       buffer.putUint16(appSettings.channelSettings[channelIndex].maxValue);
     }
     for (final dataPoint in axis.dataPoints) {
-      buffer.putUint16((dataPoint.x * 1024).round());
-      buffer.putUint16((dataPoint.y * 1024).round());
+      buffer.putUint16((dataPoint.x * 4096).round().clamp(0, 4095));
+      buffer.putUint16((dataPoint.y * 4096).round().clamp(0, 4095));
     }
     for (var i = 0; i < 20 - axis.dataPoints.length; i++) {
-      buffer.putUint16(1024);
-      buffer.putUint16(1024);
+      buffer.putUint16(4095);
+      buffer.putUint16(4095);
     }
   }
 
