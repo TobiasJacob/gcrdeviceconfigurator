@@ -43,7 +43,7 @@ Stream<UsbData> realUsbProvider(ref) async* {
         },
       );
       yield state;
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 20));
     }
 }
 
