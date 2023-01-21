@@ -47,10 +47,10 @@ class _DragBallState extends State<DragBall> {
           },
           onPanUpdate: (DragUpdateDetails details) {
             updateDataPoint(DataPoint(
-                x: dragStartDataPoint!.x +
-                    (details.globalPosition.dx - dragStartLoc!.dx) / width,
-                y: dragStartDataPoint!.y -
-                    (details.globalPosition.dy - dragStartLoc!.dy) / height));
+                x: (dragStartDataPoint!.x +
+                    (details.globalPosition.dx - dragStartLoc!.dx) / width).clamp(0.0, 1.0),
+                y: (dragStartDataPoint!.y -
+                    (details.globalPosition.dy - dragStartLoc!.dy) / height).clamp(0.0, 1.0)));
           },
           child: const Material(
             elevation: 2,

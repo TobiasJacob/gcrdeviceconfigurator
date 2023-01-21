@@ -34,6 +34,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     final lang = Languages.of(context);
     
     final profile = ref.watch(profileProvider);
+    final settingsNotifier = ref.watch(settingsProvider.notifier);
 
     if (profileNameController.text != profile.name) {
       profileNameController.text = profile.name;
@@ -55,7 +56,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                                 padding: const EdgeInsets.all(16.0),
                                 child: TextField(
                                   controller: profileNameController,
-                                  onChanged: profile.updateName,
+                                  onChanged: (value) {
+                                    settingsNotifier.updateProfile(profile.updateName(value));
+                                  },
                                 )),
                             const Divider(),
                             Expanded(

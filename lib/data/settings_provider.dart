@@ -1,6 +1,7 @@
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
 import 'package:gcrdeviceconfigurator/data/channel.dart';
 import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
+import 'package:gcrdeviceconfigurator/data/profile.dart';
 import 'package:gcrdeviceconfigurator/data/profile_axis.dart';
 import 'package:gcrdeviceconfigurator/data/profile_axis_view_provider.dart';
 import 'package:gcrdeviceconfigurator/data/profile_view_provider.dart';
@@ -44,6 +45,11 @@ class SettingsProvider extends StateNotifier<AppSettings> {
   void updateChannel(Channel channel) {
     final index = ref.read(channelIdProvider);
     state = state.updateChannel(index, channel);
+  }
+
+  void updateProfile(Profile profile) {
+    final profileId = ref.read(profileIdProvier);
+    state = state.updateProfile(profileId, profile);
   }
 
   void updateAxis(ProfileAxis updateChartDataPoint) {

@@ -5,7 +5,7 @@ import 'profile.dart';
 
 final profileIdProvier =
     StateProvider<String>((ref) {
-  return ref.watch(settingsProvider.select((value) => value.profiles.keys)).first;
+  return ref.read(settingsProvider.select((value) => value.profiles.keys)).first;
 });
 
 final profileProvider = Provider<Profile>((ref) {

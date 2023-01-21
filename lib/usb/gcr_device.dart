@@ -78,7 +78,7 @@ class GcrUsbHidDevice {
       if (response[0] == HidReportIdDeviceToHost.currentJoystickValues.value) {
         // This case is not used in this app. It is just used to tell windows about the current joystick values.
         joystickvalscounter++;
-        if (joystickvalscounter % 100 == 0) {
+        if (joystickvalscounter % 500 == 0) {
           debugPrint('Current Joystick Values: ${response.sublist(1)}');
         }
       } else if (response[0] == HidReportIdDeviceToHost.data.value) {

@@ -9,6 +9,7 @@ import 'package:gcrdeviceconfigurator/dialogs/yes_no_dialog.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'dart:io';
 
+import '../../data/profile.dart';
 import '../../i18n/languages.dart';
 import '../profile_page.dart';
 
@@ -22,7 +23,7 @@ class ProfileTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final lang = Languages.of(context);
 
-    final profile = ref.watch(settingsProvider.select((value) => value.profiles[profileKey]!));
+    final profile = ref.watch(settingsProvider.select((value) => value.profiles[profileKey] ?? Profile.empty()));
 
     return Container(
       padding: const EdgeInsets.all(8.0),
@@ -117,7 +118,7 @@ class ProfileTile extends ConsumerWidget {
     );
     if (confimation == true) {
       appSettingsNotifier.update(appSettings.deleteProfileIfMoreThanOne(profileKey));
-      appSettingsNotifier.save();
+      await appSettingsNotifier.save();
     }
   }
 }

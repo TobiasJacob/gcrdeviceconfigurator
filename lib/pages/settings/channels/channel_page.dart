@@ -74,10 +74,14 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
 
     if (autoUpdate) {
       if (currentValue < channel.minValue) {
-        setMinValue(currentValue);
+        Future(() {
+          setMinValue(currentValue);
+        });
       }
       if (currentValue > channel.maxValue) {
-        setMaxValue(currentValue);
+        Future(() {
+          setMaxValue(currentValue);
+        });
       }
     }
 

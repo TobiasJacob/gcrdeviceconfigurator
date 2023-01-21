@@ -13,9 +13,8 @@ class ProfileList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final lang = Languages.of(context);
-    final profiles = ref.watch(settingsProvider.select((s) => s.profiles));
 
-    final profileKeys = profiles.keys.toList();
+    final profileKeys = ref.watch(settingsProvider.select((s) => s.profiles.keys.toList()));
 
     return Stack(children: [
       ListView.separated(
