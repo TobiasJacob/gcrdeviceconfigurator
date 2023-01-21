@@ -42,9 +42,10 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
   @override
   Widget build(BuildContext context) {
     final lang = Languages.of(context);
-    final appSettings = ref.watch(settingsProvider);
-    final channel = appSettings.channelSettings[widget.index];
-    final usbStatus = ref.watch(usbProvider);
+    final channel = ref.watch(channelProvider);
+    final usbStatus = ref.watch(usbProvider); 
+    final settingsNotifier = ref.watch(settingsProvider.notifier);
+
     final currentValue = usbStatus.maybeWhen(
       data: (data) => data.maybeMap(
         connected: (usbStatus) => usbStatus.currentValues[widget.index],
@@ -54,24 +55,21 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
     );
 
     setMinValue(int value) {
-      final channelNotiv = ref.read(visibleChannelProvider.notifier);
-      channelNotiv.update(channel.updateMaxValue(value));
       setState(() {
+        settingsNotifier.updateChannel(channel.updateMinValue(value));
         minController.text = value.toString();
       });
     }
 
     setMaxValue(int value) {
-      final channelNotiv = ref.read(visibleChannelProvider.notifier);
-      channelNotiv.update(channel.updateMaxValue(value));
       setState(() {
+        settingsNotifier.updateChannel(channel.updateMaxValue(value));
         maxController.text = value.toString();
       });
     }
 
     setUsage(Usage usage) {
-      final channelNotiv = ref.read(visibleChannelProvider.notifier);
-      channelNotiv.update(channel.updateChannelUsage(usage));
+      settingsNotifier.updateChannel(channel.updateChannelUsage(usage));
     }
 
     if (autoUpdate) {

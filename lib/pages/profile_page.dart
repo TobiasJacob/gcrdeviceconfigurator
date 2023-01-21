@@ -25,14 +25,15 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    uneditedProfile = ref.read(visibleProfileProvider.notifier.select((value) => value.profile));
+  
+    uneditedProfile = ref.read(profileProvider);
   }
 
   @override
   Widget build(BuildContext context) {
     final lang = Languages.of(context);
     
-    final profile = ref.watch(visibleProfileProvider.notifier).profile;
+    final profile = ref.watch(profileProvider);
 
     if (profileNameController.text != profile.name) {
       profileNameController.text = profile.name;
@@ -60,7 +61,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                             Expanded(
                               child: AxisList(onSelect: (usage) {
                                 setState(() {
-                                  ref.read(visibleProfileAxisProvider.notifier).setVisibleAxis(usage);
+                                  ref.watch(axisIdProvider.notifier).state = usage;
                                 });
                               }),
                             )
@@ -77,7 +78,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   Future<bool> showExitPopup(BuildContext context, WidgetRef ref) async {
     final lang = Languages.of(context);
-    final profile = ref.watch(visibleProfileProvider.notifier).profile;
+    final profile = ref.watch(profileProvider);
     final notif = ref.watch(settingsProvider.notifier);
 
     if (uneditedProfile == profile) {

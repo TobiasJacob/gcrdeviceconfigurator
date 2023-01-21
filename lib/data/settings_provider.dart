@@ -1,4 +1,9 @@
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
+import 'package:gcrdeviceconfigurator/data/channel.dart';
+import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
+import 'package:gcrdeviceconfigurator/data/profile_axis.dart';
+import 'package:gcrdeviceconfigurator/data/profile_axis_view_provider.dart';
+import 'package:gcrdeviceconfigurator/data/profile_view_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -34,5 +39,16 @@ class SettingsProvider extends StateNotifier<AppSettings> {
 
   void update(AppSettings settings) {
     state = settings;
+  }
+
+  void updateChannel(Channel channel) {
+    final index = ref.read(channelIdProvider);
+    state = state.updateChannel(index, channel);
+  }
+
+  void updateAxis(ProfileAxis updateChartDataPoint) {
+    final profileId = ref.read(profileIdProvier);
+    final index = ref.read(axisIdProvider);
+    state = state.updateProfile(profileId, state.profiles[profileId]!.updateAxis(index, updateChartDataPoint));
   }
 }

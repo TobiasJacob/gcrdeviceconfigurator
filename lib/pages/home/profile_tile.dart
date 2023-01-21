@@ -57,7 +57,7 @@ class ProfileTile extends ConsumerWidget {
           ),
           MaterialButton(
             onPressed: () {
-              ref.read(visibleProfileProvider.notifier).setVisibleProfile(profileKey);
+              ref.read(profileIdProvier.notifier).state = profileKey;
               Navigator.push(
                   context,
                   MaterialPageRoute(

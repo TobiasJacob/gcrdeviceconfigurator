@@ -13,7 +13,7 @@ class AxisTile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final lang = Languages.of(context);
-    final visibleAxis = ref.watch(visibleProfileAxisProvider);
+    final visibleAxis = ref.watch(axisIdProvider);
 
     final backgroundColor = usage == visibleAxis ? Colors.blue[100] : null;
 

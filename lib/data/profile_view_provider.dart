@@ -3,32 +3,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'profile.dart';
 
-final visibleProfileProvider =
-    StateNotifierProvider<ProfileProvider, String>((ref) {
-  return ProfileProvider(ref);
+final profileIdProvier =
+    StateProvider<String>((ref) {
+  return ref.watch(settingsProvider.select((value) => value.profiles.keys)).first;
 });
 
-class ProfileProvider extends StateNotifier<String> {
-  final Ref ref;
-
-  ProfileProvider(this.ref)
-      : super(ref.read(settingsProvider).profiles.keys.first);
-
-  void setVisibleProfile(String profileId) {
-    assert(ref.read(settingsProvider).profiles.containsKey(profileId));
-    state = profileId;
-  }
-
-  Profile get profile {
-    return ref
-        .watch(settingsProvider.select((value) => value.profiles[state]!));
-  }
-
-  void update(Profile profile) {
-    final notif = ref.read(settingsProvider.notifier);
-    notif.update(notif.state.copyWith(profiles: {
-      ...notif.state.profiles,
-      state: profile,
-    }));
-  }
-}
+final profileProvider = Provider<Profile>((ref) {
+  final id = ref.watch(profileIdProvier);
+  final settings = ref.watch(settingsProvider);
+  return settings.profiles[id]!;
+});

@@ -36,11 +36,18 @@ class Profile with _$Profile {
   factory Profile.fromJson(Map<String, Object?> json)
       => _$ProfileFromJson(json);
 
+  Future<void> export(File file) async {
+    await file.writeAsBytes(jsonEncode(toJson()).codeUnits);
+  }
+
   Profile updateName(String name) {
     return copyWith(name: name);
   }
   
-  Future export(File file) async {
-    await file.writeAsBytes(jsonEncode(toJson()).codeUnits);
+  Profile updateAxis(Usage index, ProfileAxis updateChartDataPoint) {
+    return copyWith(axes: {
+      ...axes,
+      index: updateChartDataPoint
+    });
   }
 }

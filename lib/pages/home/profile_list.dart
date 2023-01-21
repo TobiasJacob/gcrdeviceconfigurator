@@ -43,7 +43,7 @@ class ProfileList extends ConsumerWidget {
                 onPressed: () async {
                   final updateAndId = ref.read(settingsProvider).createNewProfile(lang.newProfile);
                   ref.read(settingsProvider.notifier).update(updateAndId.item1);
-                  ref.read(visibleProfileProvider.notifier).setVisibleProfile(updateAndId.item2);
+                  ref.read(profileIdProvier.notifier).state = updateAndId.item2;
                   Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -28,23 +28,23 @@ class Chart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final appSettings = ref.watch(settingsProvider);
-    final axisId = ref.watch(visibleProfileAxisProvider);
-    final axis = ref.watch(visibleProfileAxisProvider.notifier).axis;
-    final axisNotif = ref.watch(visibleProfileAxisProvider.notifier);
+    final channelsSettings = ref.watch(settingsProvider.select((value) => value.channelSettings));
+    final axisId = ref.watch(axisIdProvider);
+    final axis = ref.watch(axisProvider);
+    final settings = ref.watch(settingsProvider.notifier);
 
     final usbStatus = ref.watch(usbProvider);
     // Todo: Make this more efficient
     var channelIndex = -1;
-    for (var i = 0; i < appSettings.channelSettings.length; i++) {
-      if (appSettings.channelSettings[i].usage == axisId) {
+    for (var i = 0; i < channelsSettings.length; i++) {
+      if (channelsSettings[i].usage == axisId) {
         channelIndex = i;
         break;
       }
     }
     var value = 0.0;
     if (channelIndex >= 0) {
-      var channelSettings = appSettings.channelSettings[channelIndex];
+      var channelSettings = channelsSettings[channelIndex];
       final usbValue = usbStatus.maybeWhen(
         data: (data) => data.maybeMap(
           connected: (usbStatus) => usbStatus.currentValues[channelIndex],
@@ -79,14 +79,14 @@ class Chart extends ConsumerWidget {
                       size: constraints.biggest,
                       margin: margin,
                       updateDataPoint: (newDataPoint) {
-                        if (axisNotif.mounted) {
-                          axisNotif.update(
+                        if (settings.mounted) {
+                          settings.updateAxis(
                               axis.updateChartDataPoint(i, newDataPoint));
                         }
                       },
                       onPressed: () {
-                        axisNotif
-                            .update(axis.deleteChartDataPointIfMoreThanTwo(i));
+                        settings
+                            .updateAxis(axis.deleteChartDataPointIfMoreThanTwo(i));
                       },
                     )))
                 .values,
@@ -100,7 +100,8 @@ class Chart extends ConsumerWidget {
                         margin: margin,
                         text: "+",
                         onPressed: () {
-                          axisNotif.update(axis.addChartDataPointAfter(i));
+                          settings
+                            .updateAxis(axis.addChartDataPointAfter(i));
                         },
                       ),
                     ))
