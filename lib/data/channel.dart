@@ -1,61 +1,39 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 
 import 'app_settings.dart';
 
-class Channel extends ChangeNotifier {
-  Usage usage;
-  int minValue;
-  int maxValue;
+part 'channel.freezed.dart';
+part 'channel.g.dart';
 
-  bool edited = false;
+@freezed
+class Channel with _$Channel {
+  const Channel._();
 
-  Channel(this.usage, this.minValue, this.maxValue);
+  @Assert('minValue >= 0')
+  @Assert('minValue < 4096')
+  @Assert('maxValue >= 0')
+  @Assert('maxValue < 4096')
+  factory Channel({
+    required Usage usage,
+    required int minValue,
+    required int maxValue
+  }) = _Channel;
 
-  static Channel of(context) {
-    return Provider.of<Channel>(context);
+  factory Channel.empty() => Channel(usage: Usage.none, minValue: 0, maxValue: 4095);
+
+  factory Channel.fromJson(Map<String, Object?> json)
+      => _$ChannelFromJson(json);
+
+  Channel updateChannelUsage(Usage usage) {
+    return copyWith(usage: usage);
   }
 
-  static Channel empty() {
-    return Channel(Usage.none, 0, 4096);
+  Channel updateMinValue(int minValue) {
+    return copyWith(minValue: minValue);
   }
 
-  static Channel fromJSON(Map<String, dynamic> data) {
-    final usage = Usage.values[data["usage"] ?? 0];
-    final minValue = data["minValue"] ?? 0;
-    final maxValue = data["maxValue"] ?? 4096;
-
-    return Channel(usage, minValue, maxValue);
-  }
-
-  Map<String, dynamic> toJSON() {
-    return {"usage": usage.index, "minValue": minValue, "maxValue": maxValue};
-  }
-
-  bool thisOrDependencyEdited() {
-    return edited;
-  }
-
-  void resetEdited() {
-    edited = false;
-  }
-
-  // actions
-  void setUsage(Usage usage) {
-    this.usage = usage;
-    edited = true;
-    notifyListeners();
-  }
-
-  void setMinValue(int minValue) {
-    this.minValue = minValue;
-    edited = true;
-    notifyListeners();
-  }
-
-  void setMaxValue(int maxValue) {
-    this.maxValue = maxValue;
-    edited = true;
-    notifyListeners();
+  Channel updateMaxValue(int maxValue) {
+    return copyWith(maxValue: maxValue);
   }
 }

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/data/axis.dart';
-import 'package:gcrdeviceconfigurator/data/data_point.dart';
+import 'package:gcrdeviceconfigurator/data/profile_axis.dart';
 
 class ChartPainter extends CustomPainter {
-  final ControllerAxis axis;
+  final ProfileAxis axis;
   final double margin;
   final double currentValue;
 

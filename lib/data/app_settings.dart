@@ -1,77 +1,68 @@
-import 'package:provider/provider.dart';
-import 'package:localstorage/localstorage.dart';
-import 'package:flutter/material.dart';
+import 'dart:math';
+
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
+import 'package:gcrdeviceconfigurator/data/profile.dart';
+import 'package:tuple/tuple.dart';
 
 import 'channel.dart';
 
-enum Usage { none, gas, brake, clutch, handbrake }
+part 'app_settings.freezed.dart';
+part 'app_settings.g.dart';
 
-class AlreadyInUseException implements Exception {}
 
-class AppSettings extends ChangeNotifier {
-  String languageCode = "en";
-  String countryCode = "US";
-  List<Channel> channelSettings = [for (var i = 0; i < 10; i++) Channel.empty()];
+String generateRandomString() {
+  const len = 16;
+  var r = Random.secure();
+  return String.fromCharCodes(
+      List.generate(len, (index) => r.nextInt(33) + 89));
+}
 
-  bool edited = false;
+@freezed
+class AppSettings with _$AppSettings {
+  const AppSettings._();
+  
+  @Assert('languageCode == "en" || languageCode == "de"')
+  @Assert('channelSettings.length == 10')
+  @Assert('profiles.isNotEmpty')
+  factory AppSettings({
+    required String languageCode,
+    required String countryCode,
+    required List<Channel> channelSettings,
+    required Map<String, Profile> profiles
+  }) = _AppSettings;
 
-  static AppSettings of(context) {
-    return Provider.of<AppSettings>(context);
-  }
+  factory AppSettings.fromJson(Map<String, Object?> json)
+      => _$AppSettingsFromJson(json);
 
-  Future<void> load() async {
-    final storage = LocalStorage('language.json');
-    await storage.ready;
-
-    languageCode = storage.getItem("languageCode") ?? languageCode;
-    countryCode = storage.getItem("countryCode") ?? countryCode;
-    channelSettings =
-        ((await storage.getItem("channelSettings") as List<dynamic>?)
-                ?.map((el) => Channel.fromJSON(el)))?.toList() ??
-            channelSettings;
-    edited = false;
-  }
-
-  Future<void> save() async {
-    final storage = LocalStorage('language.json');
-    await storage.ready;
-
-    await storage.setItem("languageCode", languageCode);
-    await storage.setItem("countryCode", countryCode);
-    await storage.setItem(
-        "channelSettings", channelSettings.map((e) => e.toJSON()).toList());
-
-    resetEdited();
-  }
-
-  bool thisOrDependencyEdited() {
-    if (edited) {
-      return true;
+  factory AppSettings.empty() => AppSettings(
+    languageCode: "en",
+    countryCode: "US",
+    channelSettings: [
+      Channel.empty(),
+      Channel.empty(),
+      Channel.empty(),
+      Channel.empty(),
+      Channel.empty(),
+      Channel.empty(),
+      Channel.empty(),
+      Channel.empty(),
+      Channel.empty(),
+      Channel.empty(),
+    ],
+    profiles: {
+      "defaultProfileId": Profile.empty()
     }
-    for (final chn in channelSettings) {
-      if (chn.thisOrDependencyEdited()) {
-        return true;
-      }
-    }
-    return false;
+  );
+
+  AppSettings updateLanguage(String languageCode, String countryCode) {
+    return copyWith(
+      languageCode: languageCode,
+      countryCode: countryCode
+    );
   }
 
-  void resetEdited() {
-    for (final chn in channelSettings) {
-      chn.resetEdited();
-    }
-    edited = false;
-  }
-
-  void updateLanguage(String languageCode, String countryCode) {
-    this.languageCode = languageCode;
-    this.countryCode = countryCode;
-
-    edited = true;
-    notifyListeners();
-  }
-
-  void updateUsage(int index, Usage usage) {
+  AppSettings updateUsage(int index, Usage usage) {
     if (usage != Usage.none) {
       for (var channel in channelSettings) {
         if (channel.usage == usage) {
@@ -79,7 +70,53 @@ class AppSettings extends ChangeNotifier {
         }
       }
     }
-    channelSettings[index].setUsage(usage);
-    notifyListeners();
+    return copyWith(
+      channelSettings: List.of(channelSettings)
+        ..[index] = channelSettings[index].copyWith(usage: usage)
+    );
+  }
+  
+  Tuple2<AppSettings, String> createNewProfile(String name) {
+    // 100 tries to find a random key not in the Dict
+    for (var i = 0; i < 100; i++) {
+      final profileId = generateRandomString();
+      if (profiles.containsKey(profileId)) {
+        continue;
+      }
+      final profile = Profile.empty(name: name);
+      return Tuple2(copyWith(
+        profiles: Map.of(profiles)
+          ..[profileId] = profile
+      ), profileId);
+    }
+    throw Exception("Error creating profile. Consider deleting profiles.");
+  }
+
+  AppSettings updateProfile(String profileId, Profile profile) {
+    return copyWith(
+      profiles: Map.of(profiles)
+        ..[profileId] = profile
+    );
+  }
+
+  AppSettings deleteProfileIfMoreThanOne(String profileKey) {
+    if (profiles.keys.length > 1) {
+      return copyWith(
+        profiles: Map.of(profiles)
+          ..remove(profileKey)
+      );
+    }
+    throw Exception("Error deleting profile. At least one profile must exist.");
+  }
+
+  AppSettings updateChannel(int index, Channel channel) {
+    return copyWith(
+      channelSettings: List.of(channelSettings)
+        ..[index] = channel
+    );
   }
 }
+
+enum Usage { none, gas, brake, clutch, handbrake }
+
+class AlreadyInUseException implements Exception {}

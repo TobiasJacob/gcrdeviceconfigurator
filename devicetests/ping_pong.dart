@@ -5,17 +5,15 @@ import 'dart:math';
 import 'package:dartusbhid/enumerate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
-import 'package:gcrdeviceconfigurator/data/database.dart';
+import 'package:gcrdeviceconfigurator/data/profile.dart';
 import 'package:gcrdeviceconfigurator/usb/config_serialize.dart';
-import 'package:gcrdeviceconfigurator/usb/usb_hid_device.dart';
+import 'package:gcrdeviceconfigurator/usb/gcr_device.dart';
 
 //
 void test() async {
-    final database = Database();
-    final appSettings = AppSettings();
-    final buffer = serializeConfig(appSettings, database);
+    final appSettings = AppSettings.empty();
+    final buffer = serializeConfig(appSettings, Profile.empty());
     debugPrint("Full config has length ${buffer.length}"); // 4 * (1 + 2 * 2 + 20 * 2 * 2) = 340
     assert(buffer.length == 340);
 

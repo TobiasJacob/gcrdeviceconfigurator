@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/channels/channel_page.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/app_settings.dart';
 import '../../i18n/languages.dart';
 
-class ChannelItem extends StatelessWidget {
+class ChannelItem extends ConsumerWidget {
   final int index;
 
   const ChannelItem({super.key, required this.index});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final lang = Languages.of(context);
-    final appSettings = AppSettings.of(context);
+    final appSettings = ref.watch(settingsProvider);
 
     return MaterialButton(
       onPressed: () {
@@ -41,13 +43,13 @@ class ChannelItem extends StatelessWidget {
   }
 }
 
-class ChannelTile extends StatelessWidget {
+class ChannelTile extends ConsumerWidget {
   const ChannelTile({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final lang = Languages.of(context);
-    final appSettings = AppSettings.of(context);
+    final appSettings = ref.watch(settingsProvider);
 
     return SettingsTile(
         title: lang.channelSettings,

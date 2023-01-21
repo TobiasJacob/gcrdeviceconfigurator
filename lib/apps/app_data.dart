@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:gcrdeviceconfigurator/data/app_settings.dart';
+import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../pages/home_page.dart';
 import '../i18n/app_localization_delegate.dart';
 
-class MyApp extends StatelessWidget {
-  Widget home;
+class AppData extends ConsumerWidget {
+  final Widget home;
 
-  MyApp({super.key, required this.home});
+  const AppData({super.key, required this.home});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     const title = "Pedal Config";
-    final AppSettings languageSettings = AppSettings.of(context);
+    final languageCode = ref.watch(settingsProvider.select((value) => value.languageCode));
+    final countryCode = ref.watch(settingsProvider.select((value) => value.countryCode));
 
     return MaterialApp(
       theme: ThemeData(
@@ -22,7 +23,7 @@ class MyApp extends StatelessWidget {
       title: title,
       debugShowCheckedModeBanner: true,
       locale:
-          Locale(languageSettings.languageCode, languageSettings.countryCode),
+          Locale(languageCode, countryCode),
       home: home,
       supportedLocales: const [Locale('en', 'EN'), Locale('de', 'DE')],
       localizationsDelegates: const [

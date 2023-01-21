@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
-import 'package:gcrdeviceconfigurator/data/profile.dart';
+import 'package:gcrdeviceconfigurator/data/profile_axis_view_provider.dart';
 import 'package:gcrdeviceconfigurator/i18n/languages.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../data/axis.dart';
-
-class AxisTile extends StatelessWidget {
+class AxisTile extends ConsumerWidget {
   final Usage usage;
   final Function(Usage usage) onSelect;
 
   const AxisTile({super.key, required this.usage, required this.onSelect});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final lang = Languages.of(context);
-    final profile = Profile.of(context);
-    final visibleAxis = ControllerAxis.of(context);
+    final visibleAxis = ref.watch(visibleProfileAxisProvider);
 
-    final backgroundColor =
-        profile.axes[usage] == visibleAxis ? Colors.blue[100] : null;
+    final backgroundColor = usage == visibleAxis ? Colors.blue[100] : null;
 
     return Container(
       padding: const EdgeInsets.all(8.0),

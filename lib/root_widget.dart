@@ -2,38 +2,28 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/apps/app_loading.dart';
-import 'package:gcrdeviceconfigurator/main_data_provider.dart';
+import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/pages/home_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'apps/app.dart';
+import 'apps/app_data.dart';
 import 'apps/app_error.dart';
-import 'package:provider/provider.dart';
 
-import 'main_data_provider_widget.dart';
 
-class RootWidget extends StatefulWidget {
+class RootWidget extends ConsumerStatefulWidget {
   const RootWidget({super.key});
 
   @override
-  State<StatefulWidget> createState() => RootWidgetState();
+  ConsumerState<ConsumerStatefulWidget> createState() => RootWidgetState();
 }
 
-class RootWidgetState extends State<RootWidget> {
-  late MainDataProvider mainDataProvier;
+class RootWidgetState extends ConsumerState<RootWidget> {
   late Future loadFuture;
 
   @override
   void initState() {
     super.initState();
-    mainDataProvier = MainDataProvider();
-    loadFuture = mainDataProvier.loadData();
-  }
-
-  void resetToFactory() async {
-    await MainDataProvider.resetToFactory();
-    setState(() {
-      mainDataProvier = MainDataProvider();
-    });
+    loadFuture = ref.read(settingsProvider.notifier).load();
   }
 
   @override
@@ -46,11 +36,10 @@ class RootWidgetState extends State<RootWidget> {
           }
           if (snapshot.hasError) {
             return AppError(
-              errorMsg: snapshot.error.toString(),
-              resetToFactory: resetToFactory,
+              errorMsg: snapshot.error.toString()
             );
           }
-          return MainDataProviderWidget(mainDataProvier: mainDataProvier, child: MyApp(home: const HomePage()),);
+          return const AppData(home: HomePage());
         });
   }
 }

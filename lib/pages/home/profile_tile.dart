@@ -1,28 +1,28 @@
-import 'dart:convert';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/data/profile_view_provider.dart';
+// import 'package:gcrdeviceconfigurator/data/profile_view_provider.dart';
+import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/dialogs/ok_dialog.dart';
 import 'package:gcrdeviceconfigurator/dialogs/yes_no_dialog.dart';
-import 'package:gcrdeviceconfigurator/pages/profile_page.dart';
-import 'package:provider/provider.dart';
+// import 'package:gcrdeviceconfigurator/pages/profile_page.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'dart:io';
 
-import '../../data/database.dart';
-import '../../data/profile.dart';
 import '../../i18n/languages.dart';
+import '../profile_page.dart';
 
-class ProfileTile extends StatelessWidget {
-  final Profile profile;
+class ProfileTile extends ConsumerWidget {
   final String profileKey;
 
   const ProfileTile(
-      {super.key, required this.profile, required this.profileKey});
+      {super.key, required this.profileKey});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final lang = Languages.of(context);
-    final database = Database.of(context);
+
+    final profile = ref.watch(settingsProvider.select((value) => value.profiles[profileKey]!));
 
     return Container(
       padding: const EdgeInsets.all(8.0),
@@ -31,13 +31,6 @@ class ProfileTile extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(10))),
       child: Row(
         children: [
-          Radio<Profile>(
-            value: profile,
-            groupValue: database.activeProfile,
-            onChanged: (value) {
-              database.setActiveProfile(value!);
-            },
-          ),
           Expanded(
               child: Text(profile.name,
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
@@ -45,10 +38,10 @@ class ProfileTile extends StatelessWidget {
             onSelected: (ev) async {
               switch (ev) {
                 case "Export":
-                  exportProfile(context);
+                  exportProfile(context, ref);
                   break;
                 case "Delete":
-                  deleteProfile(context);
+                  deleteProfile(context, ref);
                   break;
                 default:
               }
@@ -64,11 +57,11 @@ class ProfileTile extends StatelessWidget {
           ),
           MaterialButton(
             onPressed: () {
+              ref.read(visibleProfileProvider.notifier).setVisibleProfile(profileKey);
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => ChangeNotifierProvider.value(
-                          value: profile, child: const ProfilePage())));
+                      builder: (context) => const ProfilePage()));
             },
             shape: const CircleBorder(),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -82,7 +75,9 @@ class ProfileTile extends StatelessWidget {
     );
   }
 
-  Future<void> exportProfile(BuildContext context) async {
+  Future<void> exportProfile(BuildContext context, WidgetRef ref) async {
+    final profile = ref.read(settingsProvider.select((value) => value.profiles[profileKey]!));
+
     final lang = Languages.of(context);
     String? outputFile = await FilePicker.platform.saveFile(
         dialogTitle: lang.saveFile,
@@ -110,16 +105,19 @@ class ProfileTile extends StatelessWidget {
     }
   }
 
-  void deleteProfile(BuildContext context) async {
+  void deleteProfile(BuildContext context, WidgetRef ref) async {
+    final appSettings = ref.read(settingsProvider);
+    final appSettingsNotifier = ref.read(settingsProvider.notifier);
+
     final lang = Languages.of(context);
-    final database = Database.of(context, listen: false);
     final confimation = await showYesNoDialog(
       context,
       lang.deleteProfile,
       lang.wantToDeleteProfile,
     );
     if (confimation == true) {
-      database.deleteProfileIfMoreThanOne(profileKey);
+      appSettingsNotifier.update(appSettings.deleteProfileIfMoreThanOne(profileKey));
+      appSettingsNotifier.save();
     }
   }
 }

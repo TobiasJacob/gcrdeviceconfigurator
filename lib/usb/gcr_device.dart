@@ -5,9 +5,6 @@ import 'package:dartusbhid/enumerate.dart';
 import 'package:dartusbhid/open_device.dart';
 import 'package:flutter/foundation.dart';
 
-import '../data/app_settings.dart';
-import '../data/database.dart';
-
 const int vendorId = 1155;
 const int productId = 22352;
 const int packetSize = 64;
@@ -81,7 +78,7 @@ class GcrUsbHidDevice {
       if (response[0] == HidReportIdDeviceToHost.currentJoystickValues.value) {
         // This case is not used in this app. It is just used to tell windows about the current joystick values.
         joystickvalscounter++;
-        if (joystickvalscounter % 10 == 0) {
+        if (joystickvalscounter % 100 == 0) {
           debugPrint('Current Joystick Values: ${response.sublist(1)}');
         }
       } else if (response[0] == HidReportIdDeviceToHost.data.value) {
@@ -149,8 +146,8 @@ class GcrUsbHidDevice {
     Uint8List response = await waitForResponse(UsbHidCommands.sendRawADCValues);
 
     // Convert to 16 bit values
-    final Int16List adcValues = Int16List(response.length ~/ 2);
-    for (var i = 0; i < adcValues.length; i++) {
+    final Int16List adcValues = Int16List(10);
+    for (var i = 0; i < 10; i++) {
       adcValues[i] = response[i * 2] + (response[i * 2 + 1] << 8);
     }
     return adcValues;

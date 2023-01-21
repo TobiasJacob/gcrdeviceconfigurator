@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/data/profile_view_provider.dart';
+import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 import 'package:gcrdeviceconfigurator/pages/home/profile_tile.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../data/database.dart';
 import '../profile_page.dart';
 
-class ProfileList extends StatelessWidget {
+class ProfileList extends ConsumerWidget {
   const ProfileList({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final lang = Languages.of(context);
-    final database = Database.of(context);
-    final profileKeys = database.profiles.keys.toList();
+    final profiles = ref.watch(settingsProvider.select((s) => s.profiles));
+
+    final profileKeys = profiles.keys.toList();
 
     return Stack(children: [
       ListView.separated(
@@ -22,7 +24,6 @@ class ProfileList extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return ProfileTile(
             profileKey: profileKeys[index],
-            profile: database.profiles[profileKeys[index]]!,
           );
         },
         separatorBuilder: (context, index) => const SizedBox(height: 8),
@@ -39,13 +40,15 @@ class ProfileList extends StatelessWidget {
               child: IconButton(
                 icon: const Icon(Icons.add),
                 color: Colors.white,
-                onPressed: () {
-                  final profile = database.createNewProfile(lang.newProfile);
+                onPressed: () async {
+                  final updateAndId = ref.read(settingsProvider).createNewProfile(lang.newProfile);
+                  ref.read(settingsProvider.notifier).update(updateAndId.item1);
+                  ref.read(visibleProfileProvider.notifier).setVisibleProfile(updateAndId.item2);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => ChangeNotifierProvider.value(
-                              value: profile, child: const ProfilePage())));
+                          builder: (context) => const ProfilePage()));
+                  await ref.read(settingsProvider.notifier).save();
                 },
               ),
             ),

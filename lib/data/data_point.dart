@@ -1,14 +1,20 @@
-class DataPoint {
-  final double x;
-  final double y;
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 
-  DataPoint(this.x, this.y);
+part 'data_point.freezed.dart';
+part 'data_point.g.dart';
 
-  Map<String, dynamic> toJSON() {
-    return {"x": x, "y": y};
-  }
+@freezed
+class DataPoint with _$DataPoint {
+  @Assert('x >= 0')
+  @Assert('x <= 1.0')
+  @Assert('x >= 0')
+  @Assert('x <= 1.0')
+  const factory DataPoint({
+    required double x,
+    required double y
+  }) = _DataPoint;
 
-  static DataPoint fromJSON(Map<String, dynamic> e) {
-    return DataPoint(e["x"], e["y"]);
-  }
+  factory DataPoint.fromJson(Map<String, Object?> json)
+      => _$DataPointFromJson(json);
 }

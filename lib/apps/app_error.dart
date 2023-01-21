@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class AppError extends StatelessWidget {
+class AppError extends ConsumerWidget {
   final String errorMsg;
 
-  final void Function() resetToFactory;
-
-  const AppError(
-      {super.key, required this.errorMsg, required this.resetToFactory});
+  const AppError({super.key, required this.errorMsg});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     const title = "Pedal Config";
     return MaterialApp(
         title: title,
@@ -30,7 +29,9 @@ class AppError extends StatelessWidget {
                     height: 8,
                   ),
                   ElevatedButton(
-                      onPressed: resetToFactory,
+                      onPressed: () {
+                        ref.read(settingsProvider.notifier).resetToFactory();
+                      },
                       child: const Text(
                           "Reset to Factory (this will delete all profiles and calibration data)")),
                 ],
