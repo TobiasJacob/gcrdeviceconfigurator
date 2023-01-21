@@ -32,6 +32,10 @@ abstract class Languages {
   String get overwrite;
   String get deleteProfile;
   String get wantToDeleteProfile;
+  String get uploadProfile;
+  String errorUploadProfile(String msg);
+  String get errorNotConnected;
+  String activatedProfile(String name);
 
   // Profile Page
   String editProfile(String profile);

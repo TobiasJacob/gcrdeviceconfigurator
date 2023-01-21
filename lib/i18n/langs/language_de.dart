@@ -82,6 +82,22 @@ class LanguageDe extends Languages {
   String get wantToDeleteProfile => "Möchten Sie das Profil löschen?";
 
   @override
+  String get uploadProfile => "Profil aktivieren";
+
+  @override
+  String errorUploadProfile(String msg) {
+    return "Fehler beim Aktivieren des Profils: $msg";
+  }
+
+  @override
+  String activatedProfile(String name) {
+    return "Profil $name aktiviert";
+  }
+
+  @override
+  String get errorNotConnected => "Gerät nicht verbunden";
+
+  @override
   String editProfile(String profile) {
     return "Bearbeite $profile";
   }

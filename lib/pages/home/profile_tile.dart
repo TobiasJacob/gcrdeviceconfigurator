@@ -5,25 +5,27 @@ import 'package:gcrdeviceconfigurator/data/profile_view_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/dialogs/ok_dialog.dart';
 import 'package:gcrdeviceconfigurator/dialogs/yes_no_dialog.dart';
+import 'package:gcrdeviceconfigurator/usb/usb_provider.dart';
 // import 'package:gcrdeviceconfigurator/pages/profile_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'dart:io';
 
 import '../../data/profile.dart';
 import '../../i18n/languages.dart';
+import '../../usb/config_serialize.dart';
 import '../profile_page.dart';
 
 class ProfileTile extends ConsumerWidget {
   final String profileKey;
 
-  const ProfileTile(
-      {super.key, required this.profileKey});
+  const ProfileTile({super.key, required this.profileKey});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final lang = Languages.of(context);
 
     final profile = ref.watch(settingsProvider.select((value) => value.profiles[profileKey] ?? Profile.empty()));
+    final usbStatus = ref.watch(usbProvider);
 
     return Container(
       padding: const EdgeInsets.all(8.0),
@@ -35,6 +37,41 @@ class ProfileTile extends ConsumerWidget {
           Expanded(
               child: Text(profile.name,
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
+          Tooltip(
+            message: lang.uploadProfile,
+            child: MaterialButton(
+              onPressed: () {
+                usbStatus.maybeWhen(
+                  data: (data) async {
+                    data.maybeMap(
+                      connected: (usbConn) async {
+                        try {
+                          final config = serializeConfig(ref.read(settingsProvider), profile);
+                          await usbConn.device.sendSerializedConfig(config);
+                          showOkDialog(context, lang.ok, lang.activatedProfile(profile.name));
+                        // ignore: empty_catches
+                        } catch (e) {
+                          showOkDialog(context, lang.error, lang.errorUploadProfile(e.toString()));
+                        }
+                      },
+                      orElse: () => showOkDialog(
+                          context, lang.error, lang.errorNotConnected),
+                    );
+                  },
+                  orElse: () =>
+                      showOkDialog(context, lang.error, lang.errorNotConnected),
+                );
+                // usbData.value.map(connected: connected, disconnected: disconnected, uninitialized: uninitialized)
+                // await usbStatus.device.sendSerializedConfig(serializeConfig(appSettings, database));
+              },
+              shape: const CircleBorder(),
+              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              minWidth: 0,
+              child: const Icon(
+                Icons.play_circle,
+              ),
+            ),
+          ),
           PopupMenuButton<String>(
             onSelected: (ev) async {
               switch (ev) {
@@ -59,10 +96,8 @@ class ProfileTile extends ConsumerWidget {
           MaterialButton(
             onPressed: () {
               ref.read(profileIdProvier.notifier).state = profileKey;
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ProfilePage()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const ProfilePage()));
             },
             shape: const CircleBorder(),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -77,7 +112,8 @@ class ProfileTile extends ConsumerWidget {
   }
 
   Future<void> exportProfile(BuildContext context, WidgetRef ref) async {
-    final profile = ref.read(settingsProvider.select((value) => value.profiles[profileKey]!));
+    final profile = ref
+        .read(settingsProvider.select((value) => value.profiles[profileKey]!));
 
     final lang = Languages.of(context);
     String? outputFile = await FilePicker.platform.saveFile(
@@ -117,7 +153,8 @@ class ProfileTile extends ConsumerWidget {
       lang.wantToDeleteProfile,
     );
     if (confimation == true) {
-      appSettingsNotifier.update(appSettings.deleteProfileIfMoreThanOne(profileKey));
+      appSettingsNotifier
+          .update(appSettings.deleteProfileIfMoreThanOne(profileKey));
       await appSettingsNotifier.save();
     }
   }

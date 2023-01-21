@@ -82,6 +82,22 @@ class LanguageEn extends Languages {
   String get wantToDeleteProfile => "Do you want to delete the profile?";
 
   @override
+  String get uploadProfile => "Activate Profile";
+
+  @override
+  String errorUploadProfile(String msg) {
+    return "Error activating profile: $msg";
+  }
+
+  @override
+  String activatedProfile(String name) {
+    return "Activated profile $name";
+  }
+
+  @override
+  String get errorNotConnected => "Not connected to device";
+
+  @override
   String editProfile(String profile) {
     return "Edit $profile";
   }

@@ -9,9 +9,9 @@ class UpdateDeviceWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final usbStatus = ref.watch(usbProvider);
 
-    final isConnected = usbStatus.maybeMap(
+    final isConnected = usbStatus.maybeWhen(
       data: (data) => data.maybeMap(
-        data: (s) => true,
+        connected: (s) => true,
         orElse: () => false,
       ),
       orElse: () => false,
@@ -19,15 +19,6 @@ class UpdateDeviceWidget extends ConsumerWidget {
 
     return Row(
       children: [
-        // isConnected ? ElevatedButton(
-        //   style: ElevatedButton.styleFrom(
-        //     backgroundColor: Colors.white,
-        //     foregroundColor: Colors.black,
-        //   ),
-        //   onPressed: () async {
-        //     debugPrint("${serializeConfig(appSettings, database)}");
-        //     await usbStatus.device.sendSerializedConfig(serializeConfig(appSettings, database));
-        // }, child: const Text("Upload profile")) : const SizedBox(width: 20.0),
         const SizedBox(width: 8.0),
         Container(
           width: 12.0,
