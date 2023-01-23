@@ -48,7 +48,7 @@ class ProfileTile extends ConsumerWidget {
                         try {
                           final config = serializeConfig(ref.read(settingsProvider), profile);
                           await usbConn.device.sendSerializedConfig(config);
-                          showOkDialog(context, lang.ok, lang.activatedProfile(profile.name));
+                          showOkDialog(context, lang.info, lang.activatedProfile(profile.name));
                         // ignore: empty_catches
                         } catch (e) {
                           showOkDialog(context, lang.error, lang.errorUploadProfile(e.toString()));

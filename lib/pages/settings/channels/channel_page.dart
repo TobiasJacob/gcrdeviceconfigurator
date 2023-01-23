@@ -147,8 +147,8 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
                         value: autoUpdate,
                         onChanged: (value) {
                           if (value == true) {
-                            setMinValue(currentValue);
-                            setMaxValue(currentValue);
+                            setMinValue((currentValue - 1).clamp(0, 4093));
+                            setMaxValue((currentValue + 1).clamp(0, 4093));
                           }
                           setState(() {
                             autoUpdate = value!;

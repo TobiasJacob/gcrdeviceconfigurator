@@ -4,8 +4,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AppError extends ConsumerWidget {
   final String errorMsg;
+  
+  final void Function() onResetToFactory;
 
-  const AppError({super.key, required this.errorMsg});
+  const AppError({super.key, required this.errorMsg, required this.onResetToFactory});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,9 +31,7 @@ class AppError extends ConsumerWidget {
                     height: 8,
                   ),
                   ElevatedButton(
-                      onPressed: () {
-                        ref.read(settingsProvider.notifier).resetToFactory();
-                      },
+                      onPressed: onResetToFactory,
                       child: const Text(
                           "Reset to Factory (this will delete all profiles and calibration data)")),
                 ],

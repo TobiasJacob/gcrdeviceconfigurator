@@ -11,6 +11,7 @@ abstract class Languages {
   String get no;
   String get error;
   String get ok;
+  String get info;
 
   // Main Page
   String get newProfile;

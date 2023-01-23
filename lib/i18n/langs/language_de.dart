@@ -19,6 +19,9 @@ class LanguageDe extends Languages {
   String get ok => "Ok";
 
   @override
+  String get info => "Info";
+
+  @override
   String get newProfile => "Neues Profil";
 
   @override

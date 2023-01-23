@@ -36,7 +36,13 @@ class RootWidgetState extends ConsumerState<RootWidget> {
           }
           if (snapshot.hasError) {
             return AppError(
-              errorMsg: snapshot.error.toString()
+              errorMsg: snapshot.error.toString(),
+              onResetToFactory: () async {
+                await ref.read(settingsProvider.notifier).resetToFactory();
+                setState(() {
+                  loadFuture = ref.read(settingsProvider.notifier).load();
+                });
+              },
             );
           }
           return const AppData(home: HomePage());

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
 import 'package:gcrdeviceconfigurator/data/channel.dart';
 import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
@@ -23,14 +25,14 @@ class SettingsProvider extends StateNotifier<AppSettings> {
     await storage.ready;
 
     final jsonSettings = await storage.getItem("settings");
-    state = AppSettings.fromJson(jsonSettings);
+    state = AppSettings.fromJson(jsonDecode(jsonSettings));
   }
 
   Future<void> save() async {
     final storage = LocalStorage('data.json');
     await storage.ready;
 
-    await storage.setItem("settings", state.toJson());
+    await storage.setItem("settings", jsonEncode(state.toJson()));
   }
 
   Future<void> resetToFactory() async {

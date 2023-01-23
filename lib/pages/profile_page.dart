@@ -90,6 +90,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
     final confirmation = await showYesNoDialog(
         context, lang.saveProfile, lang.wantToSaveProfile);
+    print(confirmation);
 
     if (confirmation == true) {
       notif.save();

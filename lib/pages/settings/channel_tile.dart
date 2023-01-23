@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/channels/channel_page.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
@@ -19,6 +20,8 @@ class ChannelItem extends ConsumerWidget {
 
     return MaterialButton(
       onPressed: () {
+        ref.read(channelIdProvider.notifier).state = index;
+
         Navigator.push(
             context,
             MaterialPageRoute(

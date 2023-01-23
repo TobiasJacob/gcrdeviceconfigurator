@@ -14,6 +14,7 @@ class Channel with _$Channel {
   @Assert('minValue < 4096')
   @Assert('maxValue >= 0')
   @Assert('maxValue < 4096')
+  @Assert('minValue < maxValue')
   factory Channel({
     required Usage usage,
     required int minValue,

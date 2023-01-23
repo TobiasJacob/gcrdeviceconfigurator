@@ -19,6 +19,9 @@ class LanguageEn extends Languages {
   String get ok => "Ok";
 
   @override
+  String get info => "Info";
+
+  @override
   String get newProfile => "New Profile";
 
   @override
