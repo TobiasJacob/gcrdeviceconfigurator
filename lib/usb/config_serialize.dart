@@ -7,31 +7,32 @@ import '../data/profile.dart';
 Uint8List serializeConfig(AppSettings appSettings, Profile activeProfile) {
   final buffer = WriteBuffer();
   // Axis Data for each usage implemented on pcb (4 * (1 + n * 2) * 4 bytes)
-  final usagesOnPCB = [Usage.gas, Usage.brake, Usage.clutch, Usage.handbrake];
-  for (final usage in usagesOnPCB) {
-    final axis = activeProfile.axes[usage]!;
-    var channelIndex = -1;
-    for (var i = 0; i < appSettings.channelSettings.length; i++) {
-      if (appSettings.channelSettings[i].usage == usage) {
-        channelIndex = i;
-        break;
-      }
-    }
-    buffer.putUint8(channelIndex);
-    if (channelIndex == -1) {
+  buffer.putUint32(0xdeadbeef); // Magic number
+  for (int i = 0; i < 10; i++) {
+    final usage = appSettings.channelSettings[i].usage;
+    final axis = activeProfile.axes[usage];
+    if (axis == null) {
+      buffer.putUint8(0); // Axis not used
       buffer.putUint16(0);
       buffer.putUint16(4095);
+      buffer.putUint16(0);
+      buffer.putUint16(0);
+      for (var i = 1; i < 20; i++) {
+        buffer.putUint16(4095);
+        buffer.putUint16(4095);
+      }
     } else {
-      buffer.putUint16(appSettings.channelSettings[channelIndex].minValue);
-      buffer.putUint16(appSettings.channelSettings[channelIndex].maxValue);
-    }
-    for (final dataPoint in axis.dataPoints) {
-      buffer.putUint16((dataPoint.x * 4096).round().clamp(0, 4095));
-      buffer.putUint16((dataPoint.y * 4096).round().clamp(0, 4095));
-    }
-    for (var i = 0; i < 20 - axis.dataPoints.length; i++) {
-      buffer.putUint16(4095);
-      buffer.putUint16(4095);
+      buffer.putUint8(1); // Axis used
+      buffer.putUint16(appSettings.channelSettings[i].minValue);
+      buffer.putUint16(appSettings.channelSettings[i].maxValue);
+      for (final dataPoint in axis.dataPoints) {
+        buffer.putUint16((dataPoint.x * 4096).round().clamp(0, 4095));
+        buffer.putUint16((dataPoint.y * 4096).round().clamp(0, 4095));
+      }
+      for (var i = 0; i < 20 - axis.dataPoints.length; i++) {
+        buffer.putUint16(4095);
+        buffer.putUint16(4095);
+      }
     }
   }
 

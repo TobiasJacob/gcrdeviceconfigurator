@@ -8,7 +8,7 @@ import 'package:flutter/foundation.dart';
 const int vendorId = 1155;
 const int productId = 22352;
 const int packetSize = 64;
-const int serializedConfigLength = 4 * (1 + 2 * 2 + 20 * 2 * 2);
+const int serializedConfigLength = 854;
 
 // Should be the same as in gcrdevice/UserCode/usb_hid_comm.h. Note that gcrdevice is in another repo.
 enum HidReportIdDeviceToHost {
@@ -66,9 +66,9 @@ class GcrUsbHidDevice {
 
   Future<Uint8List> waitForResponse(UsbHidCommands command) async {
     Uint8List response = Uint8List(0);
-    int maxTries = 100;
+    int maxTries = 1000;
     while (true) {
-      response = await device.readReport(100);
+      response = await device.readReport(1000);
       // debugPrint('Response: $response');
       if (response.isEmpty) {
         debugPrint('Empty response');

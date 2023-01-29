@@ -14,8 +14,8 @@ import 'package:gcrdeviceconfigurator/usb/gcr_device.dart';
 void test() async {
     final appSettings = AppSettings.empty();
     final buffer = serializeConfig(appSettings, Profile.empty());
-    debugPrint("Full config has length ${buffer.length}"); // 4 * (1 + 2 * 2 + 20 * 2 * 2) = 340
-    assert(buffer.length == 340);
+    debugPrint("Full config has length ${buffer.length}"); // 10 * 2 * (2 + 20 * 2) = 854
+    assert(buffer.length == 854);
 
     final device = GcrUsbHidDevice();
     await device.open();
@@ -46,6 +46,8 @@ void test() async {
     for (int i = 0; i < receivedInitialConfig.length; i++) {
       if (receivedInitialConfig[i] != buffer[i]) {
         debugPrint("Received config differs at index $i");
+        debugPrint("Expected: ${buffer.sublist(i, i + 10)}");
+        debugPrint("Received: ${receivedInitialConfig.sublist(i, i + 10)}");
         break;
       }
     }
@@ -64,6 +66,7 @@ void test() async {
     }
 
     await device.close();
+    debugPrint("Done");
 }
 
 
