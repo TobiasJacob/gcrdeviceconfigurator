@@ -15,6 +15,7 @@ jobs:
           channel: 'stable'
           cache: true
       - run: flutter config --enable-windows-desktop
+      - run: flutter pub get
       - run: flutter pub run build_runner build
       - run: flutter build windows
       - uses: vimtor/action-zip@v1
