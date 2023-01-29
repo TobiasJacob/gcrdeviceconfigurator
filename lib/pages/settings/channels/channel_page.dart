@@ -1,3 +1,4 @@
+import 'package:dartusbhid/open_device.dart';
 import 'package:dartusbhid/usb_device.dart';
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/channel.dart';
@@ -10,6 +11,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/app_settings.dart';
 import '../../../i18n/languages.dart';
+import '../../../usb/usb_data.dart';
 
 class ChannelPage extends ConsumerStatefulWidget {
   final int index;
@@ -43,44 +45,55 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
   Widget build(BuildContext context) {
     final lang = Languages.of(context);
     final channel = ref.watch(channelProvider);
-    final usbStatus = ref.watch(usbProvider); 
+    final usbStatus = ref.watch(usbProvider);
     final settingsNotifier = ref.watch(settingsProvider.notifier);
 
     final currentValue = usbStatus.maybeWhen(
       data: (data) => data.maybeMap(
         connected: (usbStatus) => usbStatus.currentValues[widget.index],
-        orElse: () => 0,
+        orElse: () => null,
       ),
-      orElse: () => 0,
+      orElse: () => null,
     );
 
-    setMinValue(int value) {
+    updateValues(int? minValue, int? maxValue) {
       setState(() {
-        settingsNotifier.updateChannel(channel.updateMinValue(value));
-        minController.text = value.toString();
+        Channel updatedChannel = channel;
+        if (minValue != null && maxValue != null) { // Both values are set simultaneously so that the min value is always smaller than the max value
+          updatedChannel = channel.updateMinMaxValue(minValue, maxValue);
+          minController.text = minValue.toString();
+          maxController.text = maxValue.toString();
+        } else if (minValue != null) {
+          updatedChannel = channel.updateMinValue(minValue);
+          minController.text = currentValue.toString();
+        } else if (maxValue != null) {
+          updatedChannel = channel.updateMaxValue(maxValue);
+          maxController.text = currentValue.toString();
+        }
+        if (updatedChannel != channel) {
+          settingsNotifier.updateChannel(updatedChannel);
+        }
       });
     }
-
-    setMaxValue(int value) {
-      setState(() {
-        settingsNotifier.updateChannel(channel.updateMaxValue(value));
-        maxController.text = value.toString();
-      });
-    }
-
+  
     setUsage(Usage usage) {
       settingsNotifier.updateChannel(channel.updateChannelUsage(usage));
     }
 
     if (autoUpdate) {
-      if (currentValue < channel.minValue) {
+      if (currentValue != null && currentValue < channel.minValue && currentValue > channel.maxValue) {
         Future(() {
-          setMinValue(currentValue);
+          updateValues(currentValue, currentValue);
         });
       }
-      if (currentValue > channel.maxValue) {
+      if (currentValue != null && currentValue < channel.minValue) {
         Future(() {
-          setMaxValue(currentValue);
+          updateValues(currentValue, null);
+        });
+      }
+      if (currentValue != null && currentValue > channel.maxValue) {
+        Future(() {
+          updateValues(null, currentValue);
         });
       }
     }
@@ -114,7 +127,7 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
                 onFocusChange: (value) {
                   final valueInt = int.tryParse(minController.text);
                   if (valueInt != null) {
-                    setMinValue(valueInt);
+                    updateValues(valueInt, null);
                   }
                 },
                 child: TextField(
@@ -127,7 +140,7 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
                 onFocusChange: (value) {
                   final valueInt = int.tryParse(maxController.text);
                   if (valueInt != null) {
-                    setMaxValue(valueInt);
+                    updateValues(null, valueInt);
                   }
                 },
                 child: TextField(
@@ -147,8 +160,7 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
                         value: autoUpdate,
                         onChanged: (value) {
                           if (value == true) {
-                            setMinValue((currentValue - 1).clamp(0, 4093));
-                            setMaxValue((currentValue + 1).clamp(0, 4093));
+                            updateValues(((currentValue ?? 0) - 1).clamp(0, 4095), ((currentValue ?? 0) + 1).clamp(0, 4095));
                           }
                           setState(() {
                             autoUpdate = value!;

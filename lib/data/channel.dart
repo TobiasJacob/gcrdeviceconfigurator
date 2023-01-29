@@ -37,4 +37,8 @@ class Channel with _$Channel {
   Channel updateMaxValue(int maxValue) {
     return copyWith(maxValue: maxValue);
   }
+
+  Channel updateMinMaxValue(int minValue, int maxValue) {
+    return copyWith(minValue: minValue, maxValue: maxValue);
+  }
 }
