@@ -4,6 +4,7 @@ import 'package:gcrdeviceconfigurator/data/data_point.dart';
 import 'package:gcrdeviceconfigurator/data/profile_axis_view_provider.dart';
 import 'package:gcrdeviceconfigurator/data/profile_view_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
+import 'package:gcrdeviceconfigurator/usb/usb_data.dart';
 import 'package:gcrdeviceconfigurator/usb/usb_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -28,33 +29,20 @@ class Chart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final channelsSettings = ref.watch(settingsProvider.select((value) => value.channelSettings));
     final axisId = ref.watch(axisIdProvider);
     final axis = ref.watch(axisProvider);
     final settings = ref.watch(settingsProvider.notifier);
+    final appSettings = ref.watch(settingsProvider);
 
     final usbStatus = ref.watch(usbProvider);
     // Todo: Make this more efficient
-    var channelIndex = -1;
-    for (var i = 0; i < channelsSettings.length; i++) {
-      if (channelsSettings[i].usage == axisId) {
-        channelIndex = i;
-        break;
-      }
-    }
-    var value = 0.0;
-    if (channelIndex >= 0) {
-      var channelSettings = channelsSettings[channelIndex];
-      final usbValue = usbStatus.maybeWhen(
-        data: (data) => data.maybeMap(
-          connected: (usbStatus) => usbStatus.currentValues[channelIndex],
-          orElse: () => 0,
-        ),
-        orElse: () => 0,
-      );
-      value = (usbValue - channelSettings.minValue) /
-          (channelSettings.maxValue - channelSettings.minValue);
-    }
+    final value = usbStatus.maybeWhen(
+      data: (data) => data.maybeMap(
+        connected: (usbStatus) => parseValue(appSettings, usbStatus.currentValues, axisId),
+        orElse: () => 0.0,
+      ),
+      orElse: () => 0.0,
+    );
 
     final dataPoints = axis.dataPoints;
     const margin = 16.0;

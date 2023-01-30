@@ -4,11 +4,12 @@ import 'dart:typed_data';
 import 'package:dartusbhid/enumerate.dart';
 import 'package:dartusbhid/open_device.dart';
 import 'package:flutter/foundation.dart';
+import 'package:gcrdeviceconfigurator/usb/firmware_version.dart';
 
 const int vendorId = 1155;
 const int productId = 22352;
 const int packetSize = 64;
-const int serializedConfigLength = 854;
+const int serializedConfigLength = 864;
 
 // Should be the same as in gcrdevice/UserCode/usb_hid_comm.h. Note that gcrdevice is in another repo.
 enum HidReportIdDeviceToHost {
@@ -32,7 +33,8 @@ enum UsbHidCommands {
   ping(00),
   sendRawADCValues(01),
   sendConfigToHost(02),
-  receiveConfigFromHost(03);
+  receiveConfigFromHost(03),
+  sendFirmwareVersion(04);
 
   final int value;
   const UsbHidCommands(this.value);
@@ -219,5 +221,27 @@ class GcrUsbHidDevice {
     final configBuffer = configBufferBytes.buffer.asUint8List(configBufferBytes.offsetInBytes, configBufferBytes.lengthInBytes);
     assert (configBuffer.length == serializedConfigLength);
     return configBuffer;
+  }
+  
+  Future<FirmwareData> getFirmwareInformation() async {
+    if (simulated) {
+      return FirmwareData(DeviceId.unknown, 0, 0, 0);
+    }
+    const payLoadSize = packetSize - 2;
+
+    final commandWrite = WriteBuffer();
+    commandWrite.putUint8(HidReportIdHostToDevice.command.value); // Report ID (Send command)
+    commandWrite.putUint8(UsbHidCommands.sendFirmwareVersion.value); // Read Config Command
+    for (var j = 0; j < payLoadSize; j++) {
+      commandWrite.putUint8(0x00);
+    }
+    final commandBytes = commandWrite.done();
+    final command = commandBytes.buffer.asUint8List(commandBytes.offsetInBytes, commandBytes.lengthInBytes);
+    assert (command.length == packetSize);
+    await device.writeReport(command);
+
+
+    final response = await waitForResponse(UsbHidCommands.sendFirmwareVersion);
+    return FirmwareData.parse(response);
   }
 }

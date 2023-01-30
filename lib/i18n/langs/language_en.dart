@@ -1,4 +1,5 @@
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
+import 'package:gcrdeviceconfigurator/data/profile.dart';
 
 import '../languages.dart';
 
@@ -54,13 +55,33 @@ class LanguageEn extends Languages {
   @override
   String usage(Usage usage) {
     switch (usage) {
-      case Usage.gas:
-        return "Gas";
-      case Usage.brake:
-        return "Brake";
+      case Usage.gas1:
+        return "Gas 1";
+      case Usage.gas2:
+        return "Gas 2";
+      case Usage.brake1:
+        return "Brake 1";
+      case Usage.brake2:
+        return "Brake 1";
       case Usage.clutch:
         return "Clutch";
       case Usage.handbrake:
+        return "Handbrake";
+      default:
+        return "Not used";
+    }
+  }
+
+  @override
+  String profileAxisType(ProfileAxisType usage) {
+    switch (usage) {
+      case ProfileAxisType.gas:
+        return "Gas";
+      case ProfileAxisType.brake:
+        return "Brake";
+      case ProfileAxisType.clutch:
+        return "Clutch";
+      case ProfileAxisType.handbrake:
         return "Handbrake";
       default:
         return "Not used";

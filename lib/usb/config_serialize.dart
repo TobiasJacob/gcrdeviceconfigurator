@@ -10,26 +10,55 @@ Uint8List serializeConfig(AppSettings appSettings, Profile activeProfile) {
   buffer.putUint32(0xdeadbeef); // Magic number
   for (int i = 0; i < 10; i++) {
     final usage = appSettings.channelSettings[i].usage;
-    final axis = activeProfile.axes[usage];
-    if (axis == null) {
+    var channelDisabled = usage == Usage.none;
+    // If brake1 and brake2 are both enabled, disable brake2 and use sensor data fusion instead
+    if (usage == Usage.brake2 && appSettings.numOfChannelsWithUsage(Usage.brake1) == 1) {
+      channelDisabled = true;
+    }
+    // If gas1 and gas2 are both enabled, disable gas2 and use sensor data fusion instead
+    if (usage == Usage.gas2 && appSettings.numOfChannelsWithUsage(Usage.gas1) == 1) {
+      channelDisabled = true;
+    }
+
+    final profileAxis = activeProfile.axes[getProfileAxisForUsage(usage)];
+
+    if (channelDisabled) {
       buffer.putUint8(0); // Axis not used
-      buffer.putUint16(0);
-      buffer.putUint16(4095);
-      buffer.putUint16(0);
+    } else {
+      buffer.putUint8(1); // Axis used
+    }
+    buffer.putUint16(appSettings.channelSettings[i].minValue); // Min value
+    buffer.putUint16(appSettings.channelSettings[i].maxValue); // Max value
+
+    var channelForSensorDataFusion = -1;
+    if (usage == Usage.brake1) {
+      // If brake1 is used, brake2 might be used for sensor data fusion if it is found, meaning channelWithUsage does not return -1. If -1 is returned, sensor data fusion is not used.
+      channelForSensorDataFusion = appSettings.channelWithUsage(Usage.brake2);
+    }
+    if (usage == Usage.gas1) {
+      // If gas1 is used, gas2 might be used for sensor data fusion if it is found, meaning channelWithUsage does not return -1. If -1 is returned, sensor data fusion is not used.
+      channelForSensorDataFusion = appSettings.channelWithUsage(Usage.gas2);
+    }
+    if (channelForSensorDataFusion == -1) {
+      buffer.putUint8(0xFF); // Channel for sensor data fusion hardcoded to 0xFF
+    } else {
+      buffer.putUint8(channelForSensorDataFusion);
+    }
+
+    if (profileAxis == null)
+    {
+      buffer.putUint16(0); 
       buffer.putUint16(0);
       for (var i = 1; i < 20; i++) {
         buffer.putUint16(4095);
         buffer.putUint16(4095);
       }
     } else {
-      buffer.putUint8(1); // Axis used
-      buffer.putUint16(appSettings.channelSettings[i].minValue);
-      buffer.putUint16(appSettings.channelSettings[i].maxValue);
-      for (final dataPoint in axis.dataPoints) {
+      for (final dataPoint in profileAxis.dataPoints) {
         buffer.putUint16((dataPoint.x * 4096).round().clamp(0, 4095));
         buffer.putUint16((dataPoint.y * 4096).round().clamp(0, 4095));
       }
-      for (var i = 0; i < 20 - axis.dataPoints.length; i++) {
+      for (var i = 0; i < 20 - profileAxis.dataPoints.length; i++) {
         buffer.putUint16(4095);
         buffer.putUint16(4095);
       }
@@ -39,5 +68,6 @@ Uint8List serializeConfig(AppSettings appSettings, Profile activeProfile) {
   // Write to device
   final messageBufferBytes = buffer.done();
   final messageBuffer = messageBufferBytes.buffer.asUint8List(messageBufferBytes.offsetInBytes, messageBufferBytes.lengthInBytes);
+  debugPrint("Message buffer: $messageBuffer");
   return messageBuffer;
 }

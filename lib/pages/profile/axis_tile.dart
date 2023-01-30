@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/data/app_settings.dart';
 import 'package:gcrdeviceconfigurator/data/profile_axis_view_provider.dart';
 import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../data/profile.dart';
+
 class AxisTile extends ConsumerWidget {
-  final Usage usage;
-  final Function(Usage usage) onSelect;
+  final ProfileAxisType usage;
+  final Function(ProfileAxisType usage) onSelect;
 
   const AxisTile({super.key, required this.usage, required this.onSelect});
 
@@ -26,7 +27,7 @@ class AxisTile extends ConsumerWidget {
       child: Row(
         children: [
           Expanded(
-              child: Text(lang.usage(usage),
+              child: Text(lang.profileAxisType(usage),
                   style: const TextStyle(color: Colors.black, fontSize: 18))),
           MaterialButton(
             onPressed: () {

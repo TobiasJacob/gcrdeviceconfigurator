@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
+import 'package:gcrdeviceconfigurator/data/profile.dart';
 
 abstract class Languages {
   static Languages of(BuildContext context) {
@@ -26,6 +27,7 @@ abstract class Languages {
 
   // Usage
   String usage(Usage usage);
+  String profileAxisType(ProfileAxisType usage);
 
   // Profile tile
   String get saveFile;
@@ -56,4 +58,5 @@ abstract class Languages {
   String get minValue;
   String get maxValue;
   String get currentValue;
+
 }

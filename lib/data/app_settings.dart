@@ -115,8 +115,33 @@ class AppSettings with _$AppSettings {
         ..[index] = channel
     );
   }
+
+  int numOfChannelsWithUsage(Usage usage) {
+    return channelSettings.where((element) => element.usage == usage).length;
+  }
+
+  int channelWithUsage(Usage usage) {
+    return channelSettings.indexWhere((element) => element.usage == usage);
+  }
 }
 
-enum Usage { none, gas, brake, clutch, handbrake }
+enum Usage { none, gas1, gas2, brake1, brake2, clutch, handbrake }
 
 class AlreadyInUseException implements Exception {}
+
+ProfileAxisType? getProfileAxisForUsage(Usage usage) {
+  switch (usage) {
+    case Usage.gas1:
+    case Usage.gas2:
+      return ProfileAxisType.gas;
+    case Usage.brake1:
+    case Usage.brake2:
+      return ProfileAxisType.brake;
+    case Usage.clutch:
+      return ProfileAxisType.clutch;
+    case Usage.handbrake:
+      return ProfileAxisType.handbrake;
+    default:
+      return null;
+  }
+}

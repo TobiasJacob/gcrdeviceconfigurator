@@ -10,27 +10,33 @@ import 'app_settings.dart';
 part 'profile.freezed.dart';
 part 'profile.g.dart';
 
+enum ProfileAxisType {
+  gas,
+  brake,
+  clutch,
+  handbrake,
+}
+
 @freezed
 class Profile with _$Profile {
   const Profile._();
   
   @Assert('name.isNotEmpty')
   @Assert('axes.isNotEmpty')
-  @Assert('!axes.containsKey(Usage.none)')
-  @Assert('axes.containsKey(Usage.gas)')
-  @Assert('axes.containsKey(Usage.brake)')
-  @Assert('axes.containsKey(Usage.clutch)')
-  @Assert('axes.containsKey(Usage.handbrake)')
+  @Assert('axes.containsKey(ProfileAxisType.gas)')
+  @Assert('axes.containsKey(ProfileAxisType.brake)')
+  @Assert('axes.containsKey(ProfileAxisType.clutch)')
+  @Assert('axes.containsKey(ProfileAxisType.handbrake)')
   factory Profile({
     required String name,
-    required Map<Usage, ProfileAxis> axes
+    required Map<ProfileAxisType, ProfileAxis> axes
   }) = _Profile;
 
   factory Profile.empty({String name = "Default"}) => Profile(name: name, axes: {
-      Usage.gas: ProfileAxis.empty(),
-      Usage.brake: ProfileAxis.empty(),
-      Usage.clutch: ProfileAxis.empty(),
-      Usage.handbrake: ProfileAxis.empty(),
+      ProfileAxisType.gas: ProfileAxis.empty(),
+      ProfileAxisType.brake: ProfileAxis.empty(),
+      ProfileAxisType.clutch: ProfileAxis.empty(),
+      ProfileAxisType.handbrake: ProfileAxis.empty(),
     });
 
   factory Profile.fromJson(Map<String, Object?> json)
@@ -44,7 +50,7 @@ class Profile with _$Profile {
     return copyWith(name: name);
   }
   
-  Profile updateAxis(Usage index, ProfileAxis updateChartDataPoint) {
+  Profile updateAxis(ProfileAxisType index, ProfileAxis updateChartDataPoint) {
     return copyWith(axes: {
       ...axes,
       index: updateChartDataPoint
