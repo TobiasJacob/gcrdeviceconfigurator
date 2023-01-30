@@ -32,8 +32,8 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final appSettings = ref.watch(settingsProvider);
+    setState(() {
+      final appSettings = ref.read(settingsProvider);
       final channel = appSettings.channelSettings[widget.index];
 
       minController.text = channel.minValue.toString();
@@ -58,30 +58,33 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
 
     updateValues(int? minValue, int? maxValue) {
       setState(() {
-        Channel updatedChannel = channel;
-        if (minValue != null && maxValue != null) { // Both values are set simultaneously so that the min value is always smaller than the max value
+        var updatedChannel = channel;
+        if (minValue != null && maxValue != null) {
+          // Both values are set simultaneously so that the min value is always smaller than the max value
           updatedChannel = channel.updateMinMaxValue(minValue, maxValue);
           minController.text = minValue.toString();
           maxController.text = maxValue.toString();
         } else if (minValue != null) {
           updatedChannel = channel.updateMinValue(minValue);
-          minController.text = currentValue.toString();
+          minController.text = minValue.toString();
         } else if (maxValue != null) {
           updatedChannel = channel.updateMaxValue(maxValue);
-          maxController.text = currentValue.toString();
+          maxController.text = maxValue.toString();
         }
         if (updatedChannel != channel) {
           settingsNotifier.updateChannel(updatedChannel);
         }
       });
     }
-  
+
     setUsage(Usage usage) {
       settingsNotifier.updateChannel(channel.updateChannelUsage(usage));
     }
 
     if (autoUpdate) {
-      if (currentValue != null && currentValue < channel.minValue && currentValue > channel.maxValue) {
+      if (currentValue != null &&
+          currentValue < channel.minValue &&
+          currentValue > channel.maxValue) {
         Future(() {
           updateValues(currentValue, currentValue);
         });
@@ -125,9 +128,15 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
               title: lang.minValue,
               child: FocusScope(
                 onFocusChange: (value) {
-                  final valueInt = int.tryParse(minController.text);
-                  if (valueInt != null) {
+                  if (value) {
+                    return;
+                  }
+                  try {
+                    final valueInt = int.parse(minController.text);
                     updateValues(valueInt, null);
+                  } catch (e) {
+                    showOkDialog(context, lang.error, "$e");
+                    updateValues(channel.minValue, null);
                   }
                 },
                 child: TextField(
@@ -138,9 +147,15 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
               title: lang.maxValue,
               child: FocusScope(
                 onFocusChange: (value) {
-                  final valueInt = int.tryParse(maxController.text);
-                  if (valueInt != null) {
+                  if (value) {
+                    return;
+                  }
+                  try {
+                    final valueInt = int.parse(maxController.text);
                     updateValues(null, valueInt);
+                  } catch (e) {
+                    showOkDialog(context, lang.error, "$e");
+                    updateValues(null, channel.maxValue);
                   }
                 },
                 child: TextField(
@@ -160,7 +175,9 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
                         value: autoUpdate,
                         onChanged: (value) {
                           if (value == true) {
-                            updateValues(((currentValue ?? 0) - 1).clamp(0, 4095), ((currentValue ?? 0) + 1).clamp(0, 4095));
+                            updateValues(
+                                ((currentValue ?? 0) - 1).clamp(0, 4095),
+                                ((currentValue ?? 0) + 1).clamp(0, 4095));
                           }
                           setState(() {
                             autoUpdate = value!;
