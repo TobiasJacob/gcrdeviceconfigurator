@@ -1,5 +1,6 @@
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
 import 'package:gcrdeviceconfigurator/data/profile.dart';
+import 'package:gcrdeviceconfigurator/pages/home/profile_tile.dart';
 
 import '../languages.dart';
 
@@ -26,11 +27,13 @@ class LanguageDe extends Languages {
   String get newProfile => "Neues Profil";
 
   @override
-  String axisTileOptions(String option) {
+  String axisTileOptions(ProfileTileAction option) {
     switch (option) {
-      case "Export":
+      case ProfileTileAction.duplicate:
+        return "Duplizieren";
+      case ProfileTileAction.export:
         return "Exportieren";
-      case "Delete":
+      case ProfileTileAction.delete:
         return "Löschen";
       default:
         return "Undefined";

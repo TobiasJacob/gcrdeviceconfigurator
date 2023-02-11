@@ -93,6 +93,7 @@ class HomePage extends ConsumerWidget {
                         await showOkDialog(context, lang.error, "Error importing profile ${file.path}: $e");
                       }
                     }
+                    await ref.read(settingsProvider.notifier).save();
                     break;
                   default:
                 }

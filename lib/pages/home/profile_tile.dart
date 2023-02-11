@@ -15,6 +15,8 @@ import '../../i18n/languages.dart';
 import '../../usb/config_serialize.dart';
 import '../profile_page.dart';
 
+enum ProfileTileAction { duplicate, export, delete }
+
 class ProfileTile extends ConsumerWidget {
   final String profileKey;
 
@@ -72,21 +74,34 @@ class ProfileTile extends ConsumerWidget {
               ),
             ),
           ),
-          PopupMenuButton<String>(
+          PopupMenuButton<ProfileTileAction>(
             onSelected: (ev) async {
               switch (ev) {
-                case "Export":
+                case ProfileTileAction.duplicate:
+                  final updateAndId = ref
+                      .read(settingsProvider)
+                      .importProfile(profile.copyWith());
+                  ref.read(settingsProvider.notifier).update(updateAndId.item1);
+                  ref.read(profileIdProvier.notifier).state =
+                      updateAndId.item2;
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ProfilePage()));
+                  await ref.read(settingsProvider.notifier).save();
+                  break;
+                case ProfileTileAction.export:
                   exportProfile(context, ref);
                   break;
-                case "Delete":
+                case ProfileTileAction.delete:
                   deleteProfile(context, ref);
                   break;
                 default:
               }
             },
             itemBuilder: (BuildContext context) {
-              return {'Export', 'Delete'}.map((String choice) {
-                return PopupMenuItem<String>(
+              return ProfileTileAction.values.map((ProfileTileAction choice) {
+                return PopupMenuItem<ProfileTileAction>(
                   value: choice,
                   child: Text(lang.axisTileOptions(choice)),
                 );
