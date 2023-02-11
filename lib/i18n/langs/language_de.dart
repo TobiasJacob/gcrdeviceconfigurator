@@ -38,6 +38,15 @@ class LanguageDe extends Languages {
   }
 
   @override
+  String get addEmptyProfile => "Leeres Profil hinzufügen";
+
+  @override
+  String get importProfile => "Profil importieren";
+
+  @override
+  String get openFile => "Datei öffnen";
+
+  @override
   String get settings => "Einstellungen";
 
   @override

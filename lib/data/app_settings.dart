@@ -92,6 +92,21 @@ class AppSettings with _$AppSettings {
     throw Exception("Error creating profile. Consider deleting profiles.");
   }
 
+  Tuple2<AppSettings, String> importProfile(Profile profile) {
+    // 100 tries to find a random key not in the Dict
+    for (var i = 0; i < 100; i++) {
+      final profileId = generateRandomString();
+      if (profiles.containsKey(profileId)) {
+        continue;
+      }
+      return Tuple2(copyWith(
+        profiles: Map.of(profiles)
+          ..[profileId] = profile
+      ), profileId);
+    }
+    throw Exception("Error creating profile. Consider deleting profiles.");
+  }
+
   AppSettings updateProfile(String profileId, Profile profile) {
     return copyWith(
       profiles: Map.of(profiles)

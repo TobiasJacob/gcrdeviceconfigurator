@@ -21,7 +21,7 @@ class UsbData with _$UsbData {
 
 double parseValue(AppSettings appSettings, List<int> rawValues, ProfileAxisType profileAxisType) {
   var result = 0.0;
-  var count = 0.0;
+  var count = 0;
   for (var i = 0; i < 10; i++) {
     final channel = appSettings.channelSettings[i];
     final currentProfileAxisType = getProfileAxisForUsage(channel.usage);
@@ -32,5 +32,6 @@ double parseValue(AppSettings appSettings, List<int> rawValues, ProfileAxisType 
       count++;
     }
   }
+  if (count == 0) return 0.0;
   return result / count;
 }

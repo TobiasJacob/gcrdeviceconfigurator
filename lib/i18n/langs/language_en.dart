@@ -38,6 +38,15 @@ class LanguageEn extends Languages {
   }
 
   @override
+  String get addEmptyProfile => "Add empty profile";
+
+  @override
+  String get importProfile => "Import profile";
+
+  @override
+  String get openFile => "Open file";
+
+  @override
   String get settings => "Settings";
 
   @override

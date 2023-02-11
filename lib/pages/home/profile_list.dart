@@ -16,8 +16,7 @@ class ProfileList extends ConsumerWidget {
 
     final profileKeys = ref.watch(settingsProvider.select((s) => s.profiles.keys.toList()));
 
-    return Stack(children: [
-      ListView.separated(
+    return ListView.separated(
         padding: const EdgeInsets.all(16),
         itemCount: profileKeys.length,
         itemBuilder: (BuildContext context, int index) {
@@ -26,32 +25,6 @@ class ProfileList extends ConsumerWidget {
           );
         },
         separatorBuilder: (context, index) => const SizedBox(height: 8),
-      ),
-      Align(
-          alignment: Alignment.bottomRight,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Ink(
-              decoration: const ShapeDecoration(
-                color: Colors.blue,
-                shape: CircleBorder(),
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.add),
-                color: Colors.white,
-                onPressed: () async {
-                  final updateAndId = ref.read(settingsProvider).createNewProfile(lang.newProfile);
-                  ref.read(settingsProvider.notifier).update(updateAndId.item1);
-                  ref.read(profileIdProvier.notifier).state = updateAndId.item2;
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ProfilePage()));
-                  await ref.read(settingsProvider.notifier).save();
-                },
-              ),
-            ),
-          )),
-    ]);
+      );
   }
 }

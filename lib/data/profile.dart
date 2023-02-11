@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gcrdeviceconfigurator/data/profile_axis.dart';
@@ -41,6 +42,11 @@ class Profile with _$Profile {
 
   factory Profile.fromJson(Map<String, Object?> json)
       => _$ProfileFromJson(json);
+
+  static Future<Profile> fromFile(File path) async {
+    final json = jsonDecode(await path.readAsString());
+    return Profile.fromJson(json);
+  }
 
   Future<void> export(File file) async {
     await file.writeAsBytes(jsonEncode(toJson()).codeUnits);

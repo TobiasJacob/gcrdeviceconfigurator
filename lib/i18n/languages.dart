@@ -3,6 +3,8 @@ import 'package:gcrdeviceconfigurator/data/app_settings.dart';
 import 'package:gcrdeviceconfigurator/data/profile.dart';
 
 abstract class Languages {
+
+
   static Languages of(BuildContext context) {
     return Localizations.of<Languages>(context, Languages)!;
   }
@@ -17,6 +19,9 @@ abstract class Languages {
   // Main Page
   String get newProfile;
   String axisTileOptions(String option);
+  String get addEmptyProfile;
+  String get importProfile;
+  String get openFile;
 
   // Settings Page
   String get settings;
