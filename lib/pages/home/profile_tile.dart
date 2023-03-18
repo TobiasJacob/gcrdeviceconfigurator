@@ -5,11 +5,13 @@ import 'package:gcrdeviceconfigurator/data/profile_view_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/dialogs/ok_dialog.dart';
 import 'package:gcrdeviceconfigurator/dialogs/yes_no_dialog.dart';
+import 'package:gcrdeviceconfigurator/usb/usb_data.dart';
 import 'package:gcrdeviceconfigurator/usb/usb_provider.dart';
 // import 'package:gcrdeviceconfigurator/pages/profile_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'dart:io';
 
+import '../../data/activate_profile.dart';
 import '../../data/profile.dart';
 import '../../i18n/languages.dart';
 import '../../usb/config_serialize.dart';
@@ -42,27 +44,8 @@ class ProfileTile extends ConsumerWidget {
           Tooltip(
             message: lang.uploadProfile,
             child: MaterialButton(
-              onPressed: () {
-                usbStatus.maybeWhen(
-                  data: (data) async {
-                    data.maybeMap(
-                      connected: (usbConn) async {
-                        try {
-                          final config = serializeConfig(ref.read(settingsProvider), profile);
-                          await usbConn.device.sendSerializedConfig(config);
-                          showOkDialog(context, lang.info, lang.activatedProfile(profile.name));
-                        // ignore: empty_catches
-                        } catch (e) {
-                          showOkDialog(context, lang.error, lang.errorUploadProfile(e.toString()));
-                        }
-                      },
-                      orElse: () => showOkDialog(
-                          context, lang.error, lang.errorNotConnected),
-                    );
-                  },
-                  orElse: () =>
-                      showOkDialog(context, lang.error, lang.errorNotConnected),
-                );
+              onPressed: () async {
+                await activateProfile(context, ref);
                 // usbData.value.map(connected: connected, disconnected: disconnected, uninitialized: uninitialized)
                 // await usbStatus.device.sendSerializedConfig(serializeConfig(appSettings, database));
               },

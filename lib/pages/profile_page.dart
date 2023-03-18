@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gcrdeviceconfigurator/data/activate_profile.dart';
 import 'package:gcrdeviceconfigurator/data/profile_axis_view_provider.dart';
 import 'package:gcrdeviceconfigurator/data/profile_view_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
@@ -45,6 +46,13 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
         child: Scaffold(
             appBar: AppBar(
               title: Text(lang.editProfile(profile.name)),
+              actions: [
+                IconButton(
+                    icon: const Icon(Icons.play_circle),
+                    onPressed: () {
+                      activateProfile(context, ref);
+                    })
+              ],
             ),
             body: Row(
                   children: [
