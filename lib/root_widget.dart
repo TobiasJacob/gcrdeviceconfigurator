@@ -10,14 +10,14 @@ import 'apps/app_data.dart';
 import 'apps/app_error.dart';
 
 
-class RootWidget extends ConsumerStatefulWidget {
-  const RootWidget({super.key});
+class GCRRootWidget extends ConsumerStatefulWidget {
+  const GCRRootWidget({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => RootWidgetState();
+  ConsumerState<ConsumerStatefulWidget> createState() => GCRRootWidgetState();
 }
 
-class RootWidgetState extends ConsumerState<RootWidget> {
+class GCRRootWidgetState extends ConsumerState<GCRRootWidget> {
   late Future loadFuture;
 
   @override

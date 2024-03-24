@@ -20,7 +20,7 @@
 // void main() {
 //   // testWidgets('Initial screen is loading screen', (WidgetTester tester) async {
 //   //   // Build our app and trigger a frame.
-//   //   const app = RootWidget();
+//   //   const app = GCRRootWidget();
 //   //   await tester.pumpWidget(app);
 //   //   expect(find.byType(AppLoading), findsOneWidget);
 //   // });
