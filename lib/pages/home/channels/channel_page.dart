@@ -156,6 +156,15 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
                             ),
                           )),
                       SettingsTile(
+                          title: lang.inverted,
+                          child: Checkbox(
+                              value: channel.inverted,
+                              onChanged: (value) {
+                                updateValues(null, null);
+                                settingsNotifier.updateChannel(
+                                    channel.updateInverted(value ?? false));
+                              })),
+                      SettingsTile(
                         title: lang.currentValue,
                         child: Column(
                           children: [
