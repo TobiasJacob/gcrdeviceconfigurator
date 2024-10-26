@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
+import 'package:gcrdeviceconfigurator/data/data_point.dart';
 
 /// Serializes the current configuration of the device into a buffer.
 Uint8List serializeConfig(AppSettings appSettings) {
@@ -46,23 +47,20 @@ Uint8List serializeConfig(AppSettings appSettings) {
       buffer.putUint8(channelForSensorDataFusion);
     }
 
-    for (final dataPoint in profileAxis.dataPoints) {
-      if (inverted) {
-        buffer.putUint16((dataPoint.x * 4096).round().clamp(0, 4095));
-        buffer.putUint16((4095 - dataPoint.y * 4096).round().clamp(0, 4095));
-      } else {
+    if (inverted) {
+      for (final dataPoint in profileAxis.dataPoints.reversed) {
+        buffer.putUint16(((1.0 - dataPoint.x) * 4096).round().clamp(0, 4095));
+        buffer.putUint16((dataPoint.y * 4096).round().clamp(0, 4095));
+      }
+    } else {
+      for (final dataPoint in profileAxis.dataPoints) {
         buffer.putUint16((dataPoint.x * 4096).round().clamp(0, 4095));
         buffer.putUint16((dataPoint.y * 4096).round().clamp(0, 4095));
       }
     }
     for (var i = 0; i < 20 - profileAxis.dataPoints.length; i++) {
-      if (inverted) {
-        buffer.putUint16(4095);
-        buffer.putUint16(0);
-      } else {
-        buffer.putUint16(4095);
-        buffer.putUint16(4095);
-      }
+      buffer.putUint16(4095);
+      buffer.putUint16(4095);
     }
   }
 

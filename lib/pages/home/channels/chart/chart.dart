@@ -31,7 +31,7 @@ class Chart extends ConsumerWidget {
 
     final usbStatus = ref.watch(usbProvider);
     // Todo: Make this more efficient
-    final value = usbStatus.maybeWhen(
+    var value = usbStatus.maybeWhen(
       data: (data) => data.maybeMap(
         connected: (usbStatus) => parseValue(appSettings, usbStatus.currentValues, channelId),
         orElse: () => 0.0,

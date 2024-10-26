@@ -24,9 +24,10 @@ class ValueBar extends ConsumerWidget {
       orElse: () => null,
     );
     final rawValue = currentValues?[channelId];
-    final calibratedValue = currentValues != null
+    final calibratedValueX = currentValues != null
         ? parseValue(appSettings, currentValues, channelId)
         : null;
+    final calibratedValue = calibratedValueX != null ? appSettings.channelSettings[channelId].profileAxis.getY(calibratedValueX) : 0;
 
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
