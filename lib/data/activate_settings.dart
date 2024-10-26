@@ -17,9 +17,8 @@ Future<void> activateSettings(BuildContext context, WidgetRef ref) async {
           try {
             final config = serializeConfig(ref.read(settingsProvider));
             await usbConn.device.sendSerializedConfig(config);
-            // showOkDialog(
-            //     context, lang.info, lang.activatedProfile(profile.name));
-            // ignore: empty_catches
+            showOkDialog(
+                context, lang.info, lang.ok);
           } catch (e) {
             showOkDialog(
                 context, lang.error, lang.errorUploadProfile(e.toString()));

@@ -18,6 +18,8 @@ Uint8List serializeConfig(AppSettings appSettings) {
     //   channelDisabled = true;
     // }
 
+    final inverted = appSettings.channelSettings[i].inverted;
+
     final profileAxis = appSettings.channelSettings[i].profileAxis;
 
     if (channelDisabled) {
@@ -45,18 +47,29 @@ Uint8List serializeConfig(AppSettings appSettings) {
     }
 
     for (final dataPoint in profileAxis.dataPoints) {
-      buffer.putUint16((dataPoint.x * 4096).round().clamp(0, 4095));
-      buffer.putUint16((dataPoint.y * 4096).round().clamp(0, 4095));
+      if (inverted) {
+        buffer.putUint16((dataPoint.x * 4096).round().clamp(0, 4095));
+        buffer.putUint16((4095 - dataPoint.y * 4096).round().clamp(0, 4095));
+      } else {
+        buffer.putUint16((dataPoint.x * 4096).round().clamp(0, 4095));
+        buffer.putUint16((dataPoint.y * 4096).round().clamp(0, 4095));
+      }
     }
     for (var i = 0; i < 20 - profileAxis.dataPoints.length; i++) {
-      buffer.putUint16(4095);
-      buffer.putUint16(4095);
+      if (inverted) {
+        buffer.putUint16(4095);
+        buffer.putUint16(0);
+      } else {
+        buffer.putUint16(4095);
+        buffer.putUint16(4095);
+      }
     }
   }
 
   // Write to device
   final messageBufferBytes = buffer.done();
-  final messageBuffer = messageBufferBytes.buffer.asUint8List(messageBufferBytes.offsetInBytes, messageBufferBytes.lengthInBytes);
+  final messageBuffer = messageBufferBytes.buffer.asUint8List(
+      messageBufferBytes.offsetInBytes, messageBufferBytes.lengthInBytes);
   debugPrint("Message buffer: $messageBuffer");
   return messageBuffer;
 }

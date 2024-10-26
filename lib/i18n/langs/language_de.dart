@@ -107,6 +107,9 @@ class LanguageDe extends Languages {
   String get errorNotConnected => "Gerät nicht verbunden";
 
   @override
+  String get nSlashA => "N/A";
+
+  @override
   String editProfile(String profile) {
     return "Bearbeite $profile";
   }

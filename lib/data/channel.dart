@@ -20,10 +20,11 @@ class Channel with _$Channel {
     required Usage usage,
     required int minValue,
     required int maxValue,
-    required ProfileAxis profileAxis
+    required ProfileAxis profileAxis,
+    required bool inverted
   }) = _Channel;
 
-  factory Channel.empty() => Channel(usage: Usage.none, minValue: 0, maxValue: 4095, profileAxis: ProfileAxis.empty());
+  factory Channel.empty() => Channel(usage: Usage.none, minValue: 0, maxValue: 4095, profileAxis: ProfileAxis.empty(), inverted: false);
 
   factory Channel.fromJson(Map<String, Object?> json)
       => _$ChannelFromJson(json);
@@ -46,5 +47,9 @@ class Channel with _$Channel {
 
   Channel updateProfileAxis(ProfileAxis profileAxis) {
     return copyWith(profileAxis: profileAxis);
+  }
+
+  Channel updateInverted(bool inverted) {
+    return copyWith(inverted: inverted);
   }
 }

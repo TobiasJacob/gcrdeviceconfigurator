@@ -107,6 +107,9 @@ class LanguageEn extends Languages {
   String get errorNotConnected => "Not connected to device";
 
   @override
+  String get nSlashA => "N/A";
+
+  @override
   String editProfile(String profile) {
     return "Edit $profile";
   }

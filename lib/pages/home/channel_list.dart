@@ -59,8 +59,7 @@ class ChannelItem extends ConsumerWidget {
                 if (value != null) {
                   appSettingsNotifier.update(appSettings.updateChannel(
                       channelId, channelSettings.updateChannelUsage(value)));
-                  // Do not need to activate settings here because the usage does not change the behavior of the device
-                  // await activateSettings(context, ref);
+                  await activateSettings(context, ref);
                   await appSettingsNotifier.save();
                 }
               },
@@ -74,15 +73,33 @@ class ChannelItem extends ConsumerWidget {
               child: Text(
                 calibratedValue != null
                     ? calibratedValue.toStringAsFixed(2)
-                    : lang.error,
+                    : lang.nSlashA,
               ),
             ),
             SizedBox(
               width: 50,
               child: Text(
-                rawValue != null ? rawValue.toString() : lang.error,
+                rawValue != null ? rawValue.toString() : lang.nSlashA,
               ),
             ),
+            SizedBox(
+              width: 50,
+              child: Text(
+                channelSettings.minValue.toString(),
+              ),
+            ),
+            SizedBox(
+              width: 50,
+              child: Text(
+                channelSettings.maxValue.toString(),
+              ),
+            ),
+            Checkbox(value: channelSettings.inverted, onChanged: (value) async {
+              appSettingsNotifier.update(appSettings.updateChannel(
+                  channelId, channelSettings.updateInverted(value ?? false)));
+              await activateSettings(context, ref);
+              await appSettingsNotifier.save();
+            }),
             const Icon(
               Icons.arrow_right_rounded,
             )
