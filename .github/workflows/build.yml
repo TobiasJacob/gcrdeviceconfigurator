@@ -20,7 +20,7 @@ jobs:
       - run: flutter build windows
       - uses: vimtor/action-zip@v1
         with:
-          files: build/windows/runner/Release LICENSE.txt
+          files: build/windows/x64/runner/Release LICENSE.txt
           dest: GetCloserRacingDeviceConfigurator.zip
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
