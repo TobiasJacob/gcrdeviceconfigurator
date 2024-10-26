@@ -10,7 +10,18 @@ part 'profile_axis.g.dart';
 
 // Parabola function
 double parabola(double x) {
-  return 4 * x * (1 - x);
+  return x * x;
+}
+
+// Parabola function
+double paraboleFlipped(double x) {
+  x = 1 - x;
+  return 1 - x * x;
+}
+
+// S Curve
+double sCurve(double x) {
+  return 1 / (1 + exp(-(x - 0.5) * 10));
 }
 
 @freezed
@@ -36,38 +47,27 @@ class ProfileAxis with _$ProfileAxis {
         ]);
       case 2:
         return ProfileAxis(dataPoints: [
-          DataPoint(x: 0.0, y: 0.0),
-          DataPoint(x: 0.33, y: 0.33),
-          DataPoint(x: 0.66, y: 0.66),
-          DataPoint(x: 1.0, y: 1.0)
+          for (var i = 0; i <= 10; i++)
+            DataPoint(x: i / 10, y: paraboleFlipped(i / 10))
         ]);
       case 3:
         return ProfileAxis(dataPoints: [
-          DataPoint(x: 0.0, y: 0.0),
-          DataPoint(x: 0.5, y: 0.5),
-          DataPoint(x: 0.5, y: 0.5),
-          DataPoint(x: 1.0, y: 1.0)
+          for (var i = 0; i <= 10; i++)
+            DataPoint(x: i / 10, y: sCurve(i / 10))
         ]);
       case 4:
         return ProfileAxis(dataPoints: [
-          DataPoint(x: 0.0, y: 0.0),
-          DataPoint(x: 0.5, y: 0.5),
-          DataPoint(x: 0.5, y: 0.5),
-          DataPoint(x: 1.0, y: 1.0)
+          const DataPoint(x: 0.0, y: 0.0),
+          const DataPoint(x: 0.05, y: 0.0),
+          const DataPoint(x: 0.2, y: 0.2),
+          const DataPoint(x: 0.8, y: 0.8),
+          const DataPoint(x: 0.95, y: 1.0),
+          const DataPoint(x: 1.0, y: 1.0)
         ]);
       case 5:
         return ProfileAxis(dataPoints: [
-          DataPoint(x: 0.0, y: 0.0),
-          DataPoint(x: 0.5, y: 0.5),
-          DataPoint(x: 0.5, y: 0.5),
-          DataPoint(x: 1.0, y: 1.0)
-        ]);
-      case 6:
-        return ProfileAxis(dataPoints: [
-          DataPoint(x: 0.0, y: 0.0),
-          DataPoint(x: 0.5, y: 0.5),
-          DataPoint(x: 0.5, y: 0.5),
-          DataPoint(x: 1.0, y: 1.0)
+          const DataPoint(x: 0.0, y: 1.0),
+          const DataPoint(x: 1.0, y: 0.0)
         ]);
       default:
         return ProfileAxis(dataPoints: [
