@@ -1,10 +1,10 @@
 # Get closer Racing Device configurator
 
-This is the configuration Software for the GetCloserRacing pedals.
+This is the configuration Software for the GetCloserRacing pedals. It is fully open source. Feel free to submit pull requests or fiddle with the presets.
 
 ![Demo](docs/Demo.png)
 
-It is written for this PCB Board I designed:
+It works with the GetCloserRacing Box:
 
 ![Demo](docs/GameController.png)
 
@@ -20,3 +20,12 @@ flutter pub run build_runner build
 # Run tool
 flutter run windows
 ´´´
+
+## Releasing
+
+Create a new Github tag named v1.1.0 and push it
+
+```console
+git tag v1.1.0
+git push origin v1.1.0
+```
