@@ -10,9 +10,7 @@ import '../../../data/app_settings.dart';
 import '../../../i18n/languages.dart';
 
 class ChannelPage extends ConsumerStatefulWidget {
-  final int index;
-
-  const ChannelPage({super.key, required this.index});
+  const ChannelPage({super.key});
 
   @override
   ConsumerState<ChannelPage> createState() => _ChannelPageState();
@@ -30,7 +28,7 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
 
     setState(() {
       final appSettings = ref.read(settingsProvider);
-      final channel = appSettings.channelSettings[widget.index];
+      final channel = ref.read(channelProvider);
 
       minController.text = channel.minValue.toString();
       maxController.text = channel.maxValue.toString();
@@ -46,7 +44,7 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
 
     final currentValue = usbStatus.maybeWhen(
       data: (data) => data.maybeMap(
-        connected: (usbStatus) => usbStatus.currentValues[widget.index],
+        connected: (usbStatus) => usbStatus.currentValues[ref.read(channelIdProvider)],
         orElse: () => null,
       ),
       orElse: () => null,

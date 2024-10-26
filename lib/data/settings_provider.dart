@@ -39,15 +39,18 @@ class SettingsProvider extends StateNotifier<AppSettings> {
 
   void update(AppSettings settings) {
     state = settings;
+    save();
   }
 
   void updateChannel(Channel channel) {
     final index = ref.read(channelIdProvider);
     state = state.updateChannel(index, channel);
+    save();
   }
 
   void updateAxis(ProfileAxis updateChartDataPoint) {
     final index = ref.read(channelIdProvider);
     state = state.updateChannel(index, state.channelSettings[index].updateProfileAxis(updateChartDataPoint));
+    save();
   }
 }

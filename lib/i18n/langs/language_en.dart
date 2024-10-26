@@ -104,11 +104,6 @@ class LanguageEn extends Languages {
   }
 
   @override
-  String activatedProfile(String name) {
-    return "Activated profile $name";
-  }
-
-  @override
   String get errorNotConnected => "Not connected to device";
 
   @override

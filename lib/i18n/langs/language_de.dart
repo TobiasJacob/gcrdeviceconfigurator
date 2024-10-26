@@ -104,11 +104,6 @@ class LanguageDe extends Languages {
   }
 
   @override
-  String activatedProfile(String name) {
-    return "Profil $name aktiviert";
-  }
-
-  @override
   String get errorNotConnected => "Gerät nicht verbunden";
 
   @override

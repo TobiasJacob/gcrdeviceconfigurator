@@ -16,17 +16,15 @@ class ChannelItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final lang = Languages.of(context);
     final appSettings = ref.watch(settingsProvider);
+    final appSettingsNotifier = ref.watch(settingsProvider.notifier);
+    final channelSettings = appSettings.channelSettings[index];
 
     return MaterialButton(
       onPressed: () {
         ref.read(channelIdProvider.notifier).state = index;
 
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ChannelPage(
-                      index: index,
-                    )));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const ChannelPage()));
       },
       minWidth: 0,
       child: Row(
@@ -34,7 +32,7 @@ class ChannelItem extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              '${lang.channel(index)}: ${lang.usage(appSettings.channelSettings[index].usage)}',
+              '${lang.channel(index)}: ${lang.usage(channelSettings.usage)}',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             DropdownMenu<Usage>(
@@ -47,10 +45,12 @@ class ChannelItem extends ConsumerWidget {
               ],
               onSelected: (Usage? value) {
                 if (value != null) {
-                  appSettings.channelSettings[index].updateChannelUsage(value);
+                  appSettingsNotifier.update(
+                      appSettings.updateChannel(index, channelSettings.updateChannelUsage(value))
+                  );
                 }
               },
-              initialSelection: appSettings.channelSettings[index].usage,
+              initialSelection: channelSettings.usage,
             ),
             const Icon(
               Icons.arrow_right_rounded,
@@ -68,10 +68,10 @@ class ChannelList extends ConsumerWidget {
     final appSettings = ref.watch(settingsProvider);
 
     return Column(children: [
-          for (var i = 0; i < appSettings.channelSettings.length; i++)
-            ChannelItem(
-              index: i,
-            )
-        ]);
+      for (var i = 0; i < appSettings.channelSettings.length; i++)
+        ChannelItem(
+          index: i,
+        )
+    ]);
   }
 }
