@@ -73,6 +73,8 @@ class LanguageDe extends Languages {
         return "Kupplung";
       case Usage.handbrake:
         return "Handbremse";
+      case Usage.other:
+        return "Sonstiges";
       default:
         return "Unbenutzt";
     }

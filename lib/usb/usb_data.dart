@@ -22,5 +22,8 @@ double parseValue(AppSettings appSettings, List<int> rawValues, int channelId) {
   final channel = appSettings.channelSettings[channelId];
   final val = rawValues[channelId].toDouble();
   final calibratedVal = (val - channel.minValue) / (channel.maxValue - channel.minValue);
+  if (channel.inverted) {
+    return 1 - calibratedVal;
+  }
   return calibratedVal;
 }

@@ -73,6 +73,8 @@ class LanguageEn extends Languages {
         return "Clutch";
       case Usage.handbrake:
         return "Handbrake";
+      case Usage.other:
+        return "Other";
       default:
         return "Not used";
     }
