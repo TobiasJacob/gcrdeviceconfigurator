@@ -152,4 +152,13 @@ class LanguageEn extends Languages {
 
   @override
   String get currentValue => "Current Value";
+
+  @override
+  String get rawValue => "Raw value";
+
+  @override
+  String get inverted => "Inverted";
+
+  @override
+  String get reset => "Reset";
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/activate_settings.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
+import 'package:gcrdeviceconfigurator/data/channel.dart';
 import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/i18n/languages.dart';
@@ -32,46 +33,72 @@ class ChannelItem extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            DropdownMenu<Usage>(
-              dropdownMenuEntries: [
-                for (var usage in Usage.values)
-                  DropdownMenuEntry(
-                    value: usage,
-                    label: lang.usage(usage),
-                  )
-              ],
-              onSelected: (Usage? value) async {
-                if (value != null) {
-                  appSettingsNotifier.update(appSettings.updateChannel(
-                      channelId, channelSettings.updateChannelUsage(value)));
-                  await activateSettings(context, ref);
-                  await appSettingsNotifier.save();
-                }
-              },
-              initialSelection: channelSettings.usage,
-            ),
-            ValueBar(channelId: channelId),
             SizedBox(
-              width: 50,
+              width: 200,
+              child: DropdownMenu<Usage>(
+                dropdownMenuEntries: [
+                  for (var usage in Usage.values)
+                    DropdownMenuEntry(
+                      value: usage,
+                      label: lang.usage(usage),
+                    )
+                ],
+                onSelected: (Usage? value) async {
+                  if (value != null) {
+                    appSettingsNotifier.update(appSettings.updateChannel(
+                        channelId, channelSettings.updateChannelUsage(value)));
+                    await activateSettings(context, ref);
+                    await appSettingsNotifier.save();
+                  }
+                },
+                initialSelection: channelSettings.usage,
+              ),
+            ),
+            SizedBox(
+              width: 200,
+              child: ValueBar(channelId: channelId),
+            ),
+            SizedBox(
+              width: 100,
               child: Text(
                 channelSettings.minValue.toString(),
               ),
             ),
             SizedBox(
-              width: 50,
+              width: 100,
               child: Text(
                 channelSettings.maxValue.toString(),
               ),
             ),
-            Checkbox(value: channelSettings.inverted, onChanged: (value) async {
-              appSettingsNotifier.update(appSettings.updateChannel(
-                  channelId, channelSettings.updateInverted(value ?? false)));
-              await activateSettings(context, ref);
-              await appSettingsNotifier.save();
-            }),
-            const Icon(
-              Icons.arrow_right_rounded,
-            )
+            SizedBox(
+              width: 100,
+              child: Checkbox(
+                  value: channelSettings.inverted,
+                  onChanged: (value) async {
+                    appSettingsNotifier.update(appSettings.updateChannel(
+                        channelId,
+                        channelSettings.updateInverted(value ?? false)));
+                    await activateSettings(context, ref);
+                    await appSettingsNotifier.save();
+                  }),
+            ),
+            SizedBox(
+              width: 100,
+              child: IconButton(
+                icon: const Icon(Icons.restore),
+                onPressed: () async {
+                  appSettingsNotifier.update(
+                      appSettings.updateChannel(channelId, Channel.empty()));
+                  await activateSettings(context, ref);
+                  await appSettingsNotifier.save();
+                },
+              ),
+            ),
+            const SizedBox(
+                width: 100,
+                child: Icon(
+                  Icons.arrow_right_rounded,
+                ))
           ]),
     );
   }

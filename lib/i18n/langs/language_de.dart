@@ -152,4 +152,13 @@ class LanguageDe extends Languages {
 
   @override
   String get currentValue => "Aktueller Wert";
+
+  @override
+  String get rawValue => "Rohwert";
+
+  @override
+  String get inverted => "Invertiert";
+
+  @override
+  String get reset => "Reset";
 }

@@ -61,5 +61,7 @@ abstract class Languages {
   String get minValue;
   String get maxValue;
   String get currentValue;
-
+  String get rawValue;
+  String get inverted;
+  String get reset;
 }

@@ -34,7 +34,7 @@ class ValueBar extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            width: 50,
+            width: 100,
             child: Text(
               calibratedValue != null
                   ? calibratedValue.toStringAsFixed(2)
@@ -42,7 +42,7 @@ class ValueBar extends ConsumerWidget {
             ),
           ),
           SizedBox(
-            width: 50,
+            width: 100,
             child: Text(
               rawValue != null ? rawValue.toString() : lang.nSlashA,
             ),
