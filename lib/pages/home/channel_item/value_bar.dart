@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/i18n/languages.dart';
+import 'package:gcrdeviceconfigurator/pages/home/channel_item/bar_painter.dart';
 import 'package:gcrdeviceconfigurator/usb/usb_data.dart';
 import 'package:gcrdeviceconfigurator/usb/usb_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -27,7 +28,10 @@ class ValueBar extends ConsumerWidget {
     final calibratedValueX = currentValues != null
         ? parseValue(appSettings, currentValues, channelId)
         : null;
-    final calibratedValue = calibratedValueX != null ? appSettings.channelSettings[channelId].profileAxis.getY(calibratedValueX) : 0;
+    final calibratedValue = calibratedValueX != null
+        ? appSettings.channelSettings[channelId].profileAxis
+            .getY(calibratedValueX)
+        : null;
 
     return Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -35,17 +39,19 @@ class ValueBar extends ConsumerWidget {
         children: [
           SizedBox(
             width: 100,
-            child: Text(
-              calibratedValue != null
-                  ? calibratedValue.toStringAsFixed(2)
-                  : lang.nSlashA,
-            ),
+            child: CustomPaint(
+                painter: BarPainter(
+                    margin: 2,
+                    value: calibratedValue,
+                    text: '${(calibratedValue! * 100).toStringAsFixed(0)}%'),
+                child: Container()),
           ),
           SizedBox(
             width: 100,
-            child: Text(
-              rawValue != null ? rawValue.toString() : lang.nSlashA,
-            ),
+            child: CustomPaint(
+                painter: BarPainter(
+                    margin: 2, value: (rawValue ?? 0) / 4096.0, text: '${rawValue ?? lang.nSlashA}'),
+                child: Container()),
           ),
         ]);
   }
