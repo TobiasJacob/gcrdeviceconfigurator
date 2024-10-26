@@ -43,7 +43,7 @@ class ValueBar extends ConsumerWidget {
                 painter: BarPainter(
                     margin: 2,
                     value: calibratedValue,
-                    text: '${(calibratedValue! * 100).toStringAsFixed(0)}%'),
+                    text: calibratedValue != null ? '${(calibratedValue * 100).toStringAsFixed(0)}%': lang.nSlashA),
                 child: Container()),
           ),
           SizedBox(

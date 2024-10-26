@@ -29,7 +29,7 @@ class BarPainter extends CustomPainter {
         ..color = Colors.green
         ..strokeWidth = 2;
       p1 = Offset(margin, margin);
-      p2 = Offset(margin + value! * (width - 2.0 * margin), height - margin);
+      p2 = Offset(margin + (value ?? 0.0) * (width - 2.0 * margin), height - margin);
       canvas.drawRect(Rect.fromPoints(p1, p2), paint);
 
       // Text value as percentage

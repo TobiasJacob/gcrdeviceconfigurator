@@ -8,6 +8,11 @@ import 'data_point.dart';
 part 'profile_axis.freezed.dart';
 part 'profile_axis.g.dart';
 
+// Parabola function
+double parabola(double x) {
+  return 4 * x * (1 - x);
+}
+
 @freezed
 class ProfileAxis with _$ProfileAxis {
   const ProfileAxis._();
@@ -20,6 +25,57 @@ class ProfileAxis with _$ProfileAxis {
 
   factory ProfileAxis.fromJson(Map<String, Object?> json) =>
       _$ProfileAxisFromJson(json);
+
+  factory ProfileAxis.preset(int index) {
+    switch (index) {
+      case 1:
+      // for loop with parabola
+        return ProfileAxis(dataPoints: [
+          for (var i = 0; i <= 10; i++)
+            DataPoint(x: i / 10, y: parabola(i / 10))
+        ]);
+      case 2:
+        return ProfileAxis(dataPoints: [
+          DataPoint(x: 0.0, y: 0.0),
+          DataPoint(x: 0.33, y: 0.33),
+          DataPoint(x: 0.66, y: 0.66),
+          DataPoint(x: 1.0, y: 1.0)
+        ]);
+      case 3:
+        return ProfileAxis(dataPoints: [
+          DataPoint(x: 0.0, y: 0.0),
+          DataPoint(x: 0.5, y: 0.5),
+          DataPoint(x: 0.5, y: 0.5),
+          DataPoint(x: 1.0, y: 1.0)
+        ]);
+      case 4:
+        return ProfileAxis(dataPoints: [
+          DataPoint(x: 0.0, y: 0.0),
+          DataPoint(x: 0.5, y: 0.5),
+          DataPoint(x: 0.5, y: 0.5),
+          DataPoint(x: 1.0, y: 1.0)
+        ]);
+      case 5:
+        return ProfileAxis(dataPoints: [
+          DataPoint(x: 0.0, y: 0.0),
+          DataPoint(x: 0.5, y: 0.5),
+          DataPoint(x: 0.5, y: 0.5),
+          DataPoint(x: 1.0, y: 1.0)
+        ]);
+      case 6:
+        return ProfileAxis(dataPoints: [
+          DataPoint(x: 0.0, y: 0.0),
+          DataPoint(x: 0.5, y: 0.5),
+          DataPoint(x: 0.5, y: 0.5),
+          DataPoint(x: 1.0, y: 1.0)
+        ]);
+      default:
+        return ProfileAxis(dataPoints: [
+          const DataPoint(x: 0.0, y: 0.0),
+          const DataPoint(x: 1.0, y: 1.0)
+        ]);
+    }
+  }
 
   double getY(double x) {
     if (x < dataPoints[0].x) {
