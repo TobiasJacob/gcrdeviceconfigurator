@@ -19,6 +19,10 @@ class UsbData with _$UsbData {
 }
 
 double parseValue(AppSettings appSettings, List<int> rawValues, int channelId) {
+  if (appSettings.channelSettings[channelId].usage == Usage.none) {
+    return 0;
+  }
+
   final channel = appSettings.channelSettings[channelId];
   final val = rawValues[channelId].toDouble();
   final calibratedVal = (val - channel.minValue) / (channel.maxValue - channel.minValue);

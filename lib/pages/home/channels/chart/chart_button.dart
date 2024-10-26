@@ -23,12 +23,12 @@ class ChartButton extends StatelessWidget {
   Widget build(BuildContext context) {
     const buttonWidth = 48.0;
     const buttonHeight = 24.0;
-    final width = size.width - 2 * margin;
-    final height = size.height - 2 * margin;
+    final width = size.width - 2.0 * margin;
+    final height = size.height - 2.0 * margin;
     return Positioned(
-      left: dataPoint.x * width - buttonWidth / 2 + margin + (offset?.dx ?? 0),
+      left: dataPoint.x * width - buttonWidth / 2.0 + margin + (offset?.dx ?? 0.0),
       bottom:
-          dataPoint.y * height - buttonHeight / 2 + margin + (offset?.dy ?? 0),
+          dataPoint.y * height - buttonHeight / 2.0 + margin + (offset?.dy ?? 0.0),
       width: buttonWidth,
       height: buttonHeight,
       child: MaterialButton(

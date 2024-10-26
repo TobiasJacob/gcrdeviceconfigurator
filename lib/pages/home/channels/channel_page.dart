@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/dialogs/ok_dialog.dart';
+import 'package:gcrdeviceconfigurator/pages/home/channels/chart/chart.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
 import 'package:gcrdeviceconfigurator/usb/usb_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -44,7 +45,8 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
 
     final currentValue = usbStatus.maybeWhen(
       data: (data) => data.maybeMap(
-        connected: (usbStatus) => usbStatus.currentValues[ref.read(channelIdProvider)],
+        connected: (usbStatus) =>
+            usbStatus.currentValues[ref.read(channelIdProvider)],
         orElse: () => null,
       ),
       orElse: () => null,
@@ -69,10 +71,6 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
           settingsNotifier.updateChannel(updatedChannel);
         }
       });
-    }
-
-    setUsage(Usage usage) {
-      settingsNotifier.updateChannel(channel.updateChannelUsage(usage));
     }
 
     if (autoUpdate) {
@@ -101,87 +99,84 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
       ),
       body: Column(
         children: [
-          SettingsTile(
-              title: lang.usageLabel,
-              child: DropdownButton<Usage>(
-                onChanged: (value) {
-                  try {
-                    setUsage(value!);
-                  } on AlreadyInUseException {
-                    showOkDialog(
-                        context, lang.error, lang.alreadyInUse(value!));
-                  }
-                },
-                value: channel.usage,
-                items: Usage.values
-                    .map((e) =>
-                        DropdownMenuItem(value: e, child: Text(lang.usage(e))))
-                    .toList(),
-              )),
-          SettingsTile(
-              title: lang.minValue,
-              child: FocusScope(
-                onFocusChange: (value) {
-                  if (value) {
-                    return;
-                  }
-                  try {
-                    final valueInt = int.parse(minController.text);
-                    updateValues(valueInt, null);
-                  } catch (e) {
-                    showOkDialog(context, lang.error, "$e");
-                    updateValues(channel.minValue, null);
-                  }
-                },
-                child: TextField(
-                  controller: minController,
-                ),
-              )),
-          SettingsTile(
-              title: lang.maxValue,
-              child: FocusScope(
-                onFocusChange: (value) {
-                  if (value) {
-                    return;
-                  }
-                  try {
-                    final valueInt = int.parse(maxController.text);
-                    updateValues(null, valueInt);
-                  } catch (e) {
-                    showOkDialog(context, lang.error, "$e");
-                    updateValues(null, channel.maxValue);
-                  }
-                },
-                child: TextField(
-                  controller: maxController,
-                ),
-              )),
-          SettingsTile(
-            title: lang.currentValue,
-            child: Column(
-              children: [
-                Text(currentValue.toString()),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Auto calibration"),
-                    Checkbox(
-                        value: autoUpdate,
-                        onChanged: (value) {
-                          if (value == true) {
-                            updateValues(
-                                ((currentValue ?? 0) - 1).clamp(0, 4095),
-                                ((currentValue ?? 0) + 1).clamp(0, 4095));
+          Expanded(
+              flex: 2,
+              child: SingleChildScrollView(
+                  child: Column(
+                children: [
+                  SettingsTile(
+                      title: lang.minValue,
+                      child: FocusScope(
+                        onFocusChange: (value) {
+                          if (value) {
+                            return;
                           }
-                          setState(() {
-                            autoUpdate = value!;
-                          });
-                        })
-                  ],
-                ),
-              ],
-            ),
-          )
+                          try {
+                            final valueInt = int.parse(minController.text);
+                            updateValues(valueInt, null);
+                          } catch (e) {
+                            showOkDialog(context, lang.error, "$e");
+                            updateValues(channel.minValue, null);
+                          }
+                        },
+                        child: TextField(
+                          controller: minController,
+                        ),
+                      )),
+                  SettingsTile(
+                      title: lang.maxValue,
+                      child: FocusScope(
+                        onFocusChange: (value) {
+                          if (value) {
+                            return;
+                          }
+                          try {
+                            final valueInt = int.parse(maxController.text);
+                            updateValues(null, valueInt);
+                          } catch (e) {
+                            showOkDialog(context, lang.error, "$e");
+                            updateValues(null, channel.maxValue);
+                          }
+                        },
+                        child: TextField(
+                          controller: maxController,
+                        ),
+                      )),
+                  SettingsTile(
+                    title: lang.currentValue,
+                    child: Column(
+                      children: [
+                        Text(currentValue.toString()),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Auto calibration"),
+                            Checkbox(
+                                value: autoUpdate,
+                                onChanged: (value) {
+                                  if (value == true) {
+                                    updateValues(
+                                        ((currentValue ?? 0) - 1)
+                                            .clamp(0, 4095),
+                                        ((currentValue ?? 0) + 1)
+                                            .clamp(0, 4095));
+                                  }
+                                  setState(() {
+                                    autoUpdate = value!;
+                                  });
+                                })
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ))),
+          const VerticalDivider(),
+          const Expanded(
+            flex: 3,
+            child: Chart(),
+          ),
         ],
       ),
     );

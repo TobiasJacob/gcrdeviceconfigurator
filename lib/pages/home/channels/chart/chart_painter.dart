@@ -18,21 +18,21 @@ class ChartPainter extends CustomPainter {
     Paint paint = Paint()
       ..color = Colors.black
       ..strokeWidth = 2;
-    Offset p1 = Offset(0, (1 - dataPoints[0].y) * height + margin);
+    Offset p1 = Offset(0.0, (1 - dataPoints[0].y) * height + margin);
     Offset p2 = Offset(dataPoints[0].x * width + margin,
-        (1 - dataPoints[0].y) * height + margin);
+        (1.0 - dataPoints[0].y) * height + margin);
     canvas.drawLine(p1, p2, paint);
     for (var i = 0; i < dataPoints.length - 1; i++) {
       p1 = Offset(dataPoints[i].x * width + margin,
-          (1 - dataPoints[i].y) * height + margin);
+          (1.0 - dataPoints[i].y) * height + margin);
       p2 = Offset(dataPoints[i + 1].x * width + margin,
-          (1 - dataPoints[i + 1].y) * height + margin);
+          (1.0 - dataPoints[i + 1].y) * height + margin);
       canvas.drawLine(p1, p2, paint);
     }
     final i = dataPoints.length - 1;
     p1 = Offset(dataPoints[i].x * width + margin,
-        (1 - dataPoints[i].y) * height + margin);
-    p2 = Offset(1.0 * width + margin, (1 - dataPoints[i].y) * height + margin);
+        (1.0 - dataPoints[i].y) * height + margin);
+    p2 = Offset(1.0 * width + margin, (1.0 - dataPoints[i].y) * height + margin);
     canvas.drawLine(p1, p2, paint);
 
     // Draw Value Line
@@ -44,8 +44,8 @@ class ChartPainter extends CustomPainter {
     p2 = Offset(x * width + margin, height + margin);
     canvas.drawLine(p1, p2, paint);
     final y = axis.getY(x);
-    p1 = Offset(margin, height * (1 - y) + margin);
-    p2 = Offset(width + margin, height * (1 - y) + margin);
+    p1 = Offset(margin, height * (1.0 - y) + margin);
+    p2 = Offset(width + margin, height * (1.0 - y) + margin);
     canvas.drawLine(p1, p2, paint);
   }
 
