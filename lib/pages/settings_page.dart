@@ -27,8 +27,18 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final lang = Languages.of(context);
-    return WillPopScope(
-        onWillPop: () => willPop(context),
+    return PopScope(
+        canPop: false,
+        onPopInvoked: (didPop) async {
+            if (didPop) {
+              return;
+            }
+            final navigator = Navigator.of(context);
+            bool value = await willPop(context);
+            if (value) {
+              navigator.pop();
+            }
+        },
         child: Scaffold(
           appBar: AppBar(
             title: Text(lang.settings),

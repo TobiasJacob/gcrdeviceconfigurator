@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/usb/usb_provider.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+// import 'package:flutter/material.dart';
+// import 'package:gcrdeviceconfigurator/usb/usb_provider.dart';
+// import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'settings_provider.dart';
-import '../dialogs/ok_dialog.dart';
-import '../i18n/languages.dart';
-import '../usb/config_serialize.dart';
+// import 'settings_provider.dart';
+// import '../dialogs/ok_dialog.dart';
+// import '../i18n/languages.dart';
+// import '../usb/config_serialize.dart';
 
 // Future<void> activateProfile(BuildContext context, WidgetRef ref) async {
 //   final lang = Languages.of(context);

@@ -1,7 +1,4 @@
-import 'package:dartusbhid/open_device.dart';
-import 'package:dartusbhid/usb_device.dart';
 import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/data/channel.dart';
 import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/dialogs/ok_dialog.dart';
@@ -11,7 +8,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../data/app_settings.dart';
 import '../../../i18n/languages.dart';
-import '../../../usb/usb_data.dart';
 
 class ChannelPage extends ConsumerStatefulWidget {
   final int index;

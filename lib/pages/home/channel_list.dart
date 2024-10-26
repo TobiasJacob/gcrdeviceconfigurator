@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/pages/home/channels/channel_page.dart';
-import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../data/app_settings.dart';

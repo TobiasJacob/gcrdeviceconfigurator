@@ -1,8 +1,5 @@
 /// This test is used to test the USB communication with the device.
 /// Run with `flutter run -t devicetests\ping_pong.dart`
-import 'dart:math';
-
-import 'package:dartusbhid/enumerate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';

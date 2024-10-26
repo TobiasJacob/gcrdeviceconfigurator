@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AppError extends ConsumerWidget {
