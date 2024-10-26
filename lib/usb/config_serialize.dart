@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
-import 'package:gcrdeviceconfigurator/data/data_point.dart';
 
 /// Serializes the current configuration of the device into a buffer.
 Uint8List serializeConfig(AppSettings appSettings) {

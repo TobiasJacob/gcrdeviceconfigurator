@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gcrdeviceconfigurator/data/activate_settings.dart';
 import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/profile_axis.dart';
@@ -10,7 +9,6 @@ import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
 import 'package:gcrdeviceconfigurator/usb/usb_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../data/app_settings.dart';
 import '../../../i18n/languages.dart';
 
 class ChannelPage extends ConsumerStatefulWidget {
@@ -31,7 +29,6 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
     super.initState();
 
     setState(() {
-      final appSettings = ref.read(settingsProvider);
       final channel = ref.read(channelProvider);
 
       minController.text = channel.minValue.toString();
@@ -207,7 +204,13 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
                                 settingsNotifier.updateChannel(channel
                                     .updateProfileAxis(ProfileAxis.preset(i)));
                               },
-                              child: Text("$i"))
+                              style: ElevatedButton.styleFrom(
+                                shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.zero,
+                                ),
+                                minimumSize: const Size(100, 70),
+                              ),
+                              child: Text(lang.preset(i)))
                       ],
                     ),
                     const SizedBox(

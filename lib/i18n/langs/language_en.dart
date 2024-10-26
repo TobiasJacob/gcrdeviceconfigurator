@@ -161,4 +161,10 @@ class LanguageEn extends Languages {
 
   @override
   String get reset => "Reset";
+
+  @override
+  String preset(int index)
+  {
+    return "Preset $index";
+  }
 }

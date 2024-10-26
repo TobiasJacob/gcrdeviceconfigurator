@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/data/profile_axis.dart';
 
 class BarPainter extends CustomPainter {
   final double margin;
