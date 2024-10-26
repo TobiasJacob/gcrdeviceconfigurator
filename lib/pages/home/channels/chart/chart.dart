@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:gcrdeviceconfigurator/data/profile_axis.dart';
+import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/data_point.dart';
-import 'package:gcrdeviceconfigurator/data/profile_axis_view_provider.dart';
-import 'package:gcrdeviceconfigurator/data/profile_view_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/usb/usb_data.dart';
 import 'package:gcrdeviceconfigurator/usb/usb_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../data/app_settings.dart';
-import '../../../data/profile.dart';
 import 'chart_button.dart';
 import 'chart_drag_ball.dart';
 import 'chart_painter.dart';
@@ -29,8 +25,7 @@ class Chart extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final axisId = ref.watch(axisIdProvider);
-    final axis = ref.watch(axisProvider);
+    final channelId = ref.watch(channelIdProvider);
     final settings = ref.watch(settingsProvider.notifier);
     final appSettings = ref.watch(settingsProvider);
 
@@ -38,12 +33,13 @@ class Chart extends ConsumerWidget {
     // Todo: Make this more efficient
     final value = usbStatus.maybeWhen(
       data: (data) => data.maybeMap(
-        connected: (usbStatus) => parseValue(appSettings, usbStatus.currentValues, axisId),
+        connected: (usbStatus) => parseValue(appSettings, usbStatus.currentValues, channelId),
         orElse: () => 0.0,
       ),
       orElse: () => 0.0,
     );
 
+    final axis = appSettings.channelSettings[channelId].profileAxis;
     final dataPoints = axis.dataPoints;
     const margin = 16.0;
     return LayoutBuilder(

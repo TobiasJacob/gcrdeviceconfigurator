@@ -1,6 +1,4 @@
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
-import 'package:gcrdeviceconfigurator/data/profile.dart';
-import 'package:gcrdeviceconfigurator/pages/home/profile_tile.dart';
 
 import '../languages.dart';
 
@@ -26,19 +24,19 @@ class LanguageDe extends Languages {
   @override
   String get newProfile => "Neues Profil";
 
-  @override
-  String axisTileOptions(ProfileTileAction option) {
-    switch (option) {
-      case ProfileTileAction.duplicate:
-        return "Duplizieren";
-      case ProfileTileAction.export:
-        return "Exportieren";
-      case ProfileTileAction.delete:
-        return "Löschen";
-      default:
-        return "Undefined";
-    }
-  }
+  // @override
+  // String axisTileOptions(ProfileTileAction option) {
+  //   switch (option) {
+  //     case ProfileTileAction.duplicate:
+  //       return "Duplizieren";
+  //     case ProfileTileAction.export:
+  //       return "Exportieren";
+  //     case ProfileTileAction.delete:
+  //       return "Löschen";
+  //     default:
+  //       return "Undefined";
+  //   }
+  // }
 
   @override
   String get addEmptyProfile => "Leeres Profil hinzufügen";
@@ -67,36 +65,16 @@ class LanguageDe extends Languages {
   @override
   String usage(Usage usage) {
     switch (usage) {
-      case Usage.gas1:
-        return "Gas 1";
-      case Usage.gas2:
-        return "Gas 2";
-      case Usage.brake1:
-        return "Bremse 1";
-      case Usage.brake2:
-        return "Bremse 1";
+      case Usage.gas:
+        return "Gas";
+      case Usage.brake:
+        return "Bremse";
       case Usage.clutch:
         return "Kupplung";
       case Usage.handbrake:
         return "Handbremse";
       default:
         return "Unbenutzt";
-    }
-  }
-
-  @override
-  String profileAxisType(ProfileAxisType usage) {
-    switch (usage) {
-      case ProfileAxisType.gas:
-        return "Gas";
-      case ProfileAxisType.brake:
-        return "Bremse";
-      case ProfileAxisType.clutch:
-        return "Kupplung";
-      case ProfileAxisType.handbrake:
-        return "Handbremse";
-      default:
-        return "Not used";
     }
   }
 

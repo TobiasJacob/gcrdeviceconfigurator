@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:gcrdeviceconfigurator/data/profile_axis.dart';
 
 import 'app_settings.dart';
 
@@ -18,10 +19,11 @@ class Channel with _$Channel {
   factory Channel({
     required Usage usage,
     required int minValue,
-    required int maxValue
+    required int maxValue,
+    required ProfileAxis profileAxis
   }) = _Channel;
 
-  factory Channel.empty() => Channel(usage: Usage.none, minValue: 0, maxValue: 4095);
+  factory Channel.empty() => Channel(usage: Usage.none, minValue: 0, maxValue: 4095, profileAxis: ProfileAxis.empty());
 
   factory Channel.fromJson(Map<String, Object?> json)
       => _$ChannelFromJson(json);
@@ -40,5 +42,9 @@ class Channel with _$Channel {
 
   Channel updateMinMaxValue(int minValue, int maxValue) {
     return copyWith(minValue: minValue, maxValue: maxValue);
+  }
+
+  Channel updateProfileAxis(ProfileAxis profileAxis) {
+    return copyWith(profileAxis: profileAxis);
   }
 }

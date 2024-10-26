@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
-import 'package:gcrdeviceconfigurator/pages/settings/channels/channel_page.dart';
+import 'package:gcrdeviceconfigurator/pages/home/channels/channel_page.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/settings_tile.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -38,6 +38,21 @@ class ChannelItem extends ConsumerWidget {
               '${lang.channel(index)}: ${lang.usage(appSettings.channelSettings[index].usage)}',
               style: Theme.of(context).textTheme.titleLarge,
             ),
+            DropdownMenu<Usage>(
+              dropdownMenuEntries: [
+                for (var usage in Usage.values)
+                  DropdownMenuEntry(
+                    value: usage,
+                    label: lang.usage(usage),
+                  )
+              ],
+              onSelected: (Usage? value) {
+                if (value != null) {
+                  appSettings.channelSettings[index].updateChannelUsage(value);
+                }
+              },
+              initialSelection: appSettings.channelSettings[index].usage,
+            ),
             const Icon(
               Icons.arrow_right_rounded,
             )
@@ -46,21 +61,18 @@ class ChannelItem extends ConsumerWidget {
   }
 }
 
-class ChannelTile extends ConsumerWidget {
-  const ChannelTile({super.key});
+class ChannelList extends ConsumerWidget {
+  const ChannelList({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lang = Languages.of(context);
     final appSettings = ref.watch(settingsProvider);
 
-    return SettingsTile(
-        title: lang.channelSettings,
-        child: Column(children: [
+    return Column(children: [
           for (var i = 0; i < appSettings.channelSettings.length; i++)
             ChannelItem(
               index: i,
             )
-        ]));
+        ]);
   }
 }

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
-import 'package:gcrdeviceconfigurator/data/profile.dart';
-import 'package:gcrdeviceconfigurator/pages/home/profile_tile.dart';
 
 abstract class Languages {
 
@@ -19,7 +17,7 @@ abstract class Languages {
 
   // Main Page
   String get newProfile;
-  String axisTileOptions(ProfileTileAction option);
+  // String axisTileOptions(ProfileTileAction option);
   String get addEmptyProfile;
   String get importProfile;
   String get openFile;
@@ -33,7 +31,6 @@ abstract class Languages {
 
   // Usage
   String usage(Usage usage);
-  String profileAxisType(ProfileAxisType usage);
 
   // Profile tile
   String get saveFile;

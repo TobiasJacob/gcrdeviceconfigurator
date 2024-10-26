@@ -1,6 +1,4 @@
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
-import 'package:gcrdeviceconfigurator/data/profile.dart';
-import 'package:gcrdeviceconfigurator/pages/home/profile_tile.dart';
 
 import '../languages.dart';
 
@@ -26,19 +24,19 @@ class LanguageEn extends Languages {
   @override
   String get newProfile => "New Profile";
 
-  @override
-  String axisTileOptions(ProfileTileAction option) {
-    switch (option) {
-      case ProfileTileAction.duplicate:
-        return "Duplicate";
-      case ProfileTileAction.export:
-        return "Export";
-      case ProfileTileAction.delete:
-        return "Delete";
-      default:
-        return "Undefined";
-    }
-  }
+  // @override
+  // String axisTileOptions(ProfileTileAction option) {
+  //   switch (option) {
+  //     case ProfileTileAction.duplicate:
+  //       return "Duplicate";
+  //     case ProfileTileAction.export:
+  //       return "Export";
+  //     case ProfileTileAction.delete:
+  //       return "Delete";
+  //     default:
+  //       return "Undefined";
+  //   }
+  // }
 
   @override
   String get addEmptyProfile => "Add empty profile";
@@ -67,33 +65,13 @@ class LanguageEn extends Languages {
   @override
   String usage(Usage usage) {
     switch (usage) {
-      case Usage.gas1:
-        return "Gas 1";
-      case Usage.gas2:
-        return "Gas 2";
-      case Usage.brake1:
-        return "Brake 1";
-      case Usage.brake2:
-        return "Brake 1";
+      case Usage.gas:
+        return "Gas";
+      case Usage.brake:
+        return "Brake";
       case Usage.clutch:
         return "Clutch";
       case Usage.handbrake:
-        return "Handbrake";
-      default:
-        return "Not used";
-    }
-  }
-
-  @override
-  String profileAxisType(ProfileAxisType usage) {
-    switch (usage) {
-      case ProfileAxisType.gas:
-        return "Gas";
-      case ProfileAxisType.brake:
-        return "Brake";
-      case ProfileAxisType.clutch:
-        return "Clutch";
-      case ProfileAxisType.handbrake:
         return "Handbrake";
       default:
         return "Not used";

@@ -1,7 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
-import 'package:gcrdeviceconfigurator/data/profile.dart';
 
 import 'gcr_device.dart';
 
@@ -19,19 +18,9 @@ class UsbData with _$UsbData {
   const factory UsbData.uninitialized() = _UsbUninitialized;
 }
 
-double parseValue(AppSettings appSettings, List<int> rawValues, ProfileAxisType profileAxisType) {
-  var result = 0.0;
-  var count = 0;
-  for (var i = 0; i < 10; i++) {
-    final channel = appSettings.channelSettings[i];
-    final currentProfileAxisType = getProfileAxisForUsage(channel.usage);
-    final val = rawValues[i].toDouble();
-    final calibratedVal = (val - channel.minValue) / (channel.maxValue - channel.minValue);
-    if (currentProfileAxisType == profileAxisType) {
-      result += calibratedVal;
-      count++;
-    }
-  }
-  if (count == 0) return 0.0;
-  return result / count;
+double parseValue(AppSettings appSettings, List<int> rawValues, int channelId) {
+  final channel = appSettings.channelSettings[channelId];
+  final val = rawValues[channelId].toDouble();
+  final calibratedVal = (val - channel.minValue) / (channel.maxValue - channel.minValue);
+  return calibratedVal;
 }

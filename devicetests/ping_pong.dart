@@ -6,14 +6,13 @@ import 'package:dartusbhid/enumerate.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
-import 'package:gcrdeviceconfigurator/data/profile.dart';
 import 'package:gcrdeviceconfigurator/usb/config_serialize.dart';
 import 'package:gcrdeviceconfigurator/usb/gcr_device.dart';
 
 //
 void test() async {
     final appSettings = AppSettings.empty();
-    final buffer = serializeConfig(appSettings, Profile.empty());
+    final buffer = serializeConfig(appSettings);
     debugPrint("Full config has length ${buffer.length}");
     assert(buffer.length == 864);
 

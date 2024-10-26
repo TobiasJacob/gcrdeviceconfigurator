@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/dialogs/yes_no_dialog.dart';
-import 'package:gcrdeviceconfigurator/pages/settings/channel_tile.dart';
 import 'package:gcrdeviceconfigurator/pages/settings/language_settings_tile.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -34,12 +33,9 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           appBar: AppBar(
             title: Text(lang.settings),
           ),
-          body: Column(
-            children: const [
+          body: const Column(
+            children: [
               LanguageSettingTile(),
-              Divider(),
-              ChannelTile(),
-              Divider()
             ],
           ),
         ));
