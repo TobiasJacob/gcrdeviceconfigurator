@@ -6,6 +6,7 @@ import 'package:gcrdeviceconfigurator/data/channel.dart';
 import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/i18n/languages.dart';
+import 'package:gcrdeviceconfigurator/pages/home/channel_item/button_sim_bar.dart';
 import 'package:gcrdeviceconfigurator/pages/home/channel_item/value_bar.dart';
 import 'package:gcrdeviceconfigurator/pages/home/channels/channel_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -24,10 +25,6 @@ class ButtonItem extends ConsumerWidget {
 
     return MaterialButton(
       onPressed: () {
-        ref.read(channelIdProvider.notifier).state = buttonId;
-
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ChannelPage()));
       },
       minWidth: 0,
       child: Row(
@@ -57,7 +54,7 @@ class ButtonItem extends ConsumerWidget {
             ),
             SizedBox(
               width: 200,
-              child: ValueBar(channelId: buttonId),
+              child: ButtonSimBar(buttonId: buttonId),
             ),
             SizedBox(
               width: 100,
@@ -96,10 +93,7 @@ class ButtonItem extends ConsumerWidget {
               ),
             ),
             const SizedBox(
-                width: 100,
-                child: Icon(
-                  Icons.arrow_right_rounded,
-                ))
+                width: 100,)
           ]),
     );
   }
