@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/activate_settings.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
+import 'package:gcrdeviceconfigurator/data/button.dart';
 import 'package:gcrdeviceconfigurator/data/channel.dart';
 import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
@@ -9,21 +10,21 @@ import 'package:gcrdeviceconfigurator/pages/home/channel_item/value_bar.dart';
 import 'package:gcrdeviceconfigurator/pages/home/channels/channel_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ChannelItem extends ConsumerWidget {
-  final int channelId;
+class ButtonItem extends ConsumerWidget {
+  final int buttonId;
 
-  const ChannelItem({super.key, required this.channelId});
+  const ButtonItem({super.key, required this.buttonId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final lang = Languages.of(context);
     final appSettings = ref.watch(settingsProvider);
     final appSettingsNotifier = ref.watch(settingsProvider.notifier);
-    final channelSettings = appSettings.channelSettings[channelId];
+    final buttonSettings = appSettings.buttonSettings[buttonId];
 
     return MaterialButton(
       onPressed: () {
-        ref.read(channelIdProvider.notifier).state = channelId;
+        ref.read(channelIdProvider.notifier).state = buttonId;
 
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const ChannelPage()));
@@ -35,49 +36,49 @@ class ChannelItem extends ConsumerWidget {
           children: [
             SizedBox(
               width: 200,
-              child: DropdownMenu<ChannelUsage>(
+              child: DropdownMenu<ButtonUsage>(
                 dropdownMenuEntries: [
-                  for (var usage in ChannelUsage.values)
+                  for (var usage in ButtonUsage.values)
                     DropdownMenuEntry(
                       value: usage,
-                      label: lang.channelUsage(usage),
+                      label: lang.buttonUsage(usage),
                     )
                 ],
-                onSelected: (ChannelUsage? value) async {
+                onSelected: (ButtonUsage? value) async {
                   if (value != null) {
-                    appSettingsNotifier.update(appSettings.updateChannel(
-                        channelId, channelSettings.updateChannelUsage(value)));
+                    appSettingsNotifier.update(appSettings.updateButton(
+                        buttonId, buttonSettings.updateButtonUsage(value)));
                     await activateSettings(context, ref);
                     await appSettingsNotifier.save();
                   }
                 },
-                initialSelection: channelSettings.usage,
+                initialSelection: buttonSettings.usage,
               ),
             ),
             SizedBox(
               width: 200,
-              child: ValueBar(channelId: channelId),
+              child: ValueBar(channelId: buttonId),
             ),
             SizedBox(
               width: 100,
               child: Text(
-                channelSettings.minValue.toString(),
+                buttonSettings.upperThreshold.toString(),
               ),
             ),
             SizedBox(
               width: 100,
               child: Text(
-                channelSettings.maxValue.toString(),
+                buttonSettings.lowerThreshold.toString(),
               ),
             ),
             SizedBox(
               width: 100,
               child: Checkbox(
-                  value: channelSettings.inverted,
+                  value: buttonSettings.inverted,
                   onChanged: (value) async {
-                    appSettingsNotifier.update(appSettings.updateChannel(
-                        channelId,
-                        channelSettings.updateInverted(value ?? false)));
+                    appSettingsNotifier.update(appSettings.updateButton(
+                        buttonId,
+                        buttonSettings.updateInverted(value ?? false)));
                     await activateSettings(context, ref);
                     await appSettingsNotifier.save();
                   }),
@@ -88,7 +89,7 @@ class ChannelItem extends ConsumerWidget {
                 icon: const Icon(Icons.restore),
                 onPressed: () async {
                   appSettingsNotifier.update(
-                      appSettings.updateChannel(channelId, Channel.empty()));
+                      appSettings.updateButton(buttonId, Button.empty()));
                   await activateSettings(context, ref);
                   await appSettingsNotifier.save();
                 },

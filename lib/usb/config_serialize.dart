@@ -6,9 +6,9 @@ Uint8List serializeConfig(AppSettings appSettings) {
   final buffer = WriteBuffer();
   // Axis Data for each usage implemented on pcb (4 * (1 + n * 2) * 4 bytes)
   buffer.putUint32(0xdeadbeef); // Magic number
-  for (int i = 0; i < 10; i++) {
+  for (int i = 0; i < 6; i++) {
     final usage = appSettings.channelSettings[i].usage;
-    var channelDisabled = usage == Usage.none;
+    var channelDisabled = usage == ChannelUsage.none;
     // // If brake1 and brake2 are both enabled, disable brake2 and use sensor data fusion instead
     // if (usage == Usage.brake2 && appSettings.numOfChannelsWithUsage(Usage.brake1) == 1) {
     //   channelDisabled = true;
@@ -60,6 +60,32 @@ Uint8List serializeConfig(AppSettings appSettings) {
     for (var i = 0; i < 20 - profileAxis.dataPoints.length; i++) {
       buffer.putUint16(4095);
       buffer.putUint16(4095);
+    }
+  }
+  for (int i = 0; i < 4; i++) {
+    var usage = 0; // Disable button
+    switch (appSettings.buttonSettings[i].usage) {
+      case ButtonUsage.none:
+      usage = 0;
+        break;
+      case ButtonUsage.hold:
+      usage = 1;
+        break;
+      case ButtonUsage.trigger:
+      usage = 2;
+        break;
+      case ButtonUsage.toggle:
+      usage = 3;
+        break;
+      default:
+    }
+    buffer.putUint8(usage); // Usage
+    buffer.putUint16(appSettings.buttonSettings[i].upperThreshold); // Upper threshold
+    buffer.putUint16(appSettings.buttonSettings[i].lowerThreshold); // Lower threshold
+    if (appSettings.buttonSettings[i].inverted) {
+      buffer.putUint8(1); // Inverted
+    } else {
+      buffer.putUint8(0); // Not inverted
     }
   }
 

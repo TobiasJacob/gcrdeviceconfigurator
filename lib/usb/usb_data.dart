@@ -19,7 +19,7 @@ class UsbData with _$UsbData {
 }
 
 double parseValue(AppSettings appSettings, List<int> rawValues, int channelId) {
-  if (appSettings.channelSettings[channelId].usage == Usage.none) {
+  if (appSettings.channelSettings[channelId].usage == ChannelUsage.none) {
     return 0;
   }
 

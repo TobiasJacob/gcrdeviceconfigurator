@@ -19,7 +19,7 @@ Contributions are always welcome. Please open an issue before submitting a pull-
 flutter pub run build_runner build
 
 # Run development tool
-flutter run windows
+flutter run
 ```
 
 ## Releasing

@@ -17,19 +17,19 @@ class Channel with _$Channel {
   @Assert('maxValue < 4096')
   @Assert('minValue < maxValue')
   factory Channel({
-    required Usage usage,
+    required ChannelUsage usage,
     required int minValue,
     required int maxValue,
     required ProfileAxis profileAxis,
     required bool inverted
   }) = _Channel;
 
-  factory Channel.empty() => Channel(usage: Usage.none, minValue: 0, maxValue: 4095, profileAxis: ProfileAxis.empty(), inverted: false);
+  factory Channel.empty() => Channel(usage: ChannelUsage.none, minValue: 0, maxValue: 4095, profileAxis: ProfileAxis.empty(), inverted: false);
 
   factory Channel.fromJson(Map<String, Object?> json)
       => _$ChannelFromJson(json);
 
-  Channel updateChannelUsage(Usage usage) {
+  Channel updateChannelUsage(ChannelUsage usage) {
     return copyWith(usage: usage);
   }
 

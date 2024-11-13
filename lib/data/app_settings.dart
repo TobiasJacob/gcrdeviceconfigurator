@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
+import 'package:gcrdeviceconfigurator/data/button.dart';
 
 import 'channel.dart';
 
@@ -21,11 +22,13 @@ class AppSettings with _$AppSettings {
   const AppSettings._();
   
   @Assert('languageCode == "en" || languageCode == "de"')
-  @Assert('channelSettings.length == 10')
+  @Assert('channelSettings.length == 6')
+  @Assert('buttonSettings.length == 4')
   factory AppSettings({
     required String languageCode,
     required String countryCode,
-    required List<Channel> channelSettings
+    required List<Channel> channelSettings,
+    required List<Button> buttonSettings
   }) = _AppSettings;
 
   factory AppSettings.fromJson(Map<String, Object?> json)
@@ -41,11 +44,13 @@ class AppSettings with _$AppSettings {
       Channel.empty(),
       Channel.empty(),
       Channel.empty(),
-      Channel.empty(),
-      Channel.empty(),
-      Channel.empty(),
-      Channel.empty(),
-    ]
+    ],
+    buttonSettings: [
+      Button.empty(),
+      Button.empty(),
+      Button.empty(),
+      Button.empty(),
+    ],
   );
 
   AppSettings updateLanguage(String languageCode, String countryCode) {
@@ -55,8 +60,8 @@ class AppSettings with _$AppSettings {
     );
   }
 
-  AppSettings updateUsage(int index, Usage usage) {
-    if (usage != Usage.none) {
+  AppSettings updateUsage(int index, ChannelUsage usage) {
+    if (usage != ChannelUsage.none) {
       for (var channel in channelSettings) {
         if (channel.usage == usage) {
           throw AlreadyInUseException();
@@ -76,15 +81,23 @@ class AppSettings with _$AppSettings {
     );
   }
 
-  int numOfChannelsWithUsage(Usage usage) {
+  AppSettings updateButton(int index, Button button) {
+    return copyWith(
+      buttonSettings: List.of(buttonSettings)
+        ..[index] = button
+    );
+  }
+
+  int numOfChannelsWithUsage(ChannelUsage usage) {
     return channelSettings.where((element) => element.usage == usage).length;
   }
 
-  int channelWithUsage(Usage usage) {
+  int channelWithUsage(ChannelUsage usage) {
     return channelSettings.indexWhere((element) => element.usage == usage);
   }
 }
 
-enum Usage { none, gas, brake, clutch, handbrake, other }
+enum ChannelUsage { none, gas, brake, clutch, handbrake, other }
+enum ButtonUsage { none, hold, trigger, toggle }
 
 class AlreadyInUseException implements Exception {}

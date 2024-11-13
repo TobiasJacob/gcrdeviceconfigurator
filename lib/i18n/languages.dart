@@ -30,7 +30,8 @@ abstract class Languages {
   String get channelSettings;
 
   // Usage
-  String usage(Usage usage);
+  String channelUsage(ChannelUsage usage);
+  String buttonUsage(ButtonUsage usage);
 
   // Profile tile
   String get saveFile;
@@ -53,7 +54,7 @@ abstract class Languages {
   String get wantToSaveSettings;
 
   String channel(int index);
-  String alreadyInUse(Usage usage);
+  String alreadyInUse(ChannelUsage usage);
 
   // Channel Settings
   String get editChannel;

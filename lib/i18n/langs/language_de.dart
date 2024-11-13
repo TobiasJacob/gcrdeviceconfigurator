@@ -63,18 +63,32 @@ class LanguageDe extends Languages {
   String get languageSettings => "Sprache";
 
   @override
-  String usage(Usage usage) {
+  String channelUsage(ChannelUsage usage) {
     switch (usage) {
-      case Usage.gas:
+      case ChannelUsage.gas:
         return "Gas";
-      case Usage.brake:
+      case ChannelUsage.brake:
         return "Bremse";
-      case Usage.clutch:
+      case ChannelUsage.clutch:
         return "Kupplung";
-      case Usage.handbrake:
+      case ChannelUsage.handbrake:
         return "Handbremse";
-      case Usage.other:
+      case ChannelUsage.other:
         return "Sonstiges";
+      default:
+        return "Unbenutzt";
+    }
+  }
+
+  @override
+  String buttonUsage(ButtonUsage usage) {
+    switch (usage) {
+      case ButtonUsage.hold:
+        return "Halten";
+      case ButtonUsage.trigger:
+        return "Trigger";
+      case ButtonUsage.toggle:
+        return "Schalter";
       default:
         return "Unbenutzt";
     }
@@ -134,8 +148,8 @@ class LanguageDe extends Languages {
   }
 
   @override
-  String alreadyInUse(Usage usage) {
-    return "Die Funktion ${this.usage(usage)} ist schon für einen anderen Kanal eingestellt.";
+  String alreadyInUse(ChannelUsage usage) {
+    return "Die Funktion ${this.channelUsage(usage)} ist schon für einen anderen Kanal eingestellt.";
   }
 
   @override
