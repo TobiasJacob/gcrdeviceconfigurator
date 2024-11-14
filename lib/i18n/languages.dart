@@ -65,6 +65,7 @@ abstract class Languages {
   String get rawValue;
   String get inverted;
   String get reset;
+  String get index;
 
   // Profile Axis
   String preset(int index);

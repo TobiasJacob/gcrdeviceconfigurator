@@ -177,6 +177,9 @@ class LanguageDe extends Languages {
   String get reset => "Reset";
 
   @override
+  String get index => "Index";
+
+  @override
   String preset(int index)
   {
     return "Voreinstellung $index";

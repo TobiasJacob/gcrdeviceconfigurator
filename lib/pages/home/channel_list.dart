@@ -19,6 +19,10 @@ class ChannelList extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
+              width: 50,
+              child: Text(lang.index, textAlign: TextAlign.center,),
+            ),
+            SizedBox(
               width: 200,
               child: Text(lang.usageLabel, textAlign: TextAlign.center,),
             ),

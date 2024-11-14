@@ -5,24 +5,67 @@ import 'package:gcrdeviceconfigurator/data/button.dart';
 import 'package:gcrdeviceconfigurator/data/channel.dart';
 import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
+import 'package:gcrdeviceconfigurator/dialogs/ok_dialog.dart';
 import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 import 'package:gcrdeviceconfigurator/pages/home/channel_item/button_sim_bar.dart';
 import 'package:gcrdeviceconfigurator/pages/home/channel_item/value_bar.dart';
 import 'package:gcrdeviceconfigurator/pages/home/channels/channel_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class ButtonItem extends ConsumerWidget {
+class ButtonItem extends ConsumerStatefulWidget {
   final int buttonId;
 
   const ButtonItem({super.key, required this.buttonId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ButtonItem> createState() => _ButtonItemState();
+}
+
+class _ButtonItemState extends ConsumerState<ButtonItem> {
+  TextEditingController minController = TextEditingController();
+  TextEditingController maxController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      final button = ref.read(settingsProvider).buttonSettings[widget.buttonId];
+
+      minController.text = button.lowerThreshold.toString();
+      maxController.text = button.upperThreshold.toString();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final lang = Languages.of(context);
     final appSettings = ref.watch(settingsProvider);
     final appSettingsNotifier = ref.watch(settingsProvider.notifier);
-    final buttonSettings = appSettings.buttonSettings[buttonId];
+    final buttonSettings = appSettings.buttonSettings[widget.buttonId];
 
+    updateValues(int? lowerThreshold, int? upperThreshold) {
+      setState(() {
+        var update = buttonSettings;
+        if (lowerThreshold != null && upperThreshold != null) {
+          // Both values are set simultaneously so that the min value is always smaller than the max value
+          update = buttonSettings.updateBothThreshold(lowerThreshold, upperThreshold);
+          minController.text = lowerThreshold.toString();
+          maxController.text = upperThreshold.toString();
+        } else if (lowerThreshold != null) {
+          update = buttonSettings.updateLowerThreshold(lowerThreshold);
+          minController.text = lowerThreshold.toString();
+        } else if (upperThreshold != null) {
+          update = buttonSettings.updateUpperThreshold(upperThreshold);
+          maxController.text = upperThreshold.toString();
+        }
+        if (update != buttonSettings) {
+          appSettingsNotifier.update(
+            appSettings.updateButton(widget.buttonId, update)
+          );
+        }
+      });
+    }
     return MaterialButton(
       onPressed: () {
       },
@@ -31,6 +74,12 @@ class ButtonItem extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(
+              width: 50,
+              child: Text(
+                (widget.buttonId + 1 + appSettings.channelSettings.length).toString(),
+              ),
+            ),
             SizedBox(
               width: 200,
               child: DropdownMenu<ButtonUsage>(
@@ -44,7 +93,7 @@ class ButtonItem extends ConsumerWidget {
                 onSelected: (ButtonUsage? value) async {
                   if (value != null) {
                     appSettingsNotifier.update(appSettings.updateButton(
-                        buttonId, buttonSettings.updateButtonUsage(value)));
+                        widget.buttonId, buttonSettings.updateButtonUsage(value)));
                     await activateSettings(context, ref);
                     await appSettingsNotifier.save();
                   }
@@ -54,19 +103,51 @@ class ButtonItem extends ConsumerWidget {
             ),
             SizedBox(
               width: 200,
-              child: ButtonSimBar(buttonId: buttonId),
+              child: ButtonSimBar(buttonId: widget.buttonId),
             ),
             SizedBox(
               width: 100,
-              child: Text(
-                buttonSettings.upperThreshold.toString(),
-              ),
+              child: Focus(
+                        onFocusChange: (value) async {
+                          if (value) {
+                            return;
+                          }
+                          try {
+                            final valueInt = int.parse(minController.text);
+                            updateValues(valueInt, null);
+                            await activateSettings(context, ref);
+                            appSettingsNotifier.save();
+                          } catch (e) {
+                            showOkDialog(context, lang.error, "$e");
+                            updateValues(buttonSettings.lowerThreshold, null); // Reset to previous value
+                          }
+                        },
+                        child: TextField(
+                          controller: minController,
+                        ),
+                      ),
             ),
             SizedBox(
               width: 100,
-              child: Text(
-                buttonSettings.lowerThreshold.toString(),
-              ),
+              child: Focus(
+                        onFocusChange: (value) async {
+                          if (value) {
+                            return;
+                          }
+                          try {
+                            final valueInt = int.parse(maxController.text);
+                            updateValues(null, valueInt);
+                            await activateSettings(context, ref);
+                            appSettingsNotifier.save();
+                          } catch (e) {
+                            showOkDialog(context, lang.error, "$e");
+                            updateValues(null, buttonSettings.upperThreshold); // Reset to previous value
+                          }
+                        },
+                        child: TextField(
+                          controller: maxController,
+                        ),
+                      ),
             ),
             SizedBox(
               width: 100,
@@ -74,7 +155,7 @@ class ButtonItem extends ConsumerWidget {
                   value: buttonSettings.inverted,
                   onChanged: (value) async {
                     appSettingsNotifier.update(appSettings.updateButton(
-                        buttonId,
+                        widget.buttonId,
                         buttonSettings.updateInverted(value ?? false)));
                     await activateSettings(context, ref);
                     await appSettingsNotifier.save();
@@ -85,10 +166,11 @@ class ButtonItem extends ConsumerWidget {
               child: IconButton(
                 icon: const Icon(Icons.restore),
                 onPressed: () async {
-                  appSettingsNotifier.update(
-                      appSettings.updateButton(buttonId, Button.empty()));
+                  final newSettings = appSettings.updateButton(widget.buttonId, Button.empty());
+                  appSettingsNotifier.update(newSettings);
                   await activateSettings(context, ref);
                   await appSettingsNotifier.save();
+                  updateValues(newSettings.buttonSettings[widget.buttonId].lowerThreshold, newSettings.buttonSettings[widget.buttonId].upperThreshold);
                 },
               ),
             ),

@@ -125,7 +125,7 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
                             updateValues(valueInt, null);
                           } catch (e) {
                             showOkDialog(context, lang.error, "$e");
-                            updateValues(channel.minValue, null);
+                            updateValues(channel.minValue, null); // Reset to previous value
                           }
                         },
                         child: TextField(
@@ -144,7 +144,7 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
                             updateValues(null, valueInt);
                           } catch (e) {
                             showOkDialog(context, lang.error, "$e");
-                            updateValues(null, channel.maxValue);
+                            updateValues(null, channel.maxValue); // Reset to previous value
                           }
                         },
                         child: TextField(

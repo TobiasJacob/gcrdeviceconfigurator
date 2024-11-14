@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
+import 'package:gcrdeviceconfigurator/data/button.dart';
 import 'package:gcrdeviceconfigurator/data/channel.dart';
 import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/profile_axis.dart';
