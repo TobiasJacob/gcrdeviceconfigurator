@@ -9,7 +9,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'apps/app_data.dart';
 import 'apps/app_error.dart';
 
-
 class GCRRootWidget extends ConsumerStatefulWidget {
   const GCRRootWidget({super.key});
 

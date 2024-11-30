@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 import 'package:gcrdeviceconfigurator/pages/home/channel_list.dart';
@@ -17,6 +19,8 @@ class HomePage extends ConsumerWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(lang.appName),
+          // titleTextStyle:
+          // const TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
           actions: <Widget>[
             const UpdateDeviceWidget(),
             IconButton(
@@ -30,6 +34,20 @@ class HomePage extends ConsumerWidget {
             ),
           ],
         ),
-        body: const ChannelList());
+        body: Container(
+            decoration: const BoxDecoration(
+              color: Color.fromRGBO(24, 24, 24, 1),
+              image: DecorationImage(
+                  image: AssetImage('images/background.png'),
+                  fit: BoxFit.cover,
+                  alignment: Alignment.centerLeft),
+            ),
+            padding: EdgeInsets.fromLTRB(
+                max(0.12 * MediaQuery.of(context).size.width,
+                    0.2 * MediaQuery.of(context).size.height),
+                10,
+                10,
+                10),
+            child: const ChannelList()));
   }
 }

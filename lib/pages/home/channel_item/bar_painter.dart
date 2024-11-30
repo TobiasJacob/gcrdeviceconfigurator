@@ -14,7 +14,7 @@ class BarPainter extends CustomPainter {
 
     // Red background
     Paint paint = Paint()
-      ..color = Colors.red
+      ..color = const Color.fromRGBO(48, 48, 48, 1)
       ..strokeWidth = 2;
     Offset p1 = Offset(margin, margin);
     Offset p2 = Offset(width - margin, height - margin);
@@ -25,15 +25,16 @@ class BarPainter extends CustomPainter {
     } else {
       // Green bar
       paint = Paint()
-        ..color = Colors.green
+        ..color = const Color.fromRGBO(185, 101, 254, 1)
         ..strokeWidth = 2;
       p1 = Offset(margin, margin);
-      p2 = Offset(margin + (value ?? 0.0) * (width - 2.0 * margin), height - margin);
+      p2 = Offset(
+          margin + (value ?? 0.0) * (width - 2.0 * margin), height - margin);
       canvas.drawRect(Rect.fromPoints(p1, p2), paint);
 
       // Text value as percentage
       TextSpan span = TextSpan(
-        style: const TextStyle(color: Colors.black, fontSize: 16),
+        style: const TextStyle(color: Colors.white, fontSize: 16),
         text: text,
       );
       TextPainter tp = TextPainter(

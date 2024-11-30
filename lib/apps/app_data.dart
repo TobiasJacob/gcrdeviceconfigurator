@@ -13,17 +13,23 @@ class AppData extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     const title = "Pedal Config";
-    final languageCode = ref.watch(settingsProvider.select((value) => value.languageCode));
-    final countryCode = ref.watch(settingsProvider.select((value) => value.countryCode));
+    final languageCode =
+        ref.watch(settingsProvider.select((value) => value.languageCode));
+    final countryCode =
+        ref.watch(settingsProvider.select((value) => value.countryCode));
 
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      darkTheme: ThemeData(
+        primaryColor: const Color.fromRGBO(185, 101, 254, 1),
+        secondaryHeaderColor: const Color.fromRGBO(80, 254, 0, 1),
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color.fromRGBO(24, 24, 24, 1),
+        /* dark theme settings */
       ),
+      themeMode: ThemeMode.dark,
       title: title,
       debugShowCheckedModeBanner: true,
-      locale:
-          Locale(languageCode, countryCode),
+      locale: Locale(languageCode, countryCode),
       home: home,
       supportedLocales: const [Locale('en', 'EN'), Locale('de', 'DE')],
       localizationsDelegates: const [

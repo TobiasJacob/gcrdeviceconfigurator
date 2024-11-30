@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class UpdateDeviceWidget extends ConsumerWidget {
   const UpdateDeviceWidget({super.key});
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final usbStatus = ref.watch(usbProvider);
@@ -24,7 +24,9 @@ class UpdateDeviceWidget extends ConsumerWidget {
           width: 12.0,
           height: 12.0,
           decoration: BoxDecoration(
-            color: isConnected ? Colors.green : Colors.red,
+            color: isConnected
+                ? const Color.fromRGBO(80, 254, 0, 1)
+                : const Color.fromRGBO(238, 65, 35, 1),
             shape: BoxShape.circle,
           ),
         ),

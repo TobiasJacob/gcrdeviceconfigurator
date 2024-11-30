@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:gcrdeviceconfigurator/usb/firmware_version.dart';
 
 const int vendorId = 1155;
-const int productId = 22352;
+const int productId = 22353;
 const int packetSize = 64;
 const int serializedConfigLength = 544;
 

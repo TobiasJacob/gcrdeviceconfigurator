@@ -26,15 +26,20 @@ class ChartButton extends StatelessWidget {
     final width = size.width - 2.0 * margin;
     final height = size.height - 2.0 * margin;
     return Positioned(
-      left: dataPoint.x * width - buttonWidth / 2.0 + margin + (offset?.dx ?? 0.0),
-      bottom:
-          dataPoint.y * height - buttonHeight / 2.0 + margin + (offset?.dy ?? 0.0),
+      left: dataPoint.x * width -
+          buttonWidth / 2.0 +
+          margin +
+          (offset?.dx ?? 0.0),
+      bottom: dataPoint.y * height -
+          buttonHeight / 2.0 +
+          margin +
+          (offset?.dy ?? 0.0),
       width: buttonWidth,
       height: buttonHeight,
       child: MaterialButton(
         onPressed: onPressed,
         shape: const CircleBorder(),
-        color: Colors.blue,
+        color: const Color.fromRGBO(185, 101, 254, 1),
         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
         minWidth: 0,
         child: Text(text),

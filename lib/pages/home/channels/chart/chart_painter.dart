@@ -16,7 +16,7 @@ class ChartPainter extends CustomPainter {
 
     // Draw Graph
     Paint paint = Paint()
-      ..color = Colors.black
+      ..color = Colors.white
       ..strokeWidth = 2;
     Offset p1 = Offset(0.0, (1 - dataPoints[0].y) * height + margin);
     Offset p2 = Offset(dataPoints[0].x * width + margin,
@@ -32,12 +32,13 @@ class ChartPainter extends CustomPainter {
     final i = dataPoints.length - 1;
     p1 = Offset(dataPoints[i].x * width + margin,
         (1.0 - dataPoints[i].y) * height + margin);
-    p2 = Offset(1.0 * width + margin, (1.0 - dataPoints[i].y) * height + margin);
+    p2 =
+        Offset(1.0 * width + margin, (1.0 - dataPoints[i].y) * height + margin);
     canvas.drawLine(p1, p2, paint);
 
     // Draw Value Line
     paint = Paint()
-      ..color = Colors.red
+      ..color = const Color.fromRGBO(80, 254, 0, 1)
       ..strokeWidth = 2;
     final x = currentValue;
     p1 = Offset(x * width + margin, margin);

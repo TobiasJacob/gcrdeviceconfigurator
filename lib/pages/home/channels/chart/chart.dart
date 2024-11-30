@@ -33,7 +33,8 @@ class Chart extends ConsumerWidget {
     // Todo: Make this more efficient
     var value = usbStatus.maybeWhen(
       data: (data) => data.maybeMap(
-        connected: (usbStatus) => parseValue(appSettings, usbStatus.currentValues, channelId),
+        connected: (usbStatus) =>
+            parseValue(appSettings, usbStatus.currentValues, channelId),
         orElse: () => 0.0,
       ),
       orElse: () => 0.0,
@@ -51,7 +52,8 @@ class Chart extends ConsumerWidget {
           alignment: Alignment.center,
           children: [
             Container(
-                margin: const EdgeInsets.all(margin), color: Colors.grey[300]),
+                margin: const EdgeInsets.all(margin),
+                color: const Color.fromRGBO(48, 48, 48, 1)),
             CustomPaint(
                 painter: ChartPainter(axis, margin, value), child: Container()),
             ...dataPoints
@@ -69,8 +71,8 @@ class Chart extends ConsumerWidget {
                         }
                       },
                       onPressed: () {
-                        settings
-                            .updateAxis(axis.deleteChartDataPointIfMoreThanTwo(i));
+                        settings.updateAxis(
+                            axis.deleteChartDataPointIfMoreThanTwo(i));
                       },
                     )))
                 .values,
@@ -84,8 +86,7 @@ class Chart extends ConsumerWidget {
                         margin: margin,
                         text: "+",
                         onPressed: () {
-                          settings
-                            .updateAxis(axis.addChartDataPointAfter(i));
+                          settings.updateAxis(axis.addChartDataPointAfter(i));
                         },
                       ),
                     ))

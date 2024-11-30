@@ -13,6 +13,11 @@ class ChannelList extends ConsumerWidget {
     final appSettings = ref.watch(settingsProvider);
     final lang = Languages.of(context);
 
+    const headerStyle = TextStyle(
+        color: Color.fromRGBO(80, 254, 0, 1),
+        fontWeight: FontWeight.bold,
+        fontSize: 16);
+
     return Column(children: [
       Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -20,11 +25,21 @@ class ChannelList extends ConsumerWidget {
           children: [
             SizedBox(
               width: 50,
-              child: Text(lang.index, textAlign: TextAlign.center,),
+              height: 60,
+              child: Text(
+                lang.index,
+                textAlign: TextAlign.center,
+                style: headerStyle,
+              ),
             ),
             SizedBox(
               width: 200,
-              child: Text(lang.usageLabel, textAlign: TextAlign.center,),
+              height: 60,
+              child: Text(
+                lang.usageLabel,
+                textAlign: TextAlign.center,
+                style: headerStyle,
+              ),
             ),
             SizedBox(
               width: 200,
@@ -32,25 +47,53 @@ class ChannelList extends ConsumerWidget {
                 children: [
                   SizedBox(
                     width: 100,
-                    child: Text(lang.currentValue),
+                    height: 60,
+                    child: Text(
+                      lang.currentValue,
+                      style: headerStyle,
+                    ),
                   ),
                   SizedBox(
                     width: 100,
-                    child: Text(lang.rawValue),
+                    height: 60,
+                    child: Text(
+                      lang.rawValue,
+                      style: headerStyle,
+                    ),
                   )
                 ],
               ),
             ),
             SizedBox(
               width: 100,
-              child: Text(lang.minValue),
+              height: 60,
+              child: Text(
+                lang.minValue,
+                style: headerStyle,
+              ),
             ),
             SizedBox(
               width: 100,
-              child: Text(lang.maxValue),
+              height: 60,
+              child: Text(
+                lang.maxValue,
+                style: headerStyle,
+              ),
             ),
-            SizedBox(width: 100, child: Text(lang.inverted)),
-            SizedBox(width: 100, child: Text(lang.reset)),
+            SizedBox(
+                width: 100,
+                height: 60,
+                child: Text(
+                  lang.inverted,
+                  style: headerStyle,
+                )),
+            SizedBox(
+                width: 100,
+                height: 60,
+                child: Text(
+                  lang.reset,
+                  style: headerStyle,
+                )),
             const SizedBox(width: 100)
           ]),
       for (var i = 0; i < appSettings.channelSettings.length; i++)
@@ -61,7 +104,6 @@ class ChannelList extends ConsumerWidget {
         ButtonItem(
           buttonId: i,
         ),
-        
     ]);
   }
 }

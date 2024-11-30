@@ -48,14 +48,16 @@ class _DragBallState extends State<DragBall> {
           onPanUpdate: (DragUpdateDetails details) {
             updateDataPoint(DataPoint(
                 x: (dragStartDataPoint!.x +
-                    (details.globalPosition.dx - dragStartLoc!.dx) / width).clamp(0.0, 1.0),
+                        (details.globalPosition.dx - dragStartLoc!.dx) / width)
+                    .clamp(0.0, 1.0),
                 y: (dragStartDataPoint!.y -
-                    (details.globalPosition.dy - dragStartLoc!.dy) / height).clamp(0.0, 1.0)));
+                        (details.globalPosition.dy - dragStartLoc!.dy) / height)
+                    .clamp(0.0, 1.0)));
           },
           child: const Material(
             elevation: 2,
             shape: CircleBorder(),
-            color: Colors.blue,
+            color: Color.fromRGBO(185, 101, 254, 1),
             child: SizedBox(
               width: ballDiameter,
               height: ballDiameter,
