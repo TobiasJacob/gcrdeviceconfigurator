@@ -149,7 +149,7 @@ class LanguageEn extends Languages {
 
   @override
   String alreadyInUse(ChannelUsage usage) {
-    return "There already exists another channel for ${this.channelUsage(usage)}";
+    return "There already exists another channel for ${channelUsage(usage)}";
   }
 
   @override

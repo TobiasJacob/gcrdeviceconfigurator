@@ -18,6 +18,9 @@ Contributions are always welcome. Please open an issue before submitting a pull-
 # Run code generator
 flutter pub run build_runner build
 
+# Update favicon
+dart run flutter_launcher_icons
+
 # Run development tool
 flutter run
 ```

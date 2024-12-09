@@ -10,7 +10,7 @@ import '../usb/config_serialize.dart';
 Future<void> activateSettings(BuildContext context, WidgetRef ref) async {
   final lang = Languages.of(context);
   final usbStatus = ref.read(usbProvider);
-  usbStatus.maybeWhen(
+ usbStatus.maybeWhen(
     data: (data) async {
       data.maybeMap(
         connected: (usbConn) async {

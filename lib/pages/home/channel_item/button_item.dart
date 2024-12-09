@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gcrdeviceconfigurator/data/activate_settings.dart';
 import 'package:gcrdeviceconfigurator/data/app_settings.dart';
 import 'package:gcrdeviceconfigurator/data/button.dart';
-import 'package:gcrdeviceconfigurator/data/channel.dart';
-import 'package:gcrdeviceconfigurator/data/channel_provider.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/dialogs/ok_dialog.dart';
 import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 import 'package:gcrdeviceconfigurator/pages/home/channel_item/button_sim_bar.dart';
-import 'package:gcrdeviceconfigurator/pages/home/channel_item/value_bar.dart';
-import 'package:gcrdeviceconfigurator/pages/home/channels/channel_page.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ButtonItem extends ConsumerStatefulWidget {

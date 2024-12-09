@@ -100,10 +100,8 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
             return;
           }
           final navigator = Navigator.of(context);
+          navigator.pop();
           bool value = await willPop(context);
-          if (value) {
-            navigator.pop();
-          }
         },
         child: Scaffold(
           appBar: AppBar(

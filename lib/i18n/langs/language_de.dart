@@ -149,7 +149,7 @@ class LanguageDe extends Languages {
 
   @override
   String alreadyInUse(ChannelUsage usage) {
-    return "Die Funktion ${this.channelUsage(usage)} ist schon für einen anderen Kanal eingestellt.";
+    return "Die Funktion ${channelUsage(usage)} ist schon für einen anderen Kanal eingestellt.";
   }
 
   @override
