@@ -52,23 +52,37 @@ class _ChannelItemState extends ConsumerState<ChannelItem> {
             ),
             SizedBox(
               width: 200,
-              child: DropdownMenu<ChannelUsage>(
-                dropdownMenuEntries: [
-                  for (var usage in ChannelUsage.values)
-                    DropdownMenuEntry(
-                      value: usage,
-                      label: lang.channelUsage(usage),
-                    )
-                ],
-                onSelected: (ChannelUsage? value) async {
-                  if (value != null) {
-                    appSettingsNotifier.update(appSettings.updateChannel(
-                        widget.channelId, channelSettings.updateChannelUsage(value)));
-                    await activateSettings(context, ref);
-                    await appSettingsNotifier.save();
-                  }
-                },
-                initialSelection: channelSettings.usage,
+              child: Container(
+                decoration: const BoxDecoration(
+                  // background image
+                  image: DecorationImage(
+                    image: AssetImage('images/dropdown_button.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: DropdownMenu<ChannelUsage>(
+                  inputDecorationTheme: const InputDecorationTheme(
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                  ),
+                  dropdownMenuEntries: [
+                    for (var usage in ChannelUsage.values)
+                      DropdownMenuEntry(
+                        value: usage,
+                        label: lang.channelUsage(usage),
+                      )
+                  ],
+                  onSelected: (ChannelUsage? value) async {
+                    if (value != null) {
+                      appSettingsNotifier.update(appSettings.updateChannel(
+                          widget.channelId, channelSettings.updateChannelUsage(value)));
+                      await activateSettings(context, ref);
+                      await appSettingsNotifier.save();
+                    }
+                  },
+                  initialSelection: channelSettings.usage,
+                ),
               ),
             ),
             SizedBox(

@@ -123,7 +123,8 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
                             updateValues(valueInt, null);
                           } catch (e) {
                             showOkDialog(context, lang.error, "$e");
-                            updateValues(channel.minValue, null); // Reset to previous value
+                            updateValues(channel.minValue,
+                                null); // Reset to previous value
                           }
                         },
                         child: TextField(
@@ -142,7 +143,8 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
                             updateValues(null, valueInt);
                           } catch (e) {
                             showOkDialog(context, lang.error, "$e");
-                            updateValues(null, channel.maxValue); // Reset to previous value
+                            updateValues(null,
+                                channel.maxValue); // Reset to previous value
                           }
                         },
                         child: TextField(
@@ -197,23 +199,24 @@ class _ChannelPageState extends ConsumerState<ChannelPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         for (var i = 0; i < 6; i++)
-                          ElevatedButton(
+                          MaterialButton(
                               onPressed: () {
                                 settingsNotifier.updateChannel(channel
                                     .updateProfileAxis(ProfileAxis.preset(i)));
                               },
-                              style: ElevatedButton.styleFrom(
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.zero,
+                              child: Container(
+                                width: 80,
+                              height: 80,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      image: AssetImage('images/preset${i+1}.png'),	
+                                      fit: BoxFit.fill),
                                 ),
-                                minimumSize: const Size(100, 70),
                               ),
-                              child: Text(lang.preset(i)))
+                              )
                       ],
                     ),
-                    const SizedBox(
-                      width: 20
-                    )
+                    const SizedBox(width: 20)
                   ],
                 ),
               ),

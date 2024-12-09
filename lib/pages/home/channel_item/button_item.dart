@@ -78,23 +78,36 @@ class _ButtonItemState extends ConsumerState<ButtonItem> {
             ),
             SizedBox(
               width: 200,
-              child: DropdownMenu<ButtonUsage>(
-                dropdownMenuEntries: [
-                  for (var usage in ButtonUsage.values)
-                    DropdownMenuEntry(
-                      value: usage,
-                      label: lang.buttonUsage(usage),
-                    )
-                ],
-                onSelected: (ButtonUsage? value) async {
-                  if (value != null) {
-                    appSettingsNotifier.update(appSettings.updateButton(
-                        widget.buttonId, buttonSettings.updateButtonUsage(value)));
-                    await activateSettings(context, ref);
-                    await appSettingsNotifier.save();
-                  }
-                },
-                initialSelection: buttonSettings.usage,
+              child: Container(
+                decoration: const BoxDecoration(
+                  // background image
+                  image: DecorationImage(
+                    image: AssetImage('images/dropdown_button.png'),
+                    fit: BoxFit.fill,
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: DropdownMenu<ButtonUsage>(
+                  inputDecorationTheme: const InputDecorationTheme(
+                    border: InputBorder.none,
+                  ),
+                  dropdownMenuEntries: [
+                    for (var usage in ButtonUsage.values)
+                      DropdownMenuEntry(
+                        value: usage,
+                        label: lang.buttonUsage(usage),
+                      )
+                  ],
+                  onSelected: (ButtonUsage? value) async {
+                    if (value != null) {
+                      appSettingsNotifier.update(appSettings.updateButton(
+                          widget.buttonId, buttonSettings.updateButtonUsage(value)));
+                      await activateSettings(context, ref);
+                      await appSettingsNotifier.save();
+                    }
+                  },
+                  initialSelection: buttonSettings.usage,
+                ),
               ),
             ),
             SizedBox(
