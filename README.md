@@ -15,7 +15,7 @@ Contributions are always welcome. Please open an issue before submitting a pull-
 [Setup flutter](https://docs.flutter.dev/get-started/install/windows) and then run
 
 ```console
-# Run code generator
+# Run code generator for datastructures
 flutter pub run build_runner build
 
 # Update favicon
