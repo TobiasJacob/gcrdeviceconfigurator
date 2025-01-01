@@ -126,6 +126,12 @@ class LanguageEn extends Languages {
   String get nSlashA => "N/A";
 
   @override
+  String get on => "On";
+
+  @override
+  String get off => "Off";
+
+  @override
   String editProfile(String profile) {
     return "Edit $profile";
   }

@@ -3,6 +3,7 @@ import 'package:gcrdeviceconfigurator/data/app_settings.dart';
 import 'package:gcrdeviceconfigurator/data/settings_provider.dart';
 import 'package:gcrdeviceconfigurator/i18n/languages.dart';
 import 'package:gcrdeviceconfigurator/pages/home/channel_item/bar_painter.dart';
+import 'package:gcrdeviceconfigurator/pages/home/channel_item/button_painter.dart';
 import 'package:gcrdeviceconfigurator/usb/usb_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -90,10 +91,11 @@ class _ButtonSimBarState extends ConsumerState<ButtonSimBar> {
           SizedBox(
             width: 100,
             child: CustomPaint(
-                painter: BarPainter(
+                painter: ButtonPainter(
                     margin: 2,
-                    value: buttonPressed ? 1.0 : 0.0,
-                    text: ""),
+                    value: buttonPressed,
+                    onText: lang.on,
+                    offText: lang.off),
                 child: Container()),
           ),
           SizedBox(

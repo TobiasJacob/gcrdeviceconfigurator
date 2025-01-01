@@ -43,6 +43,8 @@ abstract class Languages {
   String errorUploadProfile(String msg);
   String get errorNotConnected;
   String get nSlashA;
+  String get on;
+  String get off;
 
   // Profile Page
   String editProfile(String profile);

@@ -10,14 +10,13 @@ class BarPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final width = size.width - 2 * margin;
-    final height = size.height - 2 * margin;
+    const height = 22.0;
 
     // Red background
     Paint paint = Paint()
-      ..color = const Color.fromRGBO(48, 48, 48, 1)
-      ..strokeWidth = 2;
-    Offset p1 = Offset(margin, margin);
-    Offset p2 = Offset(width - margin, height - margin);
+      ..color = const Color.fromRGBO(48, 48, 48, 1);
+    Offset p1 = Offset(margin, -height / 2.0);
+    Offset p2 = Offset(width - margin, height / 2.0);
     canvas.drawRect(Rect.fromPoints(p1, p2), paint);
 
     if (value == null) {
@@ -25,11 +24,10 @@ class BarPainter extends CustomPainter {
     } else {
       // Green bar
       paint = Paint()
-        ..color = const Color.fromRGBO(185, 101, 254, 1)
-        ..strokeWidth = 2;
-      p1 = Offset(margin, margin);
+        ..color = const Color.fromRGBO(185, 101, 254, 1);
+      p1 = Offset(margin, -height / 2.0);
       p2 = Offset(
-          margin + (value ?? 0.0) * (width - 2.0 * margin), height - margin);
+          margin + (value ?? 0.0) * (width - 2.0 * margin), height / 2.0);
       canvas.drawRect(Rect.fromPoints(p1, p2), paint);
 
       // Text value as percentage
@@ -39,11 +37,11 @@ class BarPainter extends CustomPainter {
       );
       TextPainter tp = TextPainter(
         text: span,
-        textAlign: TextAlign.right,
+        textAlign: TextAlign.center,
         textDirection: TextDirection.ltr,
       );
       tp.layout();
-      tp.paint(canvas, Offset(margin + width / 2 - tp.width / 2, margin));
+      tp.paint(canvas, Offset(width / 2 - tp.width / 2, -height / 2));
     }
   }
 
