@@ -1,5 +1,7 @@
 # Get closer Racing Device configurator
 
+[Download the current software in Github releases](https://github.com/TobiasJacob/gcrdeviceconfigurator/releases)
+
 This is the configuration Software for the GetCloserRacing pedals. It is fully open source. Feel free to submit pull requests or fiddle with the presets.
 
 ![Demo](docs/Demo.png)
