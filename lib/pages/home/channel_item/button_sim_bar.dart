@@ -98,12 +98,8 @@ class _ButtonSimBarState extends ConsumerState<ButtonSimBar> {
                     offText: lang.off),
                 child: Container()),
           ),
-          SizedBox(
-            width: 100,
-            child: CustomPaint(
-                painter: BarPainter(
-                    margin: 2, value: (rawValue ?? 0) / 4096.0, text: '${rawValue ?? lang.nSlashA}'),
-                child: Container()),
+          const SizedBox(
+            width: 100
           ),
         ]);
   }
